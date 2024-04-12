@@ -1,5 +1,16 @@
-<!-- main-layout.component.html -->
-<div>
-  <h1>Main Layout</h1>
-  <router-outlet></router-outlet>
+<!-- layout.component.html -->
+<app-header></app-header>
+
+<div fxLayout="row" class="container">
+  <!-- Sidebar -->
+  <div fxLayout="column" fxLayoutGap="10px" class="sidebar">
+    <app-sidebar></app-sidebar>
+  </div>
+
+  <!-- Main Content Area -->
+  <div fxLayout="column" fxLayoutGap="10px" fxFlex class="main-content">
+    <router-outlet></router-outlet> <!-- Content from child components will be inserted here -->
+  </div>
 </div>
+
+<app-footer></app-footer>

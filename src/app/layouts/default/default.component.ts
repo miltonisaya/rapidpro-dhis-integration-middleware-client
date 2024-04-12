@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrl: './default.component.css'
 })
 export class DefaultComponent {
+  title: string = "ZanAfyaMaoni Interoperability Middleware";
 
 }
