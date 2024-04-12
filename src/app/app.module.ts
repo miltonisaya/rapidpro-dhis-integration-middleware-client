@@ -14,7 +14,8 @@ import {MatListItem, MatNavList} from "@angular/material/list";
 import {MatSidenav, MatSidenavContainer} from "@angular/material/sidenav";
 import {SharedModule} from "./shared/shared.module";
 import {FlexLayoutModule} from "@angular/flex-layout";
-import {MatCard, MatCardContent} from "@angular/material/card";
+import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
+import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 
 @NgModule({
   declarations: [
@@ -36,7 +37,11 @@ import {MatCard, MatCardContent} from "@angular/material/card";
     SharedModule,
     FlexLayoutModule,
     MatCard,
-    MatCardContent
+    MatCardContent,
+    MatGridList,
+    MatGridTile,
+    MatCardHeader,
+    MatCardTitle
   ],
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
   providers: [

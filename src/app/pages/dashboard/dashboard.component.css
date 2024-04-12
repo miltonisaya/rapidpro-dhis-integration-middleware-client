@@ -1,0 +1,33 @@
+.page-title {
+  margin: 10px;
+}
+
+.mat-card-title {
+  margin: 10px;
+}
+
+.dashboard-cards {
+  margin: 5px;
+}
+
+.card-one {
+  background-color: greenyellow;
+}
+
+.card-two {
+  background-color: mediumturquoise;
+}
+
+.card-three {
+  background-color: yellow;
+}
+
+.card-four {
+  background-color: indianred;
+}
+
+mat-card-content {
+  text-align: center;
+  padding-top: 10px;
+  font-size: large;
+}
