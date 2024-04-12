@@ -11,19 +11,19 @@
 }
 
 .card-one {
-  background-color: greenyellow;
+  background-color: #ea1964;
 }
 
 .card-two {
-  background-color: mediumturquoise;
+  background-color: #28d7d1;
 }
 
 .card-three {
-  background-color: yellow;
+  background-color: #aaff00;
 }
 
 .card-four {
-  background-color: indianred;
+  background-color: #e7c51d;
 }
 
 mat-card-content {
