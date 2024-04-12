@@ -14,6 +14,7 @@ import {MatListItem, MatNavList} from "@angular/material/list";
 import {MatSidenav, MatSidenavContainer} from "@angular/material/sidenav";
 import {SharedModule} from "./shared/shared.module";
 import {FlexLayoutModule} from "@angular/flex-layout";
+import {MatCard, MatCardContent} from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -22,19 +23,21 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     LoginComponent,
     DashboardComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        MatToolbar,
-        MatIcon,
-        MatIconButton,
-        MatNavList,
-        MatListItem,
-        MatSidenavContainer,
-        MatSidenav,
-        SharedModule,
-        FlexLayoutModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    MatToolbar,
+    MatIcon,
+    MatIconButton,
+    MatNavList,
+    MatListItem,
+    MatSidenavContainer,
+    MatSidenav,
+    SharedModule,
+    FlexLayoutModule,
+    MatCard,
+    MatCardContent
+  ],
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     provideClientHydration(),
