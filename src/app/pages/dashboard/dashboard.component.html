@@ -33,9 +33,13 @@
   </mat-card>
 </div>
 
-<mat-grid-list cols="1" rowHeight="4:1">
-  <mat-grid-tile>Barchart</mat-grid-tile>
-  <mat-grid-tile>Transactions</mat-grid-tile>
-</mat-grid-list>
+<div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="5" class="dashboard-cards">
+  <h2>
+    Registrations by Councils
+  </h2>
+  <div fxFlex="100" style="margin: 10px;">
+    <app-barchart></app-barchart>
+  </div>
+</div>
 
 

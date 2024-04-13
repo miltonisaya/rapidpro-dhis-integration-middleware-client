@@ -8,6 +8,7 @@ import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
 import {MatListItem, MatNavList} from "@angular/material/list";
 import {RouterLink} from "@angular/router";
+import {MatDivider} from "@angular/material/divider";
 
 
 
@@ -17,15 +18,16 @@ import {RouterLink} from "@angular/router";
     SidebarComponent,
     FooterComponent
   ],
-  imports: [
-    CommonModule,
-    MatToolbar,
-    MatIcon,
-    MatIconButton,
-    MatNavList,
-    MatListItem,
-    RouterLink
-  ],
+    imports: [
+        CommonModule,
+        MatToolbar,
+        MatIcon,
+        MatIconButton,
+        MatNavList,
+        MatListItem,
+        RouterLink,
+        MatDivider
+    ],
   exports: [
     FooterComponent,
     HeaderComponent,
