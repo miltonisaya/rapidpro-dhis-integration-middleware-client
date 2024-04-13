@@ -17,6 +17,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {WidgetModule} from "./widgets/widget.module";
+import {MatDivider} from "@angular/material/divider";
 
 @NgModule({
   declarations: [
@@ -25,26 +26,27 @@ import {WidgetModule} from "./widgets/widget.module";
     LoginComponent,
     DashboardComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    MatToolbar,
-    MatIcon,
-    MatIconButton,
-    MatNavList,
-    MatListItem,
-    MatSidenavContainer,
-    MatSidenav,
-    SharedModule,
-    WidgetModule,
-    FlexLayoutModule,
-    MatCard,
-    MatCardContent,
-    MatGridList,
-    MatGridTile,
-    MatCardHeader,
-    MatCardTitle
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        MatToolbar,
+        MatIcon,
+        MatIconButton,
+        MatNavList,
+        MatListItem,
+        MatSidenavContainer,
+        MatSidenav,
+        SharedModule,
+        WidgetModule,
+        FlexLayoutModule,
+        MatCard,
+        MatCardContent,
+        MatGridList,
+        MatGridTile,
+        MatCardHeader,
+        MatCardTitle,
+        MatDivider
+    ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     provideClientHydration(),

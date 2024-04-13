@@ -37,3 +37,8 @@ mat-card-content {
   padding-top: 10px;
   font-size: large;
 }
+
+mat-divider{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
