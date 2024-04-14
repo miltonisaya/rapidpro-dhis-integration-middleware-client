@@ -1,34 +1,24 @@
-/* layout.component.css */
-.container {
+mat-sidenav {
+  width: 230px;
+  height: 100%;
+}
+
+mat-sidenav-content {
   height: 100vh;
-  display: flex;
-  flex-direction: column;
+  background-color: aqua;
+  .main {
+    margin-left: 30px;
+    margin-top: 10px;
+  }
 }
 
-.sidebar {
-  width: 200px;
-  background-color: #f0f0f0;
-}
-
-.main-content {
-  flex-grow: 1;
-}
-
-.mat-toolbar {
-  z-index: 2; /* Ensures toolbar is above the sidebar */
-}
-
-.mat-nav-list {
-  padding: 16px;
-}
-
-.mat-sidenav-content {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.content {
-  padding: 16px;
-  flex-grow: 1;
+mat-toolbar {
+  mat-icon{
+    margin-left: 15px;
+    color: black;
+  }
+  justify-content: space-between;
+  .box{
+    margin-top: 15px;
+  }
 }

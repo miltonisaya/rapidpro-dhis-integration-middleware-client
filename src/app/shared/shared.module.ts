@@ -33,7 +33,7 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
     MatButton,
     MatMenuTrigger,
     MatMenuItem,
-    MatMenu
+    MatMenu,
   ],
   exports: [
     FooterComponent,

@@ -1,16 +1,21 @@
-<!-- layout.component.html -->
-<app-header></app-header>
-
-<div fxLayout="row" class="container">
-  <!-- Sidebar -->
-  <div fxLayout="column" fxLayoutGap="10px" class="sidebar">
+<mat-sidenav-container>
+  <mat-sidenav #sidebar mode="side" opened>
     <app-sidebar></app-sidebar>
-  </div>
-
-  <!-- Main Content Area -->
-  <div fxLayout="column" fxLayoutGap="10px" fxFlex class="main-content">
-    <router-outlet></router-outlet> <!-- Content from child components will be inserted here -->
-  </div>
-</div>
-
-<app-footer></app-footer>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="content">
+      <div class="toolbar">
+        <mat-toolbar>
+          <mat-icon (click)="sidebar.toggle()">menu</mat-icon>
+          <div class="box">
+            <mat-icon>help</mat-icon>
+            <mat-icon>person_outlined</mat-icon>
+          </div>
+        </mat-toolbar>
+      </div>
+      <div class="main">
+        main content
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

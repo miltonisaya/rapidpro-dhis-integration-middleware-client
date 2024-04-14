@@ -11,7 +11,7 @@ import {MatToolbar} from "@angular/material/toolbar";
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
 import {MatListItem, MatNavList} from "@angular/material/list";
-import {MatSidenav, MatSidenavContainer} from "@angular/material/sidenav";
+import {MatSidenav, MatSidenavContainer, MatSidenavContent} from "@angular/material/sidenav";
 import {SharedModule} from "./shared/shared.module";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
@@ -45,7 +45,8 @@ import {MatDivider} from "@angular/material/divider";
         MatGridTile,
         MatCardHeader,
         MatCardTitle,
-        MatDivider
+        MatDivider,
+        MatSidenavContent
     ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
