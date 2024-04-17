@@ -8,7 +8,29 @@
   </div>
 
   <div class="menu">
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let menu of menus">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>{{ menu.icon }}</mat-icon>
+            {{ menu.name }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
 
-  </div>
-
+        <span *ngIf="menu.children.length > 0">
+          <span *ngFor="let subMenu of menu.children">
+            <mat-list-item routerLink="{{'/'+subMenu.url}}">
+              <!-- Entradas de cada submenú  -->
+              <div fxLayout="row" fxLayoutAlign="space-between center">
+                <mat-icon>{{ subMenu.icon }}</mat-icon>
+                {{ subMenu.name }}
+                </div>
+              </mat-list-item>
+            </span>
+          </span>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
 </div>
+
+

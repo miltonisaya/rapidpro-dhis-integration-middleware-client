@@ -11,6 +11,7 @@ import {RouterLink} from "@angular/router";
 import {MatDivider} from "@angular/material/divider";
 import {FlexModule} from "@angular/flex-layout";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
+import {MatAccordion, MatExpansionPanel, MatExpansionPanelTitle} from "@angular/material/expansion";
 
 
 
@@ -34,6 +35,9 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
     MatMenuTrigger,
     MatMenuItem,
     MatMenu,
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelTitle,
   ],
   exports: [
     FooterComponent,
