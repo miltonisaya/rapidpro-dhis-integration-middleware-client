@@ -5,7 +5,7 @@ mat-sidenav {
 
 mat-sidenav-content {
   height: 100vh;
-  background-color: aqua;
+  /*background-color: aqua;*/
   .main {
     margin-left: 30px;
     margin-top: 10px;
