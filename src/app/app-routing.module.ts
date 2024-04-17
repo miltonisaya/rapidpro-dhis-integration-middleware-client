@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {DefaultComponent} from "./layouts/default/default.component";
-import {DashboardComponent} from "./pages/dashboard/dashboard.component";
-import {ContactsComponent} from "./pages/contacts/contacts.component";
-import {UsersComponent} from "./pages/users/users.component";
-import {DataElementsComponent} from "./pages/data-elements/data-elements.component";
-import {OrganisationUnitsComponent} from "./pages/organisation-units/organisation-units.component";
-import {ProgramsComponent} from "./pages/programs/programs.component";
+import {DashboardComponent} from "./modules/dashboard/dashboard.component";
+import {ContactComponent} from "./modules/contact/contact.component";
+import {UserComponent} from "./modules/user/user.component";
+import {DataElementComponent} from "./modules/data-element/data-element.component";
+import {OrganisationUnitComponent} from "./modules/organisation-unit/organisation-unit.component";
+import {ProgramComponent} from "./modules/program/program.component";
 
 const routes: Routes = [{
   path:"",
@@ -16,19 +16,19 @@ const routes: Routes = [{
     component: DashboardComponent
   }, {
     path: "contacts",
-    component: ContactsComponent
+    component: ContactComponent
   }, {
     path:"users",
-    component:UsersComponent
+    component:UserComponent
   }, {
     path: "data-elements",
-    component: DataElementsComponent
+    component: DataElementComponent
   }, {
     path: "organisation-units",
-    component:OrganisationUnitsComponent
+    component:OrganisationUnitComponent
   }, {
     path:"programs",
-    component: ProgramsComponent
+    component: ProgramComponent
   }]
 }];
 

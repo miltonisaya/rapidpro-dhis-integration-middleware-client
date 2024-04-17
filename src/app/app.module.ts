@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {DefaultComponent} from './layouts/default/default.component';
 import {LoginComponent} from './layouts/login/login.component';
-import {DashboardComponent} from './pages/dashboard/dashboard.component';
+import {DashboardComponent} from './modules/dashboard/dashboard.component';
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
@@ -18,12 +18,12 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/mat
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {WidgetModule} from "./widgets/widget.module";
 import {MatDivider} from "@angular/material/divider";
-import { FlowsComponent } from './pages/flows/flows.component';
-import { ContactsComponent } from './pages/contacts/contacts.component';
-import { OrganisationUnitsComponent } from './pages/organisation-units/organisation-units.component';
-import { UsersComponent } from './pages/users/users.component';
-import { ProgramsComponent } from './pages/programs/programs.component';
-import { DataElementsComponent } from './pages/data-elements/data-elements.component';
+import { FlowComponent } from './modules/flow/flow.component';
+import { ContactComponent } from './modules/contact/contact.component';
+import { OrganisationUnitComponent } from './modules/organisation-unit/organisation-unit.component';
+import { UserComponent } from './modules/user/user.component';
+import { ProgramComponent } from './modules/program/program.component';
+import { DataElementComponent } from './modules/data-element/data-element.component';
 
 @NgModule({
   declarations: [
@@ -31,12 +31,12 @@ import { DataElementsComponent } from './pages/data-elements/data-elements.compo
     DefaultComponent,
     LoginComponent,
     DashboardComponent,
-    FlowsComponent,
-    ContactsComponent,
-    OrganisationUnitsComponent,
-    UsersComponent,
-    ProgramsComponent,
-    DataElementsComponent
+    FlowComponent,
+    ContactComponent,
+    OrganisationUnitComponent,
+    UserComponent,
+    ProgramComponent,
+    DataElementComponent
   ],
     imports: [
         BrowserModule,
