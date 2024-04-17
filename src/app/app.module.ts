@@ -18,13 +18,25 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/mat
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {WidgetModule} from "./widgets/widget.module";
 import {MatDivider} from "@angular/material/divider";
+import { FlowsComponent } from './pages/flows/flows.component';
+import { ContactsComponent } from './pages/contacts/contacts.component';
+import { OrganisationUnitsComponent } from './pages/organisation-units/organisation-units.component';
+import { UsersComponent } from './pages/users/users.component';
+import { ProgramsComponent } from './pages/programs/programs.component';
+import { DataElementsComponent } from './pages/data-elements/data-elements.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DefaultComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    FlowsComponent,
+    ContactsComponent,
+    OrganisationUnitsComponent,
+    UsersComponent,
+    ProgramsComponent,
+    DataElementsComponent
   ],
     imports: [
         BrowserModule,
