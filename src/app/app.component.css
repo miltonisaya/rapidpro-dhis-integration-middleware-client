@@ -74,3 +74,13 @@ mat-divider {
   height: 90px;
   border-radius: 50px;
 }
+
+/* Structure */
+table {
+  width: 100%;
+}
+
+.mat-mdc-form-field .mat-paginator {
+  font-size: 14px;
+  width: 100%;
+}

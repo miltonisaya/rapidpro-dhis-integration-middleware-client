@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
@@ -10,21 +10,22 @@ export const RESOURCE_URL: string = 'api/v1/contacts';
 
 @Injectable()
 
-export class ContactsService {
+export class ContactService {
   form: FormGroup = new FormGroup({
     id: new FormControl(''),
     facilityCode: new FormControl('', [Validators.required])
   });
+
   private API_ENDPOINT = `${BASE_URL}/${RESOURCE_URL}`;
 
-  constructor(private http: HttpClient) {
-  }
+  http = inject(HttpClient);
+
 
   /**
    * Get all contacts
    * @param param
    */
-  getContacts(param?): Observable<any> {
+  getContacts(param?: any): Observable<any> {
     return this.http.get<any>(this.API_ENDPOINT, {params: param}).pipe(
       map(this.extractData));
   }
@@ -33,23 +34,18 @@ export class ContactsService {
    * Delete contact by id
    * @param id
    */
-  delete(id): Observable<any> {
+  delete(id: string): Observable<any> {
     console.log("Deleting contact with id ", id);
     return this.http.delete<any>(this.API_ENDPOINT + "/" + id).pipe(
       map(this.extractData));
   }
 
-  registrationsByFacility() {
-    return this.http.get(this.API_ENDPOINT + "/registration-by-facility").pipe(
-      map(this.extractData)
-    );
-  }
 
   /**
    *
    * @param data
    */
-  populateForm(data) {
+  populateForm(data: { [key: string]: any; }) {
     this.form.setValue(data);
   }
 
@@ -65,15 +61,6 @@ export class ContactsService {
       id: '',
       facilityCode: ''
     });
-  }
-
-  responsesInAgeGroups(params: any) {
-    const httpOptions = {
-      headers: new HttpHeaders({'Content-Type': 'application/json'})
-    }
-    return this.http.post(this.API_ENDPOINT + "/responses-by-age-and-visit", params, httpOptions).pipe(
-      map(this.extractData)
-    );
   }
 
   /**

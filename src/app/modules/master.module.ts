@@ -1,7 +1,15 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ContactComponent} from "./contact/contact.component";
-import {MatCell, MatColumnDef, MatHeaderCell, MatHeaderRow, MatRow, MatTable} from "@angular/material/table";
+import {
+  MatCell,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderRow,
+  MatRow,
+  MatTable,
+  MatTableModule
+} from "@angular/material/table";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
@@ -13,6 +21,8 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {MatIcon} from "@angular/material/icon";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
+import {FlexLayoutModule} from "@angular/flex-layout";
+import {MatCard} from "@angular/material/card";
 
 
 @NgModule({
@@ -20,6 +30,7 @@ import {MatInput} from "@angular/material/input";
     NotifierComponent],
   imports: [
     CommonModule,
+    MatTableModule,
     MatTable,
     MatProgressSpinner,
     MatSort,
@@ -35,6 +46,8 @@ import {MatInput} from "@angular/material/input";
     MatLabel,
     MatFormField,
     MatInput,
+    FlexLayoutModule,
+    MatCard,
   ],
   providers: [
     ContactService,
