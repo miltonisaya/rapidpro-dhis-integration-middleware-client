@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {DefaultComponent} from "./layouts/default/default.component";
 import {DashboardComponent} from "./modules/dashboard/dashboard.component";
 import {ContactComponent} from "./modules/contact/contact.component";
@@ -7,33 +7,38 @@ import {UserComponent} from "./modules/user/user.component";
 import {DataElementComponent} from "./modules/data-element/data-element.component";
 import {OrganisationUnitComponent} from "./modules/organisation-unit/organisation-unit.component";
 import {ProgramComponent} from "./modules/program/program.component";
+import {LoginComponent} from "./layouts/login/login.component";
 
 const routes: Routes = [{
-  path:"",
-  component:DefaultComponent,
-  children:[{
-    path:"dashboard",
+  path: "",
+  component: DefaultComponent,
+  children: [{
+    path: "dashboard",
     component: DashboardComponent
   }, {
     path: "contacts",
     component: ContactComponent
   }, {
-    path:"users",
-    component:UserComponent
+    path: "users",
+    component: UserComponent
   }, {
     path: "data-elements",
     component: DataElementComponent
   }, {
     path: "organisation-units",
-    component:OrganisationUnitComponent
+    component: OrganisationUnitComponent
   }, {
-    path:"programs",
+    path: "programs",
     component: ProgramComponent
   }]
+}, {
+  path: "login",
+  component: LoginComponent
 }];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
