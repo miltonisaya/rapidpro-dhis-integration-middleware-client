@@ -23,6 +23,7 @@ import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatCard} from "@angular/material/card";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import {MatCard} from "@angular/material/card";
     MatInput,
     FlexLayoutModule,
     MatCard,
+    ReactiveFormsModule
   ],
   providers: [
     ContactService,

@@ -9,7 +9,7 @@ import {LoginComponent} from './layouts/login/login.component';
 import {DashboardComponent} from './modules/dashboard/dashboard.component';
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatIcon} from "@angular/material/icon";
-import {MatIconButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatListItem, MatNavList} from "@angular/material/list";
 import {MatSidenav, MatSidenavContainer, MatSidenavContent} from "@angular/material/sidenav";
 import {SharedModule} from "./shared/shared.module";
@@ -29,6 +29,9 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MasterModule} from "./modules/master.module";
 import {HttpClientModule, provideHttpClient, withFetch} from "@angular/common/http";
+import {MatFormField} from "@angular/material/form-field";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatInput} from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -72,7 +75,12 @@ import {HttpClientModule, provideHttpClient, withFetch} from "@angular/common/ht
     MatRow,
     MatPaginator,
     MatProgressSpinner,
-    MasterModule
+    FormsModule,
+    ReactiveFormsModule,
+    MasterModule,
+    MatFormField,
+    MatButton,
+    MatInput
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   providers: [
