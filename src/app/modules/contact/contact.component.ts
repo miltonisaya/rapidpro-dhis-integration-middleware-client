@@ -11,7 +11,7 @@ import {ContactService} from "./contact.service";
   styleUrl: './contact.component.css'
 })
 
-export class ContactComponent implements AfterViewInit {
+export class ContactComponent implements OnInit {
   displayedColumns: string[] = ["sno", 'name', 'facilityCode', 'urn', 'sex', 'age', 'actions'];
   contacts: any = [];
   @ViewChild('deleteDialog') deleteDialog: TemplateRef<any> | undefined;
@@ -29,7 +29,7 @@ export class ContactComponent implements AfterViewInit {
   ) {
   }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     console.log("Fetching contacts ...")
     this.getContacts();
   }
@@ -45,7 +45,7 @@ export class ContactComponent implements AfterViewInit {
       this.contacts = response.data;
       this.dataSource = new MatTableDataSource<any>(this.contacts);
     }, error => {
-      this.notifierService.showNotification(error.error.error, 'OK', 'error');
+      this.notifierService.showNotification(error.error, 'OK', 'error');
     });
   }
 

@@ -24,11 +24,17 @@ import {MatInput} from "@angular/material/input";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatCard} from "@angular/material/card";
 import {ReactiveFormsModule} from "@angular/forms";
+import {LoginDialogComponent} from "./login-dialog/login-dialog.component";
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {AuthInterceptor} from "../interceptors/auth-interceptor.service";
 
 
 @NgModule({
-  declarations: [ContactComponent,
-    NotifierComponent],
+  declarations: [
+    ContactComponent,
+    NotifierComponent,
+    LoginDialogComponent
+  ],
   imports: [
     CommonModule,
     MatTableModule,

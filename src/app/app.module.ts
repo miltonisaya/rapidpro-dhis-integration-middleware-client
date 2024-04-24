@@ -28,10 +28,17 @@ import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MasterModule} from "./modules/master.module";
-import {HttpClientModule, provideHttpClient, withFetch} from "@angular/common/http";
+import {
+  HTTP_INTERCEPTORS,
+  HttpClientModule,
+  provideHttpClient,
+  withFetch,
+  withInterceptors, withInterceptorsFromDi
+} from "@angular/common/http";
 import {MatFormField} from "@angular/material/form-field";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatInput} from "@angular/material/input";
+import {AuthInterceptor} from "./auth/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -86,8 +93,13 @@ import {MatInput} from "@angular/material/input";
   providers: [
     provideClientHydration(),
     provideAnimationsAsync(),
-    provideHttpClient(withFetch())
-  ],
+    provideHttpClient(withFetch()),
+    {
+      provide:HTTP_INTERCEPTORS,
+      useClass:AuthInterceptor,
+      multi:true
+    }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule {
