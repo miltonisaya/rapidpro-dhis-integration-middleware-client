@@ -18,7 +18,7 @@ export const APP_ROUTES: Route[] = [{
       component: ContactComponent
     },{
       path: "dashboard",
-      component: ContactComponent
+      component: DashboardComponent
     },{
       path: "organisation-units",
       component: OrganisationUnitComponent
