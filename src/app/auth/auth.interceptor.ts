@@ -1,9 +1,10 @@
-import {HttpInterceptorFn} from '@angular/common/http';
+import {HttpEvent, HttpHandlerFn, HttpRequest} from '@angular/common/http';
+import {Observable} from "rxjs";
 import {inject} from "@angular/core";
 import {AuthService} from "./auth.service";
 
-export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService);
+export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
+  const authService:AuthService = inject(AuthService);
   const token = authService.getToken();
   console.log("Intercepting ...", token);
   if (token) {
@@ -17,4 +18,4 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   } else {
     return next(req);
   }
-};
+}

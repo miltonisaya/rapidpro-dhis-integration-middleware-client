@@ -16,7 +16,6 @@ import {ContactComponent} from "./modules/contact/contact.component";
     CommonModule,
     RouterModule,
     LoginComponent,
-    HttpClientModule,
     FormsModule,
     ContactComponent
   ],
