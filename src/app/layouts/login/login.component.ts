@@ -45,7 +45,7 @@ export class LoginComponent {
       .subscribe(response => {
         if (response.data.user) {
           this.notifierService.showNotification(response.message, 'OK', 'success');
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/contacts']);
         }
       }, error => {
         this.notifierService.showNotification(error.error.error, 'OK', 'error');

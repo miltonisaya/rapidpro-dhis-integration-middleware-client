@@ -1,22 +1,56 @@
-import {AfterViewInit, Component, input, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, input, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from "@angular/material/table";
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable,
+  MatTableDataSource
+} from "@angular/material/table";
 import {NotifierService} from "../notification/notifier.service";
 import {ContactService} from "./contact.service";
-import { MatIcon } from '@angular/material/icon';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIconButton } from '@angular/material/button';
-import { MatInput } from '@angular/material/input';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { FlexModule } from '@angular/flex-layout';
+import {MatIcon} from '@angular/material/icon';
+import {MatTooltip} from '@angular/material/tooltip';
+import {MatIconButton} from '@angular/material/button';
+import {MatInput} from '@angular/material/input';
+import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {FlexModule} from '@angular/flex-layout';
 
 @Component({
-    selector: 'app-contacts',
-    templateUrl: './contact.component.html',
-    styleUrl: './contact.component.css',
-    standalone: true,
-    imports: [FlexModule, MatFormField, MatLabel, MatInput, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatIconButton, MatTooltip, MatIcon, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator]
+  selector: 'app-contacts',
+  templateUrl: './contact.component.html',
+  styleUrl: './contact.component.css',
+  standalone: true,
+  imports: [
+    FlexModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    MatPaginator
+  ],
+  providers: [
+    ContactService
+  ]
 })
 
 export class ContactComponent implements OnInit {
