@@ -1,14 +1,20 @@
 import {Component} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {AuthService} from "../../auth/auth.service";
 import {NotifierService} from "../notification/notifier.service";
+import { MatInput } from '@angular/material/input';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { FlexModule } from '@angular/flex-layout';
 
 @Component({
-  selector: 'app-login-dialog',
-  templateUrl: './login-dialog.component.html',
-  styleUrls: ['./login-dialog.component.css']
+    selector: 'app-login-dialog',
+    templateUrl: './login-dialog.component.html',
+    styleUrls: ['./login-dialog.component.css'],
+    standalone: true,
+    imports: [ReactiveFormsModule, FlexModule, MatFormField, MatLabel, MatIcon, MatInput]
 })
 export class LoginDialogComponent {
   formGroup: FormGroup = new FormGroup({

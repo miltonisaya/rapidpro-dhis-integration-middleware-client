@@ -1,10 +1,13 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from '@angular/material/snack-bar';
+import { UpperCasePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-notifier',
-  templateUrl: './notifier.component.html',
-  styleUrls: ['./notifier.component.scss']
+    selector: 'app-notifier',
+    templateUrl: './notifier.component.html',
+    styleUrls: ['./notifier.component.scss'],
+    standalone: true,
+    imports: [UpperCasePipe]
 })
 export class NotifierComponent implements OnInit {
 

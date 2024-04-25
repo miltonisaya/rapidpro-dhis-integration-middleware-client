@@ -2,9 +2,10 @@ import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import Chart from 'chart.js/auto';
 
 @Component({
-  selector: 'app-barchart',
-  templateUrl: './barchart.component.html',
-  styleUrl: './barchart.component.css'
+    selector: 'app-barchart',
+    templateUrl: './barchart.component.html',
+    styleUrl: './barchart.component.css',
+    standalone: true
 })
 export class BarchartComponent {
   @ViewChild('canvas', {static: true}) canvasRef!: ElementRef;

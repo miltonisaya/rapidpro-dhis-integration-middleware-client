@@ -1,12 +1,34 @@
-import { Component } from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {FlexModule} from '@angular/flex-layout';
+import {RouterLink} from '@angular/router';
+import {MatListItem} from '@angular/material/list';
+import {MatIcon} from '@angular/material/icon';
+import {NgFor, NgIf} from '@angular/common';
+import {MatAccordion, MatExpansionPanel, MatExpansionPanelTitle} from '@angular/material/expansion';
+import {MatDivider} from '@angular/material/divider';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css'
+  styleUrl: './sidebar.component.css',
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    MatDivider,
+    MatAccordion,
+    NgFor,
+    MatExpansionPanel,
+    MatExpansionPanelTitle,
+    MatIcon,
+    NgIf,
+    MatListItem,
+    RouterLink,
+    FlexModule
+  ]
 })
 export class SidebarComponent {
   menus: any[];
+
   constructor() {
     this.menus = [
       {

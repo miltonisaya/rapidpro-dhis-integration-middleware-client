@@ -12,11 +12,11 @@ import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatListItem, MatNavList} from "@angular/material/list";
 import {MatSidenav, MatSidenavContainer, MatSidenavContent} from "@angular/material/sidenav";
-import {SharedModule} from "./shared/shared.module";
+
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
-import {WidgetModule} from "./widgets/widget.module";
+
 import {MatDivider} from "@angular/material/divider";
 import { FlowComponent } from './modules/flow/flow.component';
 import { OrganisationUnitComponent } from './modules/organisation-unit/organisation-unit.component';
@@ -27,7 +27,6 @@ import {MatCell, MatColumnDef, MatHeaderCell, MatHeaderRow, MatRow, MatTable} fr
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {MasterModule} from "./modules/master.module";
 import {
   HTTP_INTERCEPTORS,
   HttpClientModule,
@@ -41,18 +40,8 @@ import {MatInput} from "@angular/material/input";
 import {AuthInterceptor} from "./auth/auth.interceptor";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DefaultComponent,
-    LoginComponent,
-    DashboardComponent,
-    FlowComponent,
-    OrganisationUnitComponent,
-    UserComponent,
-    ProgramComponent,
-    DataElementComponent
-  ],
-  imports: [
+    declarations: [AppComponent],
+    imports: [
     BrowserModule,
     AppRoutingModule,
     MatToolbar,
@@ -62,8 +51,6 @@ import {AuthInterceptor} from "./auth/auth.interceptor";
     MatListItem,
     MatSidenavContainer,
     MatSidenav,
-    SharedModule,
-    WidgetModule,
     FlexLayoutModule,
     MatCard,
     MatCardContent,
@@ -84,23 +71,30 @@ import {AuthInterceptor} from "./auth/auth.interceptor";
     MatProgressSpinner,
     FormsModule,
     ReactiveFormsModule,
-    MasterModule,
     MatFormField,
     MatButton,
-    MatInput
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-  providers: [
-    provideClientHydration(),
-    provideAnimationsAsync(),
-    provideHttpClient(withFetch()),
-    {
-      provide:HTTP_INTERCEPTORS,
-      useClass:AuthInterceptor,
-      multi:true
-    }
+    MatInput,
+    DefaultComponent,
+    LoginComponent,
+    DashboardComponent,
+    FlowComponent,
+    OrganisationUnitComponent,
+    UserComponent,
+    ProgramComponent,
+    DataElementComponent
 ],
-  bootstrap: [AppComponent]
+    schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+    providers: [
+        provideClientHydration(),
+        provideAnimationsAsync(),
+        provideHttpClient(withFetch()),
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true
+        }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }
