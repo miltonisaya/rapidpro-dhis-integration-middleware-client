@@ -1,51 +1,22 @@
-import {Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {Router} from '@angular/router';
-import {catchError} from 'rxjs/operators';
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {HttpInterceptorFn} from '@angular/common/http';
 import {AuthService} from "./auth.service";
-import {LoginDialogComponent} from "../modules/login-dialog/login-dialog.component";
+import {inject} from "@angular/core";
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
+export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService: AuthService = inject(AuthService);
+  const authToken: string = authService.getToken();
 
-  constructor(
-    public auth: AuthService,
-    public router: Router,
-    public dialog: MatDialog
-  ) {
-  }
-
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log("Intercepting request ...")
-    request = request.clone({
+  let authReq: any;
+  if (authToken) {
+    // Clone the request and add the authorization header
+    authReq = req.clone({
       setHeaders: {
-        Authorization: `Bearer ${this.auth.getToken()}`
+        Authorization: `Bearer ${authToken}`
       }
     });
-
-    return next.handle(request).pipe(
-      catchError(response => {
-        if (response.status === 401) {
-          localStorage.setItem("CURRENT_ROUTE", JSON.stringify(this.router.url));
-          this.openLoginDialog();
-          console.log("Response unauthorized =>", response);
-          // this.router.navigate(["/login"]);
-          return next.handle(request);
-        }
-        return throwError(response);
-      })
-    )
   }
 
-  openLoginDialog(): void {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    this.dialog.open(LoginDialogComponent, dialogConfig)
-      .afterClosed().subscribe(() => {
-      console.log("Dialog closed ...")
-    });
-  }
-}
+  console.log("Auth Request =>", authReq);
+  // Pass the cloned request with the updated header to the next handler
+  return next(authReq);
+};
