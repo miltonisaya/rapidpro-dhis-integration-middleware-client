@@ -9,10 +9,9 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
   console.log("Intercepting request with token ...");
   if (token) {
     const cloned = req.clone({
-      headers: req.headers.set(
-        'Authorization',
-        `Bearer ${token}`
-      )
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
     });
     return next(cloned);
   } else {
