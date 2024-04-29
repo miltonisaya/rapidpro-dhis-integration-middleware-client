@@ -1,6 +1,6 @@
 <div class="navbar">
   <div class="user">
-    <img src="./assets/smz_logo.png" alt=""/>
+    <img src="./assets/smz_logo.png" alt="" />
     <div class="logo-title">Zan-AfyaMaoni Interoperability Middleware</div>
     <mat-divider></mat-divider>
     <h4 class="name">Logged in as: Milton Isaya</h4>
@@ -19,18 +19,16 @@
 
         <span *ngIf="menu.children.length > 0">
           <span *ngFor="let subMenu of menu.children">
-            <mat-list-item routerLink="{{'/'+subMenu.url}}">
+            <mat-list-item routerLink="{{ '/' + subMenu.url }}">
               <!-- Entradas de cada submenú  -->
               <div fxLayout="row" fxLayoutAlign="space-between center">
                 <mat-icon>{{ subMenu.icon }}</mat-icon>
                 {{ subMenu.name }}
-                </div>
-              </mat-list-item>
-            </span>
+              </div>
+            </mat-list-item>
           </span>
-        </mat-expansion-panel>
-      </mat-accordion>
-    </div>
+        </span>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
 </div>
-
-
