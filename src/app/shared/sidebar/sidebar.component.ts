@@ -19,6 +19,9 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDivider } from '@angular/material/divider';
 
 import { NgFor, NgIf } from '@angular/common';
+import {MatListItem} from "@angular/material/list";
+import {RouterLink} from "@angular/router";
+import {FlexModule} from "@angular/flex-layout";
 
 /**
  * @title Accordion with expand/collapse all toggles
@@ -41,6 +44,9 @@ import { NgFor, NgIf } from '@angular/common';
     MatExpansionPanel,
     NgFor,
     NgIf,
+    MatListItem,
+    RouterLink,
+    FlexModule,
   ],
 })
 export class SidebarComponent implements OnInit {
