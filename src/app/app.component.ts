@@ -21,5 +21,4 @@ import {ContactComponent} from "./modules/contact/contact.component";
   ],
   providers: [AuthService]
 })
-export class AppComponent {
-}
+export class AppComponent {}
