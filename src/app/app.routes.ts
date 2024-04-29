@@ -16,10 +16,10 @@ export const APP_ROUTES: Route[] = [{
     {
       path: "contacts",
       component: ContactComponent
-    },{
+    }, {
       path: "dashboard",
       component: DashboardComponent
-    },{
+    }, {
       path: "organisation-units",
       component: OrganisationUnitComponent
     }, {
@@ -39,5 +39,9 @@ export const APP_ROUTES: Route[] = [{
 }, {
   path: "login",
   component: LoginComponent
-}
+},
+  {
+    path: '**',
+    redirectTo: 'dashboard'
+  }
 ];
