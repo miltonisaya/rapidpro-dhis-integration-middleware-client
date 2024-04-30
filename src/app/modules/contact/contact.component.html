@@ -2,15 +2,15 @@
   <h1>Contacts</h1>
 </div>
 
-<div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+<div fxLayout="column" fxLayoutAlign="space-evenly stretch" class="mat-elevation-z2">
   <mat-form-field fxLayout="column" fxLayoutAlign="space-evenly stretch">
     <mat-label>Filter</mat-label>
     <input #input (keyup)="applyFilter($event)" autocomplete="off" matInput>
   </mat-form-field>
 </div>
 
-<div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<div class="mat-elevation-z2">
+  <table mat-table [dataSource]="dataSource">
     <!-- SNo Column -->
     <ng-container matColumnDef="sno">
       <th mat-header-cell *matHeaderCellDef> No</th>
