@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {
+  MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogClose,
   MatDialogContent,
@@ -14,11 +15,13 @@ import {MatDivider} from "@angular/material/divider";
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-contact-dialog',
   templateUrl: 'contact-dialog-component.html',
   standalone: true,
+  providers:[ContactService],
   imports: [
     FlexModule,
     ReactiveFormsModule,
@@ -29,17 +32,23 @@ import {MatButton} from "@angular/material/button";
     MatInput,
     MatDialogActions,
     MatDialogClose,
-    MatButton
+    MatButton,
+    CommonModule
   ],
   styleUrls: ['contact-dialog.component.css']
 })
 
-export class ContactDialogComponent {
+export class ContactDialogComponent implements OnInit{
   constructor(
     public contactService: ContactService,
     public dialogRef: MatDialogRef<ContactDialogComponent>,
-    public notifierService: NotifierService
+    public notifierService: NotifierService,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+  }
+
+  ngOnInit() {
+    this.contactService.populateForm(this.data);
   }
 
   submitForm(data: any): void {
@@ -55,7 +64,6 @@ export class ContactDialogComponent {
         });
     }
   }
-
 
   onClose() {
     this.contactService.form.reset();

@@ -1,5 +1,5 @@
 import {Component, input, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {
   MatCell,
@@ -88,7 +88,6 @@ export class ContactComponent implements OnInit {
     }
 
     return this.contactService.getContacts(this.params).subscribe((response: any) => {
-      console.log("Contacts =>", response);
       this.contacts = response.data;
       this.dataSource = new MatTableDataSource<Contact>(this.contacts);
     }, error => {
@@ -96,15 +95,20 @@ export class ContactComponent implements OnInit {
     });
   }
 
-  openDialog(data?: { id: any; facilityCode: any; }): void {
+  openDialog(data: Contact): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     if (data) {
       const contactData = {
-        id: data.id,
-        facilityCode: data.facilityCode
+        uuid: data.uuid,
+        facilityCode: data.facilityCode,
+        name: data.name,
+        registrationDate: data.registrationDate,
+        urn: data.urn,
+        sex: data.sex
       };
+      dialogConfig.data = contactData;
       this.contactService.populateForm(contactData);
       this.dialogService.open(ContactDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {

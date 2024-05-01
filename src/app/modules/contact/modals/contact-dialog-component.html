@@ -26,9 +26,11 @@
       <div class="button">
         <button mat-dialog-close mat-raised-button type="button">CANCEL</button>
         <button color="primary" mat-raised-button type="submit">
-          {{contactService.form.controls['id'].value ? "UPDATE" : "CREATE"}}
+          {{contactService.form.controls['uuid'].value ? "UPDATE" : "CREATE"}}
         </button>
       </div>
     </mat-dialog-actions>
   </form>
 </section>
+
+<!--<pre>{{ contactService.form.value | json }}</pre>-->

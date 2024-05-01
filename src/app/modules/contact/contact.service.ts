@@ -50,7 +50,8 @@ export class ContactService {
    * @param data
    */
   populateForm(data: { [key: string]: any; }) {
-    this.form.setValue(data);
+    this.form.patchValue(data);
+    console.log("The received form data =>",this.form.value);
   }
 
   updateContact(contact: any) {
