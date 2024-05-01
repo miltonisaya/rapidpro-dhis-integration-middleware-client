@@ -22,6 +22,9 @@ import {MatIconButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {FlexModule} from '@angular/flex-layout';
+import {Contact} from "./types/Contact";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {ContactDialogComponent} from "./modals/contact-dialog-component";
 
 @Component({
   selector: 'app-contacts',
@@ -46,7 +49,8 @@ import {FlexModule} from '@angular/flex-layout';
     MatHeaderRow,
     MatRowDef,
     MatRow,
-    MatPaginator
+    MatPaginator,
+    ContactDialogComponent
   ],
   providers: [
     ContactService
@@ -55,19 +59,20 @@ import {FlexModule} from '@angular/flex-layout';
 
 export class ContactComponent implements OnInit {
   displayedColumns: string[] = ["sno", 'name', 'facilityCode', 'urn', 'sex', 'age', 'actions'];
-  contacts: any = [];
+  contacts: Contact[] = [];
   @ViewChild('deleteDialog') deleteDialog: TemplateRef<any> | undefined;
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
-  pageSize = 10;
-  pageNo = 0;
+  pageSize: number = 10;
+  pageNo: number = 0;
   pageSizeOptions: number[] = [10, 25, 100, 1000];
   dataSource: any;
   private params: { pageNo: number; pageSize: number; } | undefined;
 
   constructor(
     private notifierService: NotifierService,
-    private contactService: ContactService
+    private contactService: ContactService,
+    private dialogService: MatDialog
   ) {
   }
 
@@ -85,23 +90,45 @@ export class ContactComponent implements OnInit {
     return this.contactService.getContacts(this.params).subscribe((response: any) => {
       console.log("Contacts =>", response);
       this.contacts = response.data;
-      this.dataSource = new MatTableDataSource<any>(this.contacts);
+      this.dataSource = new MatTableDataSource<Contact>(this.contacts);
     }, error => {
       this.notifierService.showNotification(error.error, 'OK', 'error');
     });
   }
 
-  openDialog(contacts: any) {
-    console.log("Opening dialog!")
+  openDialog(data?: { id: any; facilityCode: any; }): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    if (data) {
+      const contactData = {
+        id: data.id,
+        facilityCode: data.facilityCode
+      };
+      this.contactService.populateForm(contactData);
+      this.dialogService.open(ContactDialogComponent, dialogConfig)
+        .afterClosed().subscribe(() => {
+        this.getContacts();
+      });
+    } else {
+      dialogConfig.data = {};
+      this.dialogService.open(ContactDialogComponent, dialogConfig)
+        .afterClosed().subscribe(() => {
+        this.getContacts();
+      });
+    }
   }
 
   protected readonly input = input;
 
-  pageChanged($event: PageEvent) {
-    console.log("Page changed!")
+  pageChanged(e: any) {
+    this.pageSize = e.pageSize;
+    this.pageNo = e.pageIndex;
+    this.getContacts();
   }
 
-  applyFilter($event: KeyboardEvent) {
-    console.log("Filter Applied!")
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }

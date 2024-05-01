@@ -12,8 +12,12 @@ export const RESOURCE_URL: string = 'api/v1/contacts';
 
 export class ContactService {
   form: FormGroup = new FormGroup({
-    id: new FormControl(''),
-    facilityCode: new FormControl('', [Validators.required])
+    uuid: new FormControl(''),
+    facilityCode: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required]),
+    urn: new FormControl('', [Validators.required]),
+    sex: new FormControl('', [Validators.required]),
+    registrationDate: new FormControl('', [Validators.required]),
   });
 
   private API_ENDPOINT = `${BASE_URL}/${RESOURCE_URL}`;

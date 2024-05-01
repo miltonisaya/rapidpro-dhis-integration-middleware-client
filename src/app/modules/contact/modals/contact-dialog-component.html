@@ -1,0 +1,34 @@
+<section class="login-form-container"
+         fxFlexFill
+         fxLayout="row"
+         fxLayout.xs="column"
+         fxLayoutAlign="center center">
+  <form #formDirective="ngForm"
+        (ngSubmit)="submitForm(contactService.form)" [formGroup]="contactService.form"
+        class="form">
+    <h1 class="dialog-header" mat-dialog-title>
+      Edit Contact Facility Code
+    </h1>
+    <mat-divider></mat-divider>
+    <mat-dialog-content>
+      <div class="dialog-content" fxLayout="column" fxLayoutGap="5px">
+        <mat-form-field>
+          <input autocomplete="off"
+                 formControlName="facilityCode"
+                 matInput
+                 maxlength="8"
+                 placeholder="Enter Facility Code" required>
+        </mat-form-field>
+      </div>
+      <!-- <pre>{{ form | json }}</pre> -->
+    </mat-dialog-content>
+    <mat-dialog-actions fxLayout="row" fxLayoutAlign="end stretch">
+      <div class="button">
+        <button mat-dialog-close mat-raised-button type="button">CANCEL</button>
+        <button color="primary" mat-raised-button type="submit">
+          {{contactService.form.controls['id'].value ? "UPDATE" : "CREATE"}}
+        </button>
+      </div>
+    </mat-dialog-actions>
+  </form>
+</section>
