@@ -40,8 +40,8 @@ export class ContactService {
   }
 
   updateContact(contact: any) {
-    return this._http.put(this.API_ENDPOINT + "/" + contact.id, contact)
-      .pipe(tap(_ => console.log(`updated contact with id=${contact.id}`)),
+    return this._http.put(this.API_ENDPOINT + "/" + contact.uuid, contact)
+      .pipe(tap(_ => console.log(`updated contact with uuid=${contact.uuid}`)),
         catchError(this.handleError<any>('update contact'))
       );
   }

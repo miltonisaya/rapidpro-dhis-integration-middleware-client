@@ -16,7 +16,7 @@ import {
 import {ContactService} from "./contact.service";
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
-import {MatIconButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {FlexModule} from '@angular/flex-layout';
@@ -55,7 +55,8 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
     CommonModule,
     MatProgressSpinner,
     MatSort,
-    MatSortHeader
+    MatSortHeader,
+    MatButton
   ],
   providers: [
     ContactService
@@ -114,7 +115,8 @@ export class ContactComponent implements AfterViewInit {
       .subscribe(data => (this.data = data));
   }
 
-  openDialog(row: Contact): void {
+  openDialog(row: any): void {
+    console.log("Open dialog clicked!");
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

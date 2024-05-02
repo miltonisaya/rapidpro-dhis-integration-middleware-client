@@ -85,7 +85,8 @@
       <ng-container matColumnDef="actions">
         <th *matHeaderCellDef mat-header-cell>Action</th>
         <td *matCellDef="let row" mat-cell>
-          <button mat-icon-button matTooltip="Edit" matTooltipPosition="left">
+          <button mat-button matTooltip="Edit" matTooltipPosition="left" (click)="openDialog(row)">
+<!--            <pre>{{row | json}}</pre>-->
             <mat-icon (click)="openDialog(row)">edit</mat-icon>
           </button>
         </td>
