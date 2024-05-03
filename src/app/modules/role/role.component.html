@@ -1,5 +1,5 @@
 <div class="page-title">
-  <h1>Contacts</h1>
+  <h1>Roles</h1>
 </div>
 
 <div class="example-container mat-elevation-z8">
@@ -33,52 +33,15 @@
       </ng-container>
 
       <!-- State Column -->
-      <ng-container matColumnDef="urn">
-        <th mat-header-cell *matHeaderCellDef>URN</th>
-        <td mat-cell *matCellDef="let row">{{ row.urn }}</td>
+      <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef>Code</th>
+        <td mat-cell *matCellDef="let row">{{ row.code }}</td>
       </ng-container>
 
-      <!-- Created Column -->
-      <ng-container matColumnDef="facilityCode">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
-          Facility Code
-        </th>
-        <td mat-cell *matCellDef="let row">{{ row.facilityCode }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="sex">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
-          Sex
-        </th>
-        <td mat-cell *matCellDef="let row">{{ row.sex }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="createdOn">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
-          Created On
-        </th>
-        <td mat-cell *matCellDef="let row">{{ row.createdOn }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="registrationDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
-          Date of registration
-        </th>
-        <td mat-cell *matCellDef="let row">{{ row.registrationDate | date }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="age">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
-          Age
-        </th>
-        <td mat-cell *matCellDef="let row">{{ row.age }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="fields">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
-          Fields
-        </th>
-        <td mat-cell *matCellDef="let row">{{ row.fields }}</td>
+      <!-- State Column -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let row">{{ row.description }}</td>
       </ng-container>
 
       <!-- Action Column -->
@@ -86,8 +49,10 @@
         <th *matHeaderCellDef mat-header-cell>Action</th>
         <td *matCellDef="let row" mat-cell>
           <button mat-button matTooltip="Edit" matTooltipPosition="left" (click)="openDialog(row)">
-<!--            <pre>{{row | json}}</pre>-->
             <mat-icon (click)="openDialog(row)">edit</mat-icon>
+          </button>
+          <button mat-button matTooltip="Delete" matTooltipPosition="left" (click)="openDeleteDialog(row.uuid)">
+            <mat-icon>delete</mat-icon>
           </button>
         </td>
       </ng-container>
@@ -100,3 +65,14 @@
   <mat-paginator [length]="resultsLength" [pageSizeOptions]="pageSizeOptions"
                  aria-label="Select page of GitHub search results"></mat-paginator>
 </div>
+
+<!--delete user dialog template-->
+<ng-template #deleteDialog>
+  <mat-dialog-content>
+    <h3>Are you sure you want to delete this user?</h3>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>NO</button>
+    <button (click)="delete()" mat-button>YES</button>
+  </mat-dialog-actions>
+</ng-template>

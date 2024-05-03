@@ -13,24 +13,25 @@ import {
   MatRowDef,
   MatTable
 } from "@angular/material/table";
-import {ContactService} from "./contact.service";
+import {RoleService} from "./role.service";
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {FlexModule} from '@angular/flex-layout';
-import {ContactDialogComponent} from "./modals/contact-dialog-component";
+import {RoleDialogComponent} from "./modals/role-dialog-component";
 import {CommonModule} from "@angular/common";
 import {merge, of as observableOf, startWith, switchMap} from 'rxjs';
 import {catchError, map} from "rxjs/operators";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
+import {response} from "express";
 
 @Component({
-  selector: 'app-contacts',
-  templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.css'],
+  selector: 'app-roles',
+  templateUrl: './role.component.html',
+  styleUrls: ['./role.component.css'],
   standalone: true,
   imports: [
     FlexModule,
@@ -51,23 +52,26 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
     MatRowDef,
     MatRow,
     MatPaginator,
-    ContactDialogComponent,
+    RoleDialogComponent,
     CommonModule,
     MatProgressSpinner,
     MatSort,
     MatSortHeader,
-    MatButton
+    MatButton,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose
   ],
   providers: [
-    ContactService
+    RoleService
   ]
 })
 
-export class ContactComponent implements AfterViewInit {
-  displayedColumns: string[] = ['number','name', 'urn', 'facilityCode', 'sex', 'createdOn', 'registrationDate', 'age', 'fields', 'actions'];
+export class RoleComponent implements AfterViewInit {
+  displayedColumns: string[] = ['number', 'name', 'code', 'description', 'actions'];
   pageSizeOptions: number[] = [10, 20, 50, 100, 250, 500, 1000];
-  data: Contact[] = [];
-
+  data: Role[] = [];
+  contactUuid: string;
   resultsLength = 0;
   isLoadingResults = true;
   areRecordsAvailable = false;
@@ -76,7 +80,7 @@ export class ContactComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private contactService: ContactService,
+    private roleService: RoleService,
     private dialogService: MatDialog
   ) {
   }
@@ -90,7 +94,7 @@ export class ContactComponent implements AfterViewInit {
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this.contactService!.getContacts(
+          return this.roleService!.get(
             this.paginator.pageIndex,
             this.paginator.pageSize,
             this.sort.direction
@@ -115,52 +119,65 @@ export class ContactComponent implements AfterViewInit {
       .subscribe(data => (this.data = data));
   }
 
+  openDeleteDialog(uuid: string): void {
+
+  }
+
   openDialog(row: any): void {
-    console.log("Open dialog clicked!");
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     if (row) {
       const contactData = {
         uuid: row.uuid,
-        facilityCode: row.facilityCode,
         name: row.name,
-        registrationDate: row.registrationDate,
-        urn: row.urn,
-        sex: row.sex
+        code: row.code,
+        description: row.description
       };
       dialogConfig.data = contactData;
-      this.contactService.populateForm(contactData);
-      this.dialogService.open(ContactDialogComponent, dialogConfig)
+      this.roleService.populateForm(contactData);
+      this.dialogService.open(RoleDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         // this.getContacts();
       });
     } else {
       dialogConfig.data = {};
-      this.dialogService.open(ContactDialogComponent, dialogConfig)
+      this.dialogService.open(RoleDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         // this.getContacts();
       });
     }
   }
+
+  delete() {
+    this.roleService.delete(this.contactUuid)
+      .subscribe((response)=>{
+        console.log("The response =>",response);
+      },error => {
+        console.log("The error =>",error);
+      })
+      // .subscribe((response: any) => {
+      //   console.log(response);
+      //   // this.NotifierService.showNotification(response.message, 'OK', 'success');
+      // }, (error: any) => {
+      //   console.log(error);
+      //   // this.NotifierService.showNotification(error.message, 'OK', 'error')
+      // });
+    this.dialogService.closeAll();
+  }
 }
 
 export interface ApiResponse {
-  data: Contact[];
+  data: Role[];
   page: number;
   size: number;
   status: number;
   total: number;
 }
 
-export interface Contact {
-  age: number;
-  createdOn: string;
-  facilityCode: string;
-  fields: string;
+export interface Role {
   name: string;
-  registrationDate: string;
-  sex: string;
-  urn: string;
+  code: string;
+  description: string;
   uuid: string;
 }

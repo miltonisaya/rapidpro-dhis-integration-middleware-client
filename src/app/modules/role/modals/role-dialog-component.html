@@ -4,7 +4,7 @@
          fxLayout.xs="column"
          fxLayoutAlign="center center">
   <form #formDirective="ngForm"
-        (ngSubmit)="submitForm(contactService.form)" [formGroup]="contactService.form"
+        (ngSubmit)="submitForm(roleService.form)" [formGroup]="roleService.form"
         class="form">
     <h1 class="dialog-header" mat-dialog-title>
       Edit Role Facility Code
@@ -12,13 +12,39 @@
     <mat-divider></mat-divider>
     <mat-dialog-content>
       <div class="dialog-content" fxLayout="column" fxLayoutGap="5px">
-        <mat-form-field>
-          <input autocomplete="off"
-                 formControlName="facilityCode"
-                 matInput
-                 maxlength="8"
-                 placeholder="Enter Facility Code" required>
-        </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
+          <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input autocomplete="off"
+                   formControlName="name"
+                   matInput
+                   maxlength="255"
+                   placeholder="Enter name" required>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Code</mat-label>
+            <input autocomplete="off"
+                   formControlName="code"
+                   matInput
+                   maxlength="255"
+                   placeholder="Enter code" required>
+          </mat-form-field>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="stretch">
+
+          <mat-form-field>
+            <mat-label>Description</mat-label>
+            <textarea
+              formControlName="description"
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="5">
+          </textarea>
+          </mat-form-field>
+        </div>
       </div>
       <!-- <pre>{{ form | json }}</pre> -->
     </mat-dialog-content>
@@ -26,11 +52,11 @@
       <div class="button">
         <button mat-dialog-close mat-raised-button type="button">CANCEL</button>
         <button color="primary" mat-raised-button type="submit">
-          {{contactService.form.controls['uuid'].value ? "UPDATE" : "CREATE"}}
+          {{ roleService.form.controls['uuid'].value ? "UPDATE" : "CREATE" }}
         </button>
       </div>
     </mat-dialog-actions>
   </form>
 </section>
 
-<pre>{{ contactService.form.value | json }}</pre>
+<!--<pre>{{ roleService.form.value | json }}</pre>-->

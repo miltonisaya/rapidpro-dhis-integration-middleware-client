@@ -12,16 +12,17 @@ import {RoleService} from "../role.service";
 import {FlexModule} from "@angular/flex-layout";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatDivider} from "@angular/material/divider";
-import {MatFormField} from "@angular/material/form-field";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
 import {CommonModule} from "@angular/common";
+import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 
 @Component({
-  selector: 'app-contact-dialog',
-  templateUrl: 'contact-dialog-component.html',
+  selector: 'app-role-dialog',
+  templateUrl: 'role-dialog-component.html',
   standalone: true,
-  providers:[RoleService],
+  providers: [RoleService],
   imports: [
     FlexModule,
     ReactiveFormsModule,
@@ -33,30 +34,33 @@ import {CommonModule} from "@angular/common";
     MatDialogActions,
     MatDialogClose,
     MatButton,
-    CommonModule
+    CommonModule,
+    CdkTextareaAutosize,
+    MatLabel
   ],
-  styleUrls: ['contact-dialog.component.css']
+  styleUrls: ['role-dialog.component.css']
 })
 
-export class ContactDialogComponent implements OnInit{
+export class RoleDialogComponent implements OnInit {
   constructor(
-    public contactService: RoleService,
-    public dialogRef: MatDialogRef<ContactDialogComponent>,
+    public roleService: RoleService,
+    public dialogRef: MatDialogRef<RoleDialogComponent>,
     public notifierService: NotifierService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
 
-  ngOnInit() {
-    this.contactService.populateForm(this.data);
+  ngOnInit(): void {
+    this.roleService.populateForm(this.data);
   }
 
   submitForm(data: any): void {
     // Ensure the form and the uuid form control exist before trying to access its value
-    if (this.contactService.form?.get('uuid')?.value) {
-      this.contactService.updateContact(this.contactService.form.value)
+    if (this.roleService.form?.get('uuid')?.value) {
+      this.roleService.update(this.roleService.form.value)
         .subscribe(response => {
-          this.notifierService.showNotification(response.message, 'OK', 'success');
+          console.log("Response =>", response);
+          // this.notifierService.showNotification(response.message, 'OK', 'success');
           this.onClose();
         }, error => {
           // Using optional chaining and nullish coalescing to handle possible null values
@@ -66,8 +70,8 @@ export class ContactDialogComponent implements OnInit{
   }
 
   onClose() {
-    this.contactService.form.reset();
-    this.contactService.initializeFormGroup();
+    this.roleService.form.reset();
+    this.roleService.initializeFormGroup();
     this.dialogRef.close();
   }
 }
