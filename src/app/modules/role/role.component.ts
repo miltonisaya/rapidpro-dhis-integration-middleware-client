@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, TemplateRef, ViewChild} from '@angular/core';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort, MatSortHeader} from "@angular/material/sort";
 import {
@@ -26,7 +26,6 @@ import {merge, of as observableOf, startWith, switchMap} from 'rxjs';
 import {catchError, map} from "rxjs/operators";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
-import {response} from "express";
 
 @Component({
   selector: 'app-roles',
@@ -71,10 +70,11 @@ export class RoleComponent implements AfterViewInit {
   displayedColumns: string[] = ['number', 'name', 'code', 'description', 'actions'];
   pageSizeOptions: number[] = [10, 20, 50, 100, 250, 500, 1000];
   data: Role[] = [];
-  contactUuid: string;
+  roleUuid: string;
   resultsLength = 0;
   isLoadingResults = true;
   areRecordsAvailable = false;
+  @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -119,8 +119,12 @@ export class RoleComponent implements AfterViewInit {
       .subscribe(data => (this.data = data));
   }
 
-  openDeleteDialog(uuid: string): void {
-
+  openDeleteDialog(uuid: string) {
+    this.roleUuid = uuid;
+    this.dialogService.open(this.deleteDialog)
+      .afterClosed().subscribe(() => {
+      // this.getUsers();
+    });
   }
 
   openDialog(row: any): void {
@@ -150,19 +154,18 @@ export class RoleComponent implements AfterViewInit {
   }
 
   delete() {
-    this.roleService.delete(this.contactUuid)
-      .subscribe((response)=>{
-        console.log("The response =>",response);
-      },error => {
-        console.log("The error =>",error);
-      })
-      // .subscribe((response: any) => {
-      //   console.log(response);
-      //   // this.NotifierService.showNotification(response.message, 'OK', 'success');
-      // }, (error: any) => {
-      //   console.log(error);
-      //   // this.NotifierService.showNotification(error.message, 'OK', 'error')
-      // });
+    console.log('Role deleted clicked');
+    this.roleService.delete(this.roleUuid).subscribe({
+      next: (response) => {
+        console.log('Role deleted successfully', response);
+        // Update the UI or state as necessary
+        // For example, refresh the list of roles if you have one
+      },
+      error: (error) => {
+        console.error('Error deleting role:', error);
+        // Optionally handle errors, e.g., show a notification or message to the user
+      }
+    });
     this.dialogService.closeAll();
   }
 }
