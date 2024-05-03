@@ -8,6 +8,7 @@ import {UserComponent} from "./modules/user/user.component";
 import {DefaultComponent} from "./layouts/default/default.component";
 import {LoginComponent} from "./layouts/login/login.component";
 import {Route} from "@angular/router";
+import {RoleComponent} from "./modules/role/role.component";
 
 export const APP_ROUTES: Route[] = [{
   path: "",
@@ -34,6 +35,9 @@ export const APP_ROUTES: Route[] = [{
     }, {
       path: "users",
       component: UserComponent
+    }, {
+      path: "roles",
+      component: RoleComponent
     }
   ]
 }, {

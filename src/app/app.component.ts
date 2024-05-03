@@ -6,6 +6,7 @@ import {AuthService} from "./auth/auth.service";
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {ContactComponent} from "./modules/contact/contact.component";
+import {RoleComponent} from "./modules/role/role.component";
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ import {ContactComponent} from "./modules/contact/contact.component";
     RouterModule,
     LoginComponent,
     FormsModule,
-    ContactComponent
+    ContactComponent,
+    RoleComponent
   ],
   providers: [AuthService]
 })
