@@ -1,15 +1,24 @@
-<div class="page-title">
-  <h1>Roles</h1>
+
+<div fxFlexLayoutAlign="row" fxLayoutAlign="space-between center">
+  <div class="page-title">
+    <h1>Roles</h1>
+  </div>
+  <div fxLayoutGap="5px">
+    <button (click)="openCreateDialog()" class="mat-primary" mat-raised-button>
+      <mat-icon>add</mat-icon>
+      CREATE
+    </button>
+  </div>
 </div>
 
-<div class="example-container mat-elevation-z8">
+<div class="table-content-wrapper-container mat-elevation-z8">
   @if (isLoadingResults || areRecordsAvailable) {
-    <div class="example-loading-shade">
+    <div class="loading-shade">
       @if (isLoadingResults) {
         <mat-spinner></mat-spinner>
       }
       @if (areRecordsAvailable) {
-        <div class="example-rate-limit-reached">
+        <div class="record-not-found">
           Records not found
         </div>
       }

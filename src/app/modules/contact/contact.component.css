@@ -4,7 +4,7 @@
 }
 
 /* Structure */
-.example-container {
+.table-content-wrapper-container {
   position: relative;
 }
 
@@ -18,7 +18,7 @@ table {
   width: 100%;
 }
 
-.example-loading-shade {
+.loading-shade {
   position: absolute;
   top: 0;
   left: 0;
@@ -31,7 +31,7 @@ table {
   justify-content: center;
 }
 
-.example-rate-limit-reached {
+.record-not-found {
   max-width: 360px;
   text-align: center;
 }

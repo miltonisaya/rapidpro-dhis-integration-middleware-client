@@ -168,6 +168,33 @@ export class RoleComponent implements AfterViewInit {
     });
     this.dialogService.closeAll();
   }
+
+  openCreateDialog(data?: { uuid: any; name: any; description: any; code: any; }): void {
+    console.log(data);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    if (data) {
+      const roleData = {
+        id: data.uuid,
+        name: data.name,
+        description: data.description,
+        code: data.code,
+      };
+      this.roleService.populateForm(roleData);
+      this.dialogService.open(RoleDialogComponent, dialogConfig)
+        .afterClosed().subscribe(() => {
+        // this.getUsers();
+      });
+    } else {
+      dialogConfig.data = {};
+      this.dialogService.open(RoleDialogComponent, dialogConfig)
+        .afterClosed().subscribe(() => {
+        // this.getUsers();
+      });
+    }
+  }
+
 }
 
 export interface ApiResponse {
