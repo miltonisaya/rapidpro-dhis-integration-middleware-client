@@ -1,13 +1,13 @@
-<section class="login-form-container"
-         fxFlexFill
-         fxLayout="row"
-         fxLayout.lg="column"
-         fxLayoutAlign="center center">
+<section
+  fxFlexFill
+  fxLayout="column"
+  fxLayoutAlign="center center"
+>
   <form #formDirective="ngForm"
         (ngSubmit)="submitForm(roleService.form)" [formGroup]="roleService.form"
         class="form">
     <h1 class="dialog-header" mat-dialog-title>
-      Role
+      {{roleService.form.controls['uuid'].value ? "Edit Role" : "Create Role"}}
     </h1>
     <mat-divider></mat-divider>
     <mat-dialog-content>
@@ -50,17 +50,20 @@
           <div class="list-section">
             <h3 class="pick-list-title">Existing Authorities</h3>
             <mat-list>
-              <mat-list-item *ngFor="let item of originalList" (click)="onSelectOriginal(item)" [class.selected]="selectedOriginal.includes(item)">
+              <mat-list-item *ngFor="let item of originalList" (click)="onSelectOriginal(item)"
+                             [class.selected]="selectedOriginal.includes(item)">
                 {{ item }}
               </mat-list-item>
             </mat-list>
           </div>
 
           <div class="action-buttons">
-            <button mat-raised-button color="primary" (click)="addToSelected()" [disabled]="selectedOriginal.length === 0">
+            <button mat-raised-button color="primary" (click)="addToSelected()"
+                    [disabled]="selectedOriginal.length === 0">
               >>
             </button>
-            <button mat-raised-button color="primary" (click)="removeFromSelected()" [disabled]="selectedSelected.length === 0">
+            <button mat-raised-button color="primary" (click)="removeFromSelected()"
+                    [disabled]="selectedSelected.length === 0">
               <<
             </button>
           </div>
@@ -68,7 +71,8 @@
           <div class="list-section">
             <h3 class="pick-list-title">Selected Authorities</h3>
             <mat-list>
-              <mat-list-item *ngFor="let item of selectedList" (click)="onSelectSelected(item)" [class.selected]="selectedSelected.includes(item)">
+              <mat-list-item *ngFor="let item of selectedList" (click)="onSelectSelected(item)"
+                             [class.selected]="selectedSelected.includes(item)">
                 {{ item }}
               </mat-list-item>
             </mat-list>
