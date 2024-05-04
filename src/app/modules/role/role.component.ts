@@ -27,6 +27,7 @@ import {catchError, map} from "rxjs/operators";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
 import {Role} from "./types/Role";
+import {Authority} from "./types/Authority";
 
 @Component({
   selector: 'app-roles',
@@ -137,7 +138,8 @@ export class RoleComponent implements AfterViewInit {
         uuid: row.uuid,
         name: row.name,
         code: row.code,
-        description: row.description
+        description: row.description,
+        authorities: row.authorities
       };
       dialogConfig.data = contactData;
       this.roleService.populateForm(contactData);
@@ -170,8 +172,8 @@ export class RoleComponent implements AfterViewInit {
     this.dialogService.closeAll();
   }
 
-  openCreateDialog(data?: { uuid: any; name: any; description: any; code: any; }): void {
-    console.log(data);
+  openCreateDialog(data?: { uuid: string; name: string; description: string; code: string; authorities:Authority[] }): void {
+    // console.log(data);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -183,6 +185,7 @@ export class RoleComponent implements AfterViewInit {
         name: data.name,
         description: data.description,
         code: data.code,
+        authorities:data.authorities
       };
       this.roleService.populateForm(roleData);
       this.dialogService.open(RoleDialogComponent, dialogConfig)

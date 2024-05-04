@@ -17,14 +17,7 @@ import {MatInput} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
 import {CommonModule} from "@angular/common";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
-import {
-  CdkDrag,
-  CdkDragDrop,
-  CdkDropList,
-  DragDropModule,
-  moveItemInArray,
-  transferArrayItem
-} from "@angular/cdk/drag-drop";
+import {CdkDrag, CdkDropList, DragDropModule} from "@angular/cdk/drag-drop";
 import {MatList, MatListItem} from "@angular/material/list";
 
 @Component({
@@ -95,7 +88,7 @@ export class RoleDialogComponent implements OnInit {
   }
 
   onSelectSelected(item: string): void {
-    const index:number = this.selectedSelected.indexOf(item);
+    const index: number = this.selectedSelected.indexOf(item);
     if (index > -1) {
       this.selectedSelected.splice(index, 1);
     } else {
@@ -115,7 +108,7 @@ export class RoleDialogComponent implements OnInit {
     this.roleService.populateForm(this.data);
   }
 
-  submitForm(data: any): void {
+  submitForm(): void {
     // Ensure the form and the uuid form control exist before trying to access its value
     if (this.roleService.form?.get('uuid')?.value) {
       this.roleService.update(this.roleService.form.value)

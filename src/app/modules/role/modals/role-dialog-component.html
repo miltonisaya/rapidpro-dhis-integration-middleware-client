@@ -4,7 +4,7 @@
   fxLayoutAlign="space-between center"
 >
   <form #formDirective="ngForm"
-        (ngSubmit)="submitForm(roleService.form)"
+        (ngSubmit)="submitForm()"
         [formGroup]="roleService.form"
   >
     <h1 class="dialog-header" mat-dialog-title>
@@ -13,7 +13,6 @@
     <mat-divider></mat-divider>
     <mat-dialog-content>
       <div class="dialog-content" fxLayout="column" fxLayoutGap="5px">
-<!--        <div fxLayout="row" fxLayoutGap="5px">-->
         <div fxLayout="row" fxLayoutAlign="space-between stretch" >
         <mat-form-field>
             <mat-label>Name</mat-label>
@@ -95,4 +94,4 @@
   </form>
 </section>
 
-<!--<pre>{{ roleService.form.value | json }}</pre>-->
+<!--<pre>{{ data.authorities | json }}</pre>-->

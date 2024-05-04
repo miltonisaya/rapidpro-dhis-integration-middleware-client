@@ -1,15 +1,13 @@
-
-
-.dialog-header{
-  /*color: #008080*/
+.dialog-header {
+  color: gray;
   margin-bottom: 0px;
 }
 
-.dialog-content{
+.dialog-content {
   margin-top: 10px
 }
 
-.button{
+.button {
   margin: 5px;
 }
 
@@ -54,4 +52,5 @@
 .pick-list-title {
   font-size: small;
 }
+
 /*Css for the pick list ends here*/
