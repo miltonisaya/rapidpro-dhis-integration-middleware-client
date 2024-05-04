@@ -17,6 +17,15 @@ import {MatInput} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
 import {CommonModule} from "@angular/common";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDropList,
+  DragDropModule,
+  moveItemInArray,
+  transferArrayItem
+} from "@angular/cdk/drag-drop";
+import {MatList, MatListItem} from "@angular/material/list";
 
 @Component({
   selector: 'app-role-dialog',
@@ -36,12 +45,64 @@ import {CdkTextareaAutosize} from "@angular/cdk/text-field";
     MatButton,
     CommonModule,
     CdkTextareaAutosize,
-    MatLabel
+    MatLabel,
+    CdkDropList,
+    CdkDrag,
+    MatList,
+    MatListItem,
+    DragDropModule
   ],
   styleUrls: ['role-dialog.component.css']
 })
 
 export class RoleDialogComponent implements OnInit {
+  originalList: string[] = [
+    'Item 1',
+    'Item 2',
+    'Item 3',
+    'Item 4',
+    'Item 5',
+    'Item 6',
+    'Item 7',
+    'Item 8',
+    'Item 9',
+    'Item 10'
+  ];
+
+  selectedList: string[] = [];
+  selectedOriginal: string[] = [];
+  selectedSelected: string[] = [];
+
+  addToSelected(): void {
+    this.selectedList.push(...this.selectedOriginal);
+    this.originalList = this.originalList.filter(item => !this.selectedOriginal.includes(item));
+    this.selectedOriginal = [];
+  }
+
+  removeFromSelected(): void {
+    this.originalList.push(...this.selectedSelected);
+    this.selectedList = this.selectedList.filter(item => !this.selectedSelected.includes(item));
+    this.selectedSelected = [];
+  }
+
+  onSelectOriginal(item: string): void {
+    const index = this.selectedOriginal.indexOf(item);
+    if (index > -1) {
+      this.selectedOriginal.splice(index, 1);
+    } else {
+      this.selectedOriginal.push(item);
+    }
+  }
+
+  onSelectSelected(item: string): void {
+    const index:number = this.selectedSelected.indexOf(item);
+    if (index > -1) {
+      this.selectedSelected.splice(index, 1);
+    } else {
+      this.selectedSelected.push(item);
+    }
+  }
+
   constructor(
     public roleService: RoleService,
     public dialogRef: MatDialogRef<RoleDialogComponent>,

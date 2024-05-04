@@ -14,3 +14,46 @@
 .button{
   margin: 5px;
 }
+
+/*Css for the pick list starts here*/
+.list-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.list-section {
+  border: solid 1px #ccc;
+  width: 200px;
+  height: 300px; /* Fixed height */
+  display: block;
+  background: #f7f7f7;
+  font-size: x-small;
+  overflow: scroll; /* Ensure that the overflow is controlled by the mat-list */
+}
+
+.mat-list {
+  max-height: 100%; /* Makes mat-list fill the container */
+  overflow-y: auto; /* Enables vertical scrolling */
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.action-buttons button {
+  margin: 5px;
+}
+
+.mat-list-item.selected {
+  background-color: #bde4ff;
+}
+
+.pick-list-title {
+  font-size: small;
+}
+/*Css for the pick list ends here*/
