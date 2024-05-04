@@ -26,6 +26,7 @@ import {merge, of as observableOf, startWith, switchMap} from 'rxjs';
 import {catchError, map} from "rxjs/operators";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
+import {Role} from "./types/Role";
 
 @Component({
   selector: 'app-roles',
@@ -174,6 +175,8 @@ export class RoleComponent implements AfterViewInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.width='600px';
+    dialogConfig.height='auto';
     if (data) {
       const roleData = {
         id: data.uuid,
@@ -197,17 +200,6 @@ export class RoleComponent implements AfterViewInit {
 
 }
 
-export interface ApiResponse {
-  data: Role[];
-  page: number;
-  size: number;
-  status: number;
-  total: number;
-}
 
-export interface Role {
-  name: string;
-  code: string;
-  description: string;
-  uuid: string;
-}
+
+

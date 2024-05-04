@@ -1,19 +1,21 @@
 <section
   fxFlexFill
-  fxLayout="column"
-  fxLayoutAlign="center center"
+  fxLayout="row"
+  fxLayoutAlign="space-between center"
 >
   <form #formDirective="ngForm"
-        (ngSubmit)="submitForm(roleService.form)" [formGroup]="roleService.form"
-        class="form">
+        (ngSubmit)="submitForm(roleService.form)"
+        [formGroup]="roleService.form"
+  >
     <h1 class="dialog-header" mat-dialog-title>
-      {{roleService.form.controls['uuid'].value ? "Edit Role" : "Create Role"}}
+      {{ roleService.form.controls['uuid'].value ? "Edit Role" : "Create Role" }}
     </h1>
     <mat-divider></mat-divider>
     <mat-dialog-content>
       <div class="dialog-content" fxLayout="column" fxLayoutGap="5px">
-        <div fxLayout="row" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
-          <mat-form-field>
+<!--        <div fxLayout="row" fxLayoutGap="5px">-->
+        <div fxLayout="row" fxLayoutAlign="space-between stretch" >
+        <mat-form-field>
             <mat-label>Name</mat-label>
             <input autocomplete="off"
                    formControlName="name"

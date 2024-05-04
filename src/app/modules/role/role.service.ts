@@ -5,7 +5,7 @@ import {catchError, tap} from 'rxjs/operators';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {environment} from "../../../environments/environment";
 import {SortDirection} from "@angular/material/sort";
-import {ApiResponse} from "./role.component";
+import {RoleApiResponse} from "./types/RoleApiResponse";
 
 export const BASE_URL: string = environment.baseURL;
 export const RESOURCE_URL: string = 'api/v1/roles';
@@ -23,14 +23,14 @@ export class RoleService {
   private API_ENDPOINT = `${BASE_URL}/${RESOURCE_URL}`;
   _http: HttpClient = inject(HttpClient);
 
-  get(page: number, size: number, sort: SortDirection): Observable<ApiResponse> {
+  get(page: number, size: number, sort: SortDirection): Observable<RoleApiResponse> {
     const requestUrl = `${this.API_ENDPOINT}?page=${page}&size=${size}&sort=${sort}`;
-    return this._http.get<ApiResponse>(requestUrl);
+    return this._http.get<RoleApiResponse>(requestUrl);
   }
 
-  delete(uuid: string): Observable<ApiResponse> {
+  delete(uuid: string): Observable<RoleApiResponse> {
     const requestUrl = `${this.API_ENDPOINT}/${uuid}`;
-    return this._http.delete<ApiResponse>(requestUrl);
+    return this._http.delete<RoleApiResponse>(requestUrl);
   }
 
   /**

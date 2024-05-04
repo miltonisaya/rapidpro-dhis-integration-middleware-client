@@ -1,6 +1,4 @@
-.form{
-  width: 400px;
-}
+
 
 .dialog-header{
   /*color: #008080*/
@@ -57,7 +55,3 @@
   font-size: small;
 }
 /*Css for the pick list ends here*/
-
-/*.login-form-container {*/
-/*  width: 800px;*/
-/*}*/
