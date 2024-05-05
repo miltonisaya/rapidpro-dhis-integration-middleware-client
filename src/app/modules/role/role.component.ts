@@ -179,6 +179,7 @@ export class RoleComponent implements AfterViewInit {
     dialogConfig.autoFocus = true;
     dialogConfig.width='600px';
     dialogConfig.height='auto';
+    dialogConfig.panelClass="dialog-config"
     if (data) {
       const roleData = {
         id: data.uuid,

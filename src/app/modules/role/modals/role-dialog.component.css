@@ -54,3 +54,7 @@
 }
 
 /*Css for the pick list ends here*/
+
+.dialog-config {
+  min-height: 800px;
+}
