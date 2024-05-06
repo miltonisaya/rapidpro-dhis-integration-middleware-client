@@ -88,6 +88,7 @@ export class OrganisationUnitComponent implements OnInit {
       expandable: !!node.children && node.children.length > 0,
       name: node.name,
       level: level,
+      uuid: node.uuid
     };
   };
 
@@ -96,7 +97,7 @@ export class OrganisationUnitComponent implements OnInit {
     node => node.expandable,
   );
 
-  treeFlattener = new MatTreeFlattener(
+  treeFlattener = new MatTreeFlattener<OrganisationUnit, OrganisationUnitFlatNode>(
     this._transformer,
     node => node.level,
     node => node.expandable,
@@ -112,9 +113,6 @@ export class OrganisationUnitComponent implements OnInit {
 
   onNodeClick(node: MatTreeNode<OrganisationUnitFlatNode>) {
     this.selectedNode = node;
-    console.log("Selected Node =>", this.selectedNode)
-    //Fetch the children
-    // this.organisationUnitService.findChildrenByParentUuid(this.selectedNode)
   }
 }
 
