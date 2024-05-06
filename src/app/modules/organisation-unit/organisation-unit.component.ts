@@ -28,31 +28,6 @@ interface OrganisationUnit {
   parent?: OrganisationUnit;
   children?: OrganisationUnit[];
 }
-
-const TREE_DATA: OrganisationUnit[] = [
-  {
-    name: 'Fruit',
-    children: [{name: 'Apple', code: 'Apple', uuid: 'Apple'}, {
-      name: 'Banana',
-      code: 'Banana',
-      uuid: 'Banana'
-    }, {name: 'Fruit loops'}],
-  },
-  {
-    name: 'Vegetables',
-    children: [
-      {
-        name: 'Green',
-        children: [{name: 'Broccoli'}, {name: 'Brussels sprouts'}],
-      },
-      {
-        name: 'Orange',
-        children: [{name: 'Pumpkins'}, {name: 'Carrots'}],
-      },
-    ],
-  },
-];
-
 /** Flat node with expandable and level information */
 interface OrganisationUnitFlatNode {
   expandable: boolean;
@@ -101,7 +76,7 @@ export class OrganisationUnitComponent implements OnInit {
     this.loadData();
   }
 
-  loadData(){
+  loadData() {
     this.organisationUnitService.get().subscribe(response => {
       this.apiResponse = response;
       this.dataSource.data = this.apiResponse.data;
@@ -135,8 +110,11 @@ export class OrganisationUnitComponent implements OnInit {
   openCreateDialog() {
   }
 
-  onNodeClick(node:MatTreeNode<OrganisationUnitFlatNode>) {
+  onNodeClick(node: MatTreeNode<OrganisationUnitFlatNode>) {
     this.selectedNode = node;
+    console.log("Selected Node =>", this.selectedNode)
+    //Fetch the children
+    // this.organisationUnitService.findChildrenByParentUuid(this.selectedNode)
   }
 }
 

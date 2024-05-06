@@ -10,14 +10,12 @@
   </div>
 </div>
 
-
-<div class="table-content-wrapper-container mat-elevation-z8">
-
+<div class="main-content-container mat-elevation-z3">
   <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
     <!-- This is the tree node template for leaf nodes -->
     <mat-tree-node (click)="onNodeClick(node)" *matTreeNodeDef="let node" [class.selected]="node === selectedNode"
                    matTreeNodeToggle>
-      {{ node.name }}
+      {{node.name}}
     </mat-tree-node>
 
     <!-- This is the tree node template for expandable nodes -->

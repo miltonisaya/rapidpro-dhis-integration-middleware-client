@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 export class OrganisationUnitService {
   private baseUrl = 'http://localhost:8081/api/v1';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   // Create
   create(data: any): Observable<any> {
@@ -18,6 +19,11 @@ export class OrganisationUnitService {
   // Read
   get(): Observable<any> {
     return this.http.get(`${this.baseUrl}/organisation-units/parent-organisation-units`);
+  }
+
+  //Get children by parent uuid
+  findChildrenByParentUuid(parentUuid: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/organisation-units/children/${parentUuid}`);
   }
 
   // Update

@@ -51,3 +51,8 @@ mat-tree-node.selected {
   color: green;
   font-weight: bold;
 }
+
+.main-content-container {
+  min-height: 85vh;
+  background-color: white;
+}
