@@ -54,7 +54,7 @@ const TREE_DATA: OrganisationUnit[] = [
 ];
 
 /** Flat node with expandable and level information */
-interface ExampleFlatNode {
+interface OrganisationUnitFlatNode {
   expandable: boolean;
   name: string;
   level: number;
@@ -90,6 +90,7 @@ interface ExampleFlatNode {
 
 export class OrganisationUnitComponent implements OnInit {
   apiResponse: OrganisationUnitApiResponse;
+  selectedNode: MatTreeNode<OrganisationUnitFlatNode>;
 
   constructor(
     private organisationUnitService: OrganisationUnitService
@@ -115,7 +116,7 @@ export class OrganisationUnitComponent implements OnInit {
     };
   };
 
-  treeControl = new FlatTreeControl<ExampleFlatNode>(
+  treeControl = new FlatTreeControl<OrganisationUnitFlatNode>(
     node => node.level,
     node => node.expandable,
   );
@@ -129,9 +130,13 @@ export class OrganisationUnitComponent implements OnInit {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+  hasChild = (_: number, node: OrganisationUnitFlatNode) => node.expandable;
 
   openCreateDialog() {
+  }
+
+  onNodeClick(node:MatTreeNode<OrganisationUnitFlatNode>) {
+    this.selectedNode = node;
   }
 }
 
