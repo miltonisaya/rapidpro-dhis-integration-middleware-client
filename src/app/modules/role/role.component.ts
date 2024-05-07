@@ -27,7 +27,7 @@ import {catchError, map} from "rxjs/operators";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
 import {Role} from "./types/Role";
-import {Authority} from "./types/Authority";
+import {Authority} from "../authority/types/Authority";
 
 @Component({
   selector: 'app-roles',

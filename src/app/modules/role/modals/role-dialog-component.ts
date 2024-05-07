@@ -19,8 +19,10 @@ import {CommonModule} from "@angular/common";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {CdkDrag, CdkDropList, DragDropModule} from "@angular/cdk/drag-drop";
 import {MatList, MatListItem} from "@angular/material/list";
-import {Authority} from "../types/Authority";
+import {Authority} from "../../authority/types/Authority";
 import {MatIcon} from "@angular/material/icon";
+import {AuthorityService} from "../../authority/authority.service";
+import {AuthorityApiResponse} from "../../authority/types/AuthorityApiResponse";
 
 @Component({
   selector: 'app-role-dialog',
@@ -56,6 +58,8 @@ export class RoleDialogComponent implements OnInit {
   selectedList: Authority[] = [];
   selectedOriginal: Authority[] = [];
   selectedAuthorities: Authority[] = [];
+  authorities: Authority[];
+  params: { page: number; size: number; sort: string } = {size: 10, page: 0, sort: 'name'};
 
   addToSelected(): void {
     this.selectedList.push(...this.selectedOriginal);
@@ -91,15 +95,32 @@ export class RoleDialogComponent implements OnInit {
     public roleService: RoleService,
     public dialogRef: MatDialogRef<RoleDialogComponent>,
     public notifierService: NotifierService,
+    public authorityService: AuthorityService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
 
   ngOnInit(): void {
+    this.initializeAuthorities(); //Fetch all the authorities existing in the DB
     this.roleService.populateForm(this.data);
-    //Initialize the lists
-    this.originalList = this.data.authorities;
-    console.log("Data =>", this.originalList);
+    this.selectedList = this.data.authorities;
+  }
+
+  initializeAuthorities(): void {
+    this.params.size = 1000;
+    this.params.page = 0;
+    this.params.sort = 'name';
+
+    this.authorityService.get(this.params).subscribe((response: AuthorityApiResponse): void => {
+      this.authorities = response.data;
+      //Perform the filter of the authorities
+      this.selectedList = this.removeAssignedAuthorities(this.authorities, this.selectedList);
+    });
+  }
+
+  removeAssignedAuthorities(existingAuthorities: Authority[], assignedAuthorities: Authority[]) {
+    const assignedIds = new Set(assignedAuthorities.map(auth => auth.uuid));
+    return existingAuthorities.filter(auth => !assignedIds.has(auth.uuid));
   }
 
   submitForm(): void {
@@ -107,7 +128,6 @@ export class RoleDialogComponent implements OnInit {
     if (this.roleService.form?.get('uuid')?.value) {
       this.roleService.update(this.roleService.form.value)
         .subscribe((response) => {
-          console.log("Response =>", response);
           // this.notifierService.showNotification(response.message, 'OK', 'success');
           this.onClose();
         }, error => {

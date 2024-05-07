@@ -1,4 +1,4 @@
-import {Authority} from "./Authority";
+import {Authority} from "../../authority/types/Authority";
 
 export interface Role {
   name: string;
