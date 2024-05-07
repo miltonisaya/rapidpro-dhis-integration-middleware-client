@@ -19,6 +19,8 @@ import {CommonModule} from "@angular/common";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {CdkDrag, CdkDropList, DragDropModule} from "@angular/cdk/drag-drop";
 import {MatList, MatListItem} from "@angular/material/list";
+import {Authority} from "../types/Authority";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-role-dialog',
@@ -43,28 +45,17 @@ import {MatList, MatListItem} from "@angular/material/list";
     CdkDrag,
     MatList,
     MatListItem,
-    DragDropModule
+    DragDropModule,
+    MatIcon
   ],
   styleUrls: ['role-dialog.component.css']
 })
 
 export class RoleDialogComponent implements OnInit {
-  originalList: string[] = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-    'Item 6',
-    'Item 7',
-    'Item 8',
-    'Item 9',
-    'Item 10'
-  ];
-
-  selectedList: string[] = [];
-  selectedOriginal: string[] = [];
-  selectedSelected: string[] = [];
+  originalList: Authority[] = [];
+  selectedList: Authority[] = [];
+  selectedOriginal: Authority[] = [];
+  selectedAuthorities: Authority[] = [];
 
   addToSelected(): void {
     this.selectedList.push(...this.selectedOriginal);
@@ -73,12 +64,12 @@ export class RoleDialogComponent implements OnInit {
   }
 
   removeFromSelected(): void {
-    this.originalList.push(...this.selectedSelected);
-    this.selectedList = this.selectedList.filter(item => !this.selectedSelected.includes(item));
-    this.selectedSelected = [];
+    this.originalList.push(...this.selectedAuthorities);
+    this.selectedList = this.selectedList.filter(item => !this.selectedAuthorities.includes(item));
+    this.selectedAuthorities = [];
   }
 
-  onSelectOriginal(item: string): void {
+  onSelectOriginal(item: Authority): void {
     const index = this.selectedOriginal.indexOf(item);
     if (index > -1) {
       this.selectedOriginal.splice(index, 1);
@@ -87,12 +78,12 @@ export class RoleDialogComponent implements OnInit {
     }
   }
 
-  onSelectSelected(item: string): void {
-    const index: number = this.selectedSelected.indexOf(item);
+  onSelectSelected(item: Authority): void {
+    const index: number = this.selectedAuthorities.indexOf(item);
     if (index > -1) {
-      this.selectedSelected.splice(index, 1);
+      this.selectedAuthorities.splice(index, 1);
     } else {
-      this.selectedSelected.push(item);
+      this.selectedAuthorities.push(item);
     }
   }
 
@@ -106,13 +97,16 @@ export class RoleDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.roleService.populateForm(this.data);
+    //Initialize the lists
+    this.originalList = this.data.authorities;
+    console.log("Data =>", this.originalList);
   }
 
   submitForm(): void {
     // Ensure the form and the uuid form control exist before trying to access its value
     if (this.roleService.form?.get('uuid')?.value) {
       this.roleService.update(this.roleService.form.value)
-        .subscribe(response => {
+        .subscribe((response) => {
           console.log("Response =>", response);
           // this.notifierService.showNotification(response.message, 'OK', 'success');
           this.onClose();

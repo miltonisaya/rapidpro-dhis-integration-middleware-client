@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {environment} from "../../../environments/environment";
 import {SortDirection} from "@angular/material/sort";
 import {RoleApiResponse} from "./types/RoleApiResponse";
@@ -17,7 +17,8 @@ export class RoleService {
     uuid: new FormControl(''),
     name: new FormControl('', [Validators.required]),
     code: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required])
+    description: new FormControl('', [Validators.required]),
+    authorities: new FormArray([])
   });
 
   private API_ENDPOINT = `${BASE_URL}/${RESOURCE_URL}`;
@@ -42,11 +43,15 @@ export class RoleService {
     console.log("The received form data =>", this.form.value);
   }
 
-  update(contact: any) {
-    return this._http.put(this.API_ENDPOINT + "/" + contact.uuid, contact)
-      .pipe(tap(_ => console.log(`updated role with uuid=${contact.uuid}`)),
-        catchError(this.handleError<any>('update role'))
-      );
+  // update(contact: any) {
+  //   return this._http.put(this.API_ENDPOINT + "/" + contact.uuid, contact)
+  //     .pipe(tap(_ => console.log(`updated role with uuid=${contact.uuid}`)),
+  //       catchError(this.handleError<any>('update role'))
+  //     );
+  // }
+
+  update(data: any): Observable<any> {
+    return this._http.put(`${this.API_ENDPOINT}/roles/${data.uuid}`, data);
   }
 
   initializeFormGroup() {
