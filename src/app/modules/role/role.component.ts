@@ -177,7 +177,7 @@ export class RoleComponent implements AfterViewInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width='600px';
+    dialogConfig.minWidth='600px';
     dialogConfig.height='auto';
     dialogConfig.panelClass="dialog-config"
     if (data) {
@@ -194,7 +194,7 @@ export class RoleComponent implements AfterViewInit {
         // this.getUsers();
       });
     } else {
-      dialogConfig.data = {};
+      dialogConfig.minWidth='600px';
       this.dialogService.open(RoleDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         // this.getUsers();

@@ -46,40 +46,35 @@
           </textarea>
           </mat-form-field>
         </div>
-
-        <div class="list-container">
-          <div class="list-section">
-            <h3 class="pick-list-title">Existing Authorities</h3>
-            <mat-list>
-              <mat-list-item *ngFor="let item of originalList" (click)="onSelectOriginal(item)"
-                             [class.selected]="selectedOriginal.includes(item)">
-                {{ item.name + "-[" + item.resource + "]" }}
-              </mat-list-item>
-            </mat-list>
-          </div>
-
-          <div class="action-buttons">
-            <button mat-raised-button color="primary" (click)="addToSelected()"
-                    [disabled]="selectedOriginal.length === 0">
-              <mat-icon>fast_forward</mat-icon>
-            </button>
-            <button mat-raised-button color="primary" (click)="removeFromSelected()"
-                    [disabled]="selectedAuthorities.length === 0">
-              <mat-icon>fast_rewind</mat-icon>
-            </button>
-          </div>
-
-          <div class="list-section">
-            <h3 class="pick-list-title">Selected Authorities</h3>
-            <mat-list>
-              <mat-list-item *ngFor="let item of selectedList" (click)="onSelectSelected(item)"
-                             [class.selected]="selectedAuthorities.includes(item)">
-                {{ item.name + "-[" + item.resource + "]" }}
-              </mat-list-item>
-            </mat-list>
-          </div>
-        </div>
-
+        <!--        Picklist goes here-->
+        <p-pickList
+          [source]="availableAuthorities"
+          [target]="assignedAuthorities"
+          sourceHeader="Available"
+          targetHeader="Selected"
+          [dragdrop]="true"
+          [responsive]="true"
+          [sourceStyle]="{ height: '30rem' }"
+          [targetStyle]="{ height: '30rem' }"
+          breakpoint="1400px">
+          <ng-template let-authority pTemplate="item">
+            <div class="flex flex-wrap p-2 align-items-center gap-3">
+              <div class="flex-1 flex flex-column gap-2">
+                <span class="font-bold">Name: {{ authority.name }}</span>
+                <div class="flex align-items-center gap-2">
+                  <i class="pi pi-tag text-sm"></i>
+                  <span>
+                    Resource: {{ authority.resource }}
+                  </span>
+                </div>
+              </div>
+              <span class="font-bold text-900">
+                    Action: {{ authority.action }}
+                </span>
+            </div>
+          </ng-template>
+        </p-pickList>
+        <!--        Picklist ends here-->
       </div>
     </mat-dialog-content>
     <mat-dialog-actions fxLayout="row" fxLayoutAlign="end stretch">
