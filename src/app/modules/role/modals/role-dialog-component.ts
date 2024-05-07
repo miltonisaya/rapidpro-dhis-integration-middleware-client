@@ -10,7 +10,7 @@ import {
 import {NotifierService} from "../../notification/notifier.service";
 import {RoleService} from "../role.service";
 import {FlexModule} from "@angular/flex-layout";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatDivider} from "@angular/material/divider";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
@@ -65,12 +65,26 @@ export class RoleDialogComponent implements OnInit {
     this.selectedList.push(...this.selectedOriginal);
     this.originalList = this.originalList.filter(item => !this.selectedOriginal.includes(item));
     this.selectedOriginal = [];
+
+    //Add the selected items to the form
+    const authorityArray = this.roleService.form.get('authorities') as FormArray;
+    this.selectedList.forEach((auth) => {
+      authorityArray.push(this.createAuthorityFormGroup(auth));
+    });
   }
 
   removeFromSelected(): void {
     this.originalList.push(...this.selectedAuthorities);
     this.selectedList = this.selectedList.filter(item => !this.selectedAuthorities.includes(item));
     this.selectedAuthorities = [];
+
+    //Remove the item from the form
+    //Add the selected items to the form
+    const authorityArray = this.roleService.form.get('authorities') as FormArray;
+    this.selectedList.forEach((authority) => {
+      authorityArray.reset();
+      authorityArray.push(this.createAuthorityFormGroup(authority));
+    });
   }
 
   onSelectOriginal(item: Authority): void {
@@ -96,6 +110,7 @@ export class RoleDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<RoleDialogComponent>,
     public notifierService: NotifierService,
     public authorityService: AuthorityService,
+    public fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
@@ -118,6 +133,15 @@ export class RoleDialogComponent implements OnInit {
     });
   }
 
+  createAuthorityFormGroup(authority: Authority): FormGroup {
+    return this.fb.group({
+      uuid: new FormControl(authority.uuid, Validators.required),
+      name: new FormControl(authority.name, Validators.required),
+      action: new FormControl(authority.action, Validators.required),
+      resource: new FormControl(authority.resource, Validators.required)
+    });
+  }
+
   removeAssignedAuthorities(existingAuthorities: Authority[], assignedAuthorities: Authority[]) {
     const assignedIds = new Set(assignedAuthorities.map(auth => auth.uuid));
     return existingAuthorities.filter(auth => !assignedIds.has(auth.uuid));
@@ -126,14 +150,13 @@ export class RoleDialogComponent implements OnInit {
   submitForm(): void {
     // Ensure the form and the uuid form control exist before trying to access its value
     if (this.roleService.form?.get('uuid')?.value) {
-      this.roleService.update(this.roleService.form.value)
-        .subscribe((response) => {
-          // this.notifierService.showNotification(response.message, 'OK', 'success');
-          this.onClose();
-        }, error => {
-          // Using optional chaining and nullish coalescing to handle possible null values
-          this.notifierService.showNotification(error?.error?.error ?? 'Unknown error', 'OK', 'error');
-        });
+      this.roleService.update(this.roleService.form.value).subscribe((response) => {
+        // this.notifierService.showNotification(response.message, 'OK', 'success');
+        this.onClose();
+      }, error => {
+        // Using optional chaining and nullish coalescing to handle possible null values
+        this.notifierService.showNotification(error?.error?.error ?? 'Unknown error', 'OK', 'error');
+      });
     }
   }
 

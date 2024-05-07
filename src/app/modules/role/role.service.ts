@@ -24,6 +24,12 @@ export class RoleService {
   private API_ENDPOINT = `${BASE_URL}/${RESOURCE_URL}`;
   _http: HttpClient = inject(HttpClient);
 
+  /**
+   *
+   * @param page
+   * @param size
+   * @param sort
+   */
   get(page: number, size: number, sort: SortDirection): Observable<RoleApiResponse> {
     const requestUrl = `${this.API_ENDPOINT}?page=${page}&size=${size}&sort=${sort}`;
     return this._http.get<RoleApiResponse>(requestUrl);
@@ -40,15 +46,7 @@ export class RoleService {
    */
   populateForm(data: { [key: string]: any; }) {
     this.form.patchValue(data);
-    console.log("The received form data =>", this.form.value);
   }
-
-  // update(contact: any) {
-  //   return this._http.put(this.API_ENDPOINT + "/" + contact.uuid, contact)
-  //     .pipe(tap(_ => console.log(`updated role with uuid=${contact.uuid}`)),
-  //       catchError(this.handleError<any>('update role'))
-  //     );
-  // }
 
   update(data: any): Observable<any> {
     return this._http.put(`${this.API_ENDPOINT}/roles/${data.uuid}`, data);
@@ -59,19 +57,8 @@ export class RoleService {
       id: '',
       name: '',
       code: '',
-      description: ''
+      description: '',
+      authorities:[]
     });
-  }
-
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      console.log(`${operation} failed: ${error.message}`);
-      return of(result as T);
-    };
   }
 }
