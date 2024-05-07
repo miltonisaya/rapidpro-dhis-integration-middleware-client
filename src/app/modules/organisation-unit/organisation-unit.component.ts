@@ -1,33 +1,23 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, OnInit} from '@angular/core';
 import {
   MatNestedTreeNode,
-  MatTree,
-  MatTreeFlatDataSource,
-  MatTreeFlattener,
-  MatTreeModule,
+  MatTree, MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule,
   MatTreeNode,
   MatTreeNodeOutlet,
   MatTreeNodePadding,
   MatTreeNodeToggle
 } from "@angular/material/tree";
+import {CommonModule} from "@angular/common";
+import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatDialogActions, MatDialogClose, MatDialogContent} from "@angular/material/dialog";
-import {OrganisationUnitService} from "./organisation-unit.service";
-import {MatIcon} from "@angular/material/icon";
 import {MatFormField} from "@angular/material/form-field";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatInput} from "@angular/material/input";
-import {CommonModule} from "@angular/common";
-import {FlatTreeControl} from "@angular/cdk/tree";
+import {OrganisationUnitService} from "./organisation-unit.service";
 import {OrganisationUnitApiResponse} from "./types/OrganisationUnitApiResponse";
-
-export interface OrganisationUnit {
-  name: string;
-  code?: string;
-  uuid?: string;
-  parent?: OrganisationUnit;
-  children?: OrganisationUnit[];
-}
+import {OrganisationUnit} from "./types/OrganisationUnit";
+import {FlatTreeControl} from "@angular/cdk/tree";
 
 /** Flat node with expandable and level information */
 interface OrganisationUnitFlatNode {
@@ -120,12 +110,10 @@ export class OrganisationUnitComponent implements OnInit {
   }
 
   getChildrenByParentUuid(parentUuid: string) {
-    this.organisationUnitService.findChildrenByParentUuid(parentUuid).subscribe(response => {
+    this.organisationUnitService.findChildrenByParentUuid(parentUuid).subscribe((response) => {
       if(response.data.length > 0){
         this.dataSource.data = [...response.data];
       }
     })
   }
 }
-
-
