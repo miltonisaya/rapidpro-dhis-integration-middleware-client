@@ -21,13 +21,14 @@ import {CommonModule} from "@angular/common";
 import {FlatTreeControl} from "@angular/cdk/tree";
 import {OrganisationUnitApiResponse} from "./types/OrganisationUnitApiResponse";
 
-interface OrganisationUnit {
+export interface OrganisationUnit {
   name: string;
   code?: string;
   uuid?: string;
   parent?: OrganisationUnit;
   children?: OrganisationUnit[];
 }
+
 /** Flat node with expandable and level information */
 interface OrganisationUnitFlatNode {
   expandable: boolean;
@@ -66,6 +67,7 @@ interface OrganisationUnitFlatNode {
 export class OrganisationUnitComponent implements OnInit {
   apiResponse: OrganisationUnitApiResponse;
   selectedNode: MatTreeNode<OrganisationUnitFlatNode>;
+  selectedNodeUuid: string;
 
   constructor(
     private organisationUnitService: OrganisationUnitService
@@ -113,6 +115,16 @@ export class OrganisationUnitComponent implements OnInit {
 
   onNodeClick(node: MatTreeNode<OrganisationUnitFlatNode>) {
     this.selectedNode = node;
+    this.selectedNodeUuid = JSON.parse(JSON.stringify(this.selectedNode)).uuid;
+    this.getChildrenByParentUuid(this.selectedNodeUuid);
+  }
+
+  getChildrenByParentUuid(parentUuid: string) {
+    this.organisationUnitService.findChildrenByParentUuid(parentUuid).subscribe(response => {
+      if(response.data.length > 0){
+        this.dataSource.data = [...response.data];
+      }
+    })
   }
 }
 

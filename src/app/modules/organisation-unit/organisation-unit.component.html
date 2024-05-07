@@ -15,7 +15,7 @@
     <!-- This is the tree node template for leaf nodes -->
     <mat-tree-node (click)="onNodeClick(node)" *matTreeNodeDef="let node" [class.selected]="node === selectedNode"
                    matTreeNodeToggle>
-      {{node.name}}
+      {{ node.name }}
     </mat-tree-node>
 
     <!-- This is the tree node template for expandable nodes -->
