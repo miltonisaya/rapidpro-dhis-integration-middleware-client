@@ -1,7 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
-import {catchError, tap} from 'rxjs/operators';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {environment} from "../../../environments/environment";
 import {SortDirection} from "@angular/material/sort";
@@ -17,8 +16,7 @@ export class RoleService {
     uuid: new FormControl(''),
     name: new FormControl('', [Validators.required]),
     code: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
-    authorities: new FormArray([])
+    description: new FormControl('', [Validators.required])
   });
 
   private API_ENDPOINT = `${BASE_URL}/${RESOURCE_URL}`;
@@ -49,7 +47,12 @@ export class RoleService {
   }
 
   update(data: any): Observable<any> {
-    return this._http.put(`${this.API_ENDPOINT}/roles/${data.uuid}`, data);
+    console.log('Payload Update =>',data);
+    return this._http.put(`${this.API_ENDPOINT}/${data.uuid}`, data);
+  }
+
+  findUnAssignedAuthoritiesByRoleUuid(roleUuid:string):Observable<any>{
+    return this._http.get(`${this.API_ENDPOINT}/authorities/${roleUuid}`);
   }
 
   initializeFormGroup() {
@@ -58,7 +61,10 @@ export class RoleService {
       name: '',
       code: '',
       description: '',
-      authorities:[]
     });
+  }
+
+  create(payload: any):Observable<any> {
+    return this._http.put(`${this.API_ENDPOINT}/roles`, payload);
   }
 }

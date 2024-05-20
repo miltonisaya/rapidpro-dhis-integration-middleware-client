@@ -88,6 +88,10 @@ export class RoleComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.loadData();
+  }
+
+  loadData() {
     // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
@@ -145,13 +149,13 @@ export class RoleComponent implements AfterViewInit {
       this.roleService.populateForm(contactData);
       this.dialogService.open(RoleDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
-        // this.getContacts();
+        this.loadData();
       });
     } else {
       dialogConfig.data = {};
       this.dialogService.open(RoleDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
-        // this.getContacts();
+        this.loadData();
       });
     }
   }
@@ -161,8 +165,6 @@ export class RoleComponent implements AfterViewInit {
     this.roleService.delete(this.roleUuid).subscribe({
       next: (response) => {
         console.log('Role deleted successfully', response);
-        // Update the UI or state as necessary
-        // For example, refresh the list of roles if you have one
       },
       error: (error) => {
         console.error('Error deleting role:', error);
@@ -172,38 +174,40 @@ export class RoleComponent implements AfterViewInit {
     this.dialogService.closeAll();
   }
 
-  openCreateDialog(data?: { uuid: string; name: string; description: string; code: string; authorities:Authority[] }): void {
+  openCreateDialog(data?: {
+    uuid: string;
+    name: string;
+    description: string;
+    code: string;
+    authorities: Authority[]
+  }): void {
     // console.log(data);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.minWidth='600px';
-    dialogConfig.height='auto';
-    dialogConfig.panelClass="dialog-config"
+    dialogConfig.minWidth = '400px';
+    dialogConfig.height = 'auto';
+    dialogConfig.panelClass = "dialog-config"
     if (data) {
       const roleData = {
         id: data.uuid,
         name: data.name,
         description: data.description,
         code: data.code,
-        authorities:data.authorities
       };
       this.roleService.populateForm(roleData);
       this.dialogService.open(RoleDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
-        // this.getUsers();
+        this.ngAfterViewInit();
       });
     } else {
-      dialogConfig.minWidth='600px';
+      dialogConfig.minWidth = '400px';
       this.dialogService.open(RoleDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
-        // this.getUsers();
+        this.ngAfterViewInit();
       });
     }
   }
-
 }
-
-
 
 

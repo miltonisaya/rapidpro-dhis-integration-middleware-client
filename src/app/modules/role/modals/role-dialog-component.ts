@@ -19,11 +19,7 @@ import {CommonModule} from "@angular/common";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {CdkDrag, CdkDropList, DragDropModule} from "@angular/cdk/drag-drop";
 import {MatList, MatListItem} from "@angular/material/list";
-import {Authority} from "../../authority/types/Authority";
 import {MatIcon} from "@angular/material/icon";
-import {AuthorityService} from "../../authority/authority.service";
-import {AuthorityApiResponse} from "../../authority/types/AuthorityApiResponse";
-import {PickListModule} from "primeng/picklist";
 
 @Component({
   selector: 'app-role-dialog',
@@ -49,57 +45,48 @@ import {PickListModule} from "primeng/picklist";
     MatList,
     MatListItem,
     DragDropModule,
-    MatIcon,
-    PickListModule
+    MatIcon
   ],
   styleUrls: ['role-dialog.component.css']
 })
 
 export class RoleDialogComponent implements OnInit {
   params: { page: number; size: number; sort: string } = {size: 10, page: 0, sort: 'name'};
-  availableAuthorities: Authority[];
-  assignedAuthorities: Authority[];
 
   constructor(
     public roleService: RoleService,
     public dialogRef: MatDialogRef<RoleDialogComponent>,
     public notifierService: NotifierService,
-    public authorityService: AuthorityService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
 
   ngOnInit(): void {
     this.roleService.populateForm(this.data);
-    this.assignedAuthorities = this.data.authorities;
-    this.initializeAuthorities(); //Fetch all the authorities existing in the DB
-  }
-
-  initializeAuthorities(): void {
-    this.params.size = 1000;
-    this.params.page = 0;
-    this.params.sort = 'name';
-
-    this.assignedAuthorities = this.data.authorities; //Authorities which have been assigned to the current role
-    this.authorityService.get(this.params).subscribe((response: AuthorityApiResponse): void => {
-      this.availableAuthorities = response.data;
-      this.removeAssignedAuthorities();
-    });
-  }
-
-  removeAssignedAuthorities() {
-    const assignedIds = new Set(this.assignedAuthorities.map(auth => auth.uuid));
-    this.availableAuthorities = this.availableAuthorities.filter(auth => !assignedIds.has(auth.uuid));
   }
 
   submitForm(): void {
-    if (this.roleService.form?.get('uuid')?.value) {
-      this.roleService.update(this.roleService.form.value).subscribe((response) => {
-        // this.notifierService.showNotification(response.message, 'OK', 'success');
-        this.onClose();
-      }, error => {
-        this.notifierService.showNotification(error?.error?.error ?? 'Unknown error', 'OK', 'error');
-      });
+    if (this.roleService.form.valid) {
+      if (this.roleService.form.get('uuid')?.value) {
+        this.roleService.update(this.roleService.form.value)
+          .subscribe((response) => {
+            console.log('Response =>', response);
+            // this.notifierService.showNotification(response.message, 'OK', 'success');
+            this.dialogRef.close();
+            this.onClose();
+          }, error => {
+            console.log('Error =>', error);
+
+            // this.notifierService.showNotification(error.error.error, 'OK', 'error');
+          });
+      } else {
+        this.roleService.create(this.roleService.form.value)
+          .subscribe(data => {
+            this.onClose();
+          }, error => {
+            this.notifierService.showNotification(error.message, 'OK', 'error');
+          });
+      }
     }
   }
 

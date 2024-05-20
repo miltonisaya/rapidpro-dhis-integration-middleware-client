@@ -1,1 +1,68 @@
-<p>data-elements works!</p>
+<div fxFlexLayoutAlign="row" fxLayoutAlign="space-between center">
+  <div>
+    <h3>Manage Data Elements</h3>
+  </div>
+  <div fxLayoutGap="5px">
+    <button (click)="syncDataElements()" class="mat-primary" mat-raised-button>
+      SYNC
+    </button>
+  </div>
+</div>
+
+<mat-form-field appearance="fill">
+  <mat-label>Filter</mat-label>
+  <input #input (keyup)="applyFilter($event)" autocomplete="off" matInput>
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+  <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table>
+    <!-- SNo Column -->
+    <ng-container matColumnDef="sno">
+      <th *matHeaderCellDef mat-header-cell> No</th>
+      <td *matCellDef="let dataElements; let i = index" mat-cell>{{i + 1}}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th *matHeaderCellDef mat-header-cell> Name</th>
+      <td *matCellDef="let dataElements" mat-cell> {{dataElements.name}} </td>
+    </ng-container>
+
+    <!-- Code Column -->
+    <ng-container matColumnDef="code">
+      <th *matHeaderCellDef mat-header-cell> Code</th>
+      <td *matCellDef="let dataElements" mat-cell> {{dataElements.code}} </td>
+    </ng-container>
+
+    <!-- Value Type Column -->
+    <ng-container matColumnDef="dataType">
+      <th *matHeaderCellDef mat-header-cell> Value Type</th>
+      <td *matCellDef="let dataElements" mat-cell>{{ dataElements.dataType }}  </td>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="dhis2uid">
+      <th *matHeaderCellDef mat-header-cell> DHIS2 UUID</th>
+      <td *matCellDef="let dataElements" mat-cell> {{dataElements.dhisUid}} </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+
+    <!-- Row shown when there is no matching data. -->
+    <tr *matNoDataRow class="mat-row">
+      <td class="mat-cell" colspan="3">No data matching the filter "{{input.value}}"</td>
+    </tr>
+  </table>
+
+  <mat-paginator
+    (page)="pageChanged($event)"
+    [length]="dataElements?.totalElements"
+    [pageSizeOptions]="pageSizeOptions"
+    [pageSize]="pageSize"
+    class="mat-elevation-z8"
+  ></mat-paginator>
+
+</div>
+
+<!--<pre>{{dataElements | json}}</pre>-->
