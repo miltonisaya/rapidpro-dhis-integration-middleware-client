@@ -1,4 +1,4 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, ViewChild} from '@angular/core';
 import {MatPaginator} from "@angular/material/paginator";
 import {
   MatCell,
@@ -7,7 +7,7 @@ import {
   MatHeaderRow,
   MatRow,
   MatTable,
-  MatTableDataSource
+  MatTableDataSource, MatTableModule
 } from "@angular/material/table";
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
@@ -33,9 +33,11 @@ import {DataElement} from "./types/dataElement";
     MatInput,
     MatTable,
     MatButton,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatTableModule
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers:[DataElementService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   standalone: true
 })
 export class DataElementComponent {
