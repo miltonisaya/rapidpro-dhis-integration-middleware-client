@@ -9,7 +9,7 @@
   </div>
 </div>
 
-<div fxLayout="column" fxLayoutAlign="space-between stretch" >
+<div fxLayout="column" fxLayoutAlign="space-between stretch">
   <mat-form-field appearance="fill">
     <mat-label>Select a flow</mat-label>
     <mat-select (selectionChange)="getKeysByFlowUuid($event)" [(value)]="selectedFlowUuid">
@@ -20,98 +20,103 @@
   </mat-form-field>
 </div>
 
-<pre>{{flowKeys | json}}</pre>
-<mat-form-field *ngIf="flowKeys.length !== 0 && true" appearance="fill">
-  <mat-label>Filter</mat-label>
-  <input #input (keyup)="applyFilter($event)" autocomplete="off" matInput>
-</mat-form-field>
+<div fxLayout="column" fxLayoutAlign="space-between stretch">
+  <mat-form-field *ngIf="flowKeys.length !== 0 && true" appearance="fill">
+    <mat-label>Filter</mat-label>
+    <input #input (keyup)="applyFilter($event)" autocomplete="off" matInput>
+  </mat-form-field>
+  <div>
 
-<div *ngIf="flowKeys.length > 0" class="mat-elevation-z8">
-  <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table>
-    <!-- SNo Column -->
-    <ng-container matColumnDef="sno">
-      <th *matHeaderCellDef mat-header-cell> No</th>
-      <td *matCellDef="let flowKeys; let i = index" mat-cell style="padding-right: 5px;">{{ i + 1 }}</td>
-    </ng-container>
+    <div *ngIf="flowKeys.length > 0" class="mat-elevation-z8">
+      <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table>
+        <!-- SNo Column -->
+        <ng-container matColumnDef="sno">
+          <th *matHeaderCellDef mat-header-cell> No</th>
+          <td *matCellDef="let flowKeys; let i = index" mat-cell style="padding-right: 5px;">{{ i + 1 }}</td>
+        </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="keyName">
-      <th *matHeaderCellDef mat-header-cell> Name</th>
-      <td *matCellDef="let flowKeys" mat-cell>
-        <div class="link-data-element" (click)="openMapDataElementDialog(flowKeys)"
-             matTooltip="Click to map data element">{{ flowKeys.keyName }}
-        </div>
-      </td>
-    </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="keyName">
+          <th *matHeaderCellDef mat-header-cell> Key Name</th>
+          <td *matCellDef="let flowKeys" mat-cell>
+            <div class="link-data-element" (click)="openMapDataElementDialog(flowKeys)"
+                 matTooltip="Click to map data element">{{ flowKeys.name }}
+            </div>
+          </td>
+        </ng-container>
 
-    <!-- Description Column -->
-    <ng-container matColumnDef="dataElement">
-      <th *matHeaderCellDef mat-header-cell> Data Element</th>
-      <td *matCellDef="let flowKeys" mat-cell>
-        <div *ngFor="let category of flowKeys.categories">
+        <!-- Description Column -->
+        <ng-container matColumnDef="dataElement">
+          <th *matHeaderCellDef mat-header-cell> Data Element</th>
+          <td *matCellDef="let flowKeys" mat-cell>
+            <div *ngFor="let category of flowKeys.categories">
           <span *ngIf="category.dataElement">
             {{ "(" + category?.dataElement?.code + ") - " + category?.dataElement?.name }}
           </span>
 
-          <!--          <span *ngIf="category.possibleTrueValues" style="color: teal;">-->
-          <!--            >> [{{ category.possibleTrueValues }}]-->
-          <!--          </span>-->
-        </div>
+              <!--          <span *ngIf="category.possibleTrueValues" style="color: teal;">-->
+              <!--            >> [{{ category.possibleTrueValues }}]-->
+              <!--          </span>-->
+            </div>
 
-        <div *ngIf="flowKeys.dataElement" style="color: teal">
-          {{ "(" + flowKeys?.dataElement?.code + ") - " + flowKeys?.dataElement?.name }}
-        </div>
-      </td>
-    </ng-container>
+            <div *ngIf="flowKeys.dataElement" style="color: teal">
+              {{ "(" + flowKeys?.dataElement?.code + ") - " + flowKeys?.dataElement?.name }}
+            </div>
+          </td>
+        </ng-container>
 
-    <ng-container matColumnDef="categories">
-      <th *matHeaderCellDef mat-header-cell> Categories</th>
-      <td *matCellDef="let categories" mat-cell>
-        <div *ngIf="categories.categories.length > 0" style="align-content: space-around;">
-          <ul>
-            <li *ngFor="let category of categories.categories">
-              <div class="link-data-element" style="justify-content: flex-start" (click)="openMapCategoryDialog(category)"
-                   matTooltip="Click to map data element">
-                {{ category.name }}
-              </div>
-              <span *ngIf="category.possibleTrueValues" style="color: teal;"> >> [{{ category.possibleTrueValues }}] </span>
-              <span *ngIf="category.dataElement" (click)="openSetPossibleValuesDialog(category)">
+        <ng-container matColumnDef="categories">
+          <th *matHeaderCellDef mat-header-cell> Categories</th>
+          <td *matCellDef="let categories" mat-cell>
+            <div *ngIf="categories.categories.length > 0" style="align-content: space-around;">
+              <ul>
+                <li *ngFor="let category of categories.categories">
+                  <div class="link-data-element" style="justify-content: flex-start"
+                       (click)="openMapCategoryDialog(category)"
+                       matTooltip="Click to map data element">
+                    {{ category.name }}
+                  </div>
+                  <span *ngIf="category.possibleTrueValues" style="color: teal;"> >> [{{ category.possibleTrueValues }}
+                    ] </span>
+                  <span *ngIf="category.dataElement" (click)="openSetPossibleValuesDialog(category)">
                 <mat-icon style="align-content: center;">add</mat-icon>
               </span>
-            </li>
-          </ul>
-        </div>
-      </td>
-    </ng-container>
+                </li>
+              </ul>
+            </div>
+          </td>
+        </ng-container>
 
-    <!-- Action Column -->
-    <ng-container matColumnDef="actions">
-      <th *matHeaderCellDef mat-header-cell>Action</th>
-      <td *matCellDef="let flowKeys" mat-cell>
-        <button mat-icon-button matTooltip="Reset Mapping" matTooltipPosition="left">
-          <mat-icon (click)="openResetDialog(flowKeys)">undo</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+        <!-- Action Column -->
+        <ng-container matColumnDef="actions">
+          <th *matHeaderCellDef mat-header-cell>Action</th>
+          <td *matCellDef="let flowKeys" mat-cell>
+            <button mat-icon-button matTooltip="Reset Mapping" matTooltipPosition="left">
+              <mat-icon (click)="openResetDialog(flowKeys)">undo</mat-icon>
+            </button>
+          </td>
+        </ng-container>
 
-    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+        <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
 
-    Row shown when there is no matching data.
-    <tr *matNoDataRow class="mat-row">
-      <td class="mat-cell" colspan="3">No data matching the filter "{{ input.value }}"</td>
-    </tr>
-  </table>
+        Row shown when there is no matching data.
+        <tr *matNoDataRow class="mat-row">
+          <td class="mat-cell" colspan="3">No data matching the filter "{{ input.value }}"</td>
+        </tr>
+      </table>
 
-  <!--delete user dialog template-->
-  <ng-template #resetDialog>
-    <mat-dialog-content>
-      <h3>Are you sure you want to reset this mapping?</h3>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>NO</button>
-      <button (click)="reset()" mat-button>YES</button>
-    </mat-dialog-actions>
-  </ng-template>
-  <!--delete user dialog template-->
-</div>
+      <!--delete user dialog template-->
+      <ng-template #resetDialog>
+        <mat-dialog-content>
+          <h3>Are you sure you want to reset this mapping?</h3>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+          <button mat-button mat-dialog-close>NO</button>
+          <button (click)="reset()" mat-button>YES</button>
+        </mat-dialog-actions>
+      </ng-template>
+      <!--delete user dialog template-->
+    </div>
+
+    <pre>{{ flowKeys | json }}</pre>

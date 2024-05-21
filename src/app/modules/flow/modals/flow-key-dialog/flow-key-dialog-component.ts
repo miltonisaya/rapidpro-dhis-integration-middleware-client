@@ -1,4 +1,4 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA, Inject, OnInit} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, Inject, NO_ERRORS_SCHEMA, OnInit} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions, MatDialogClose,
@@ -14,10 +14,11 @@ import {DataElementService} from "../../../data-element/data-element.service";
 import {FlowKeyService} from "../../flowkey.service";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatDivider} from "@angular/material/divider";
-import {MatFormField} from "@angular/material/form-field";
+import {MatFormField, MatFormFieldControl, MatFormFieldModule} from "@angular/material/form-field";
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from "@angular/material/autocomplete";
-import {AsyncPipe} from "@angular/common";
+import {AsyncPipe, NgFor} from "@angular/common";
 import {MatButton} from "@angular/material/button";
+import {MatInputModule} from "@angular/material/input";
 
 @Component({
   selector: 'app-flow-key-dialog',
@@ -25,6 +26,9 @@ import {MatButton} from "@angular/material/button";
   standalone: true,
   styleUrls: ['flow-key-dialog.component.sass'],
   imports: [
+    NgFor,
+    MatFormFieldModule,
+    MatInputModule,
     FlexLayoutModule,
     ReactiveFormsModule,
     MatDialogTitle,
@@ -37,9 +41,10 @@ import {MatButton} from "@angular/material/button";
     MatOption,
     MatDialogActions,
     MatDialogClose,
-    MatButton
+    MatButton,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  providers:[DataElementService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA]
 })
 
 export class FlowKeyDialogComponent implements OnInit {
