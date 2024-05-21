@@ -11,9 +11,10 @@ export class DataElementService {
   constructor(private _http: HttpClient) {
   }
 
-  getDataElements(param?: any): Observable<any> {
-    const requestUrl = `${BASE_URL}/api/v1/data-elements}`;
-    return this._http.get<ApiResponse>(requestUrl, param);
+  getDataElements(params?: any): Observable<any> {
+    const requestUrl = `${BASE_URL}/api/v1/data-elements?pageNumber=${params.pageNo}&pageSize=${params.pageSize}&sortBy=${params.sortBy}`;
+
+    return this._http.get<ApiResponse>(requestUrl);
   }
 
   syncDataElements() {

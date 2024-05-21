@@ -1,4 +1,4 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, ViewChild} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from "@angular/material/paginator";
 import {
   MatCell,
@@ -7,7 +7,8 @@ import {
   MatHeaderRow,
   MatRow,
   MatTable,
-  MatTableDataSource, MatTableModule
+  MatTableDataSource,
+  MatTableModule
 } from "@angular/material/table";
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
@@ -36,11 +37,11 @@ import {DataElement} from "./types/dataElement";
     FlexLayoutModule,
     MatTableModule
   ],
-  providers:[DataElementService],
+  providers: [DataElementService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   standalone: true
 })
-export class DataElementComponent {
+export class DataElementComponent implements OnInit {
 
   displayedColumns: string[] = ["sno", 'name', 'code', 'dataType', 'dhis2uid'];
   dataElements: any = [];
@@ -51,7 +52,7 @@ export class DataElementComponent {
   pageSize = 10;
   pageNo = 0;
   pageSizeOptions: number[] = [10, 25, 100, 1000];
-  private params: { pageNo: number; pageSize: number };
+  private params: { pageNo: number; pageSize: number; sortBy: string };
 
   constructor(
     private DataElementService: DataElementService,
@@ -69,7 +70,8 @@ export class DataElementComponent {
   getDataElements() {
     this.params = {
       "pageNo": this.pageNo,
-      "pageSize": this.pageSize
+      "pageSize": this.pageSize,
+      "sortBy": "name"
     }
 
     return this.DataElementService.getDataElements(this.params).subscribe((response: any) => {
@@ -77,7 +79,7 @@ export class DataElementComponent {
       this.dataSource = new MatTableDataSource<DataElement>(this.dataElements.content);
       this.dataSource.sort = this.sort;
     }, error => {
-      this.notifierService.showNotification(error.error.error, 'OK', 'error');
+      this.notifierService.showNotification(error.message, 'OK', 'error');
     });
   }
 
@@ -94,7 +96,7 @@ export class DataElementComponent {
       }
     }, error => {
       // console.log("The error===>",error.message);
-      this.notifierService.showNotification(error.error.error, 'OK', 'error');
+      this.notifierService.showNotification(error.message, 'OK', 'error');
     });
   }
 
