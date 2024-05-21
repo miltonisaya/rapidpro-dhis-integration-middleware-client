@@ -9,10 +9,12 @@
   </div>
 </div>
 
+<div fxLayout="column" fxLayoutAlign="space-between stretch">
 <mat-form-field appearance="fill">
   <mat-label>Filter</mat-label>
   <input #input (keyup)="applyFilter($event)" autocomplete="off" matInput>
 </mat-form-field>
+</div>
 
 <div class="mat-elevation-z8">
   <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table>
