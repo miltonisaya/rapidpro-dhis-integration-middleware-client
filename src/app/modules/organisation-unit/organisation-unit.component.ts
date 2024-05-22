@@ -1,7 +1,10 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, OnInit} from '@angular/core';
 import {
   MatNestedTreeNode,
-  MatTree, MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule,
+  MatTree,
+  MatTreeFlatDataSource,
+  MatTreeFlattener,
+  MatTreeModule,
   MatTreeNode,
   MatTreeNodeOutlet,
   MatTreeNodePadding,
@@ -55,6 +58,7 @@ interface OrganisationUnitFlatNode {
 })
 
 export class OrganisationUnitComponent implements OnInit {
+  title: string = "Organisation Units";
   apiResponse: OrganisationUnitApiResponse;
   selectedNode: MatTreeNode<OrganisationUnitFlatNode>;
   selectedNodeUuid: string;
@@ -111,7 +115,7 @@ export class OrganisationUnitComponent implements OnInit {
 
   getChildrenByParentUuid(parentUuid: string) {
     this.organisationUnitService.findChildrenByParentUuid(parentUuid).subscribe((response) => {
-      if(response.data.length > 0){
+      if (response.data.length > 0) {
         this.dataSource.data = [...response.data];
       }
     })

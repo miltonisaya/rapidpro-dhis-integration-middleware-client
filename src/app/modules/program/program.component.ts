@@ -46,6 +46,7 @@ export interface ProgramApiResponse {
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class ProgramComponent implements OnInit {
+  title: string = "Programs";
   displayedColumns: string[] = ["sno", 'name', 'code', 'dhis2uid', 'actions'];
   programs: any = [];
   dataSource: MatTableDataSource<Program>;

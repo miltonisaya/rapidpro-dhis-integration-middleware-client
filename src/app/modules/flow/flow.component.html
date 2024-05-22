@@ -1,6 +1,7 @@
 <div fxFlexLayoutAlign="row" fxLayoutAlign="space-between center">
-  <div>
-    <h3>Manage Flows</h3>
+  <div class="page-title">
+    <h1>{{ title }}</h1>
+    <span class="breadcrumb">Home / Flows</span>
   </div>
   <div fxLayoutGap="5px">
     <button (click)="syncFlows()" class="mat-primary" mat-raised-button>
@@ -118,5 +119,6 @@
       </ng-template>
       <!--delete user dialog template-->
     </div>
-
-    <pre>{{ flowKeys | json }}</pre>
+  </div>
+</div>
+<!--    <pre>{{ flowKeys | json }}</pre>-->

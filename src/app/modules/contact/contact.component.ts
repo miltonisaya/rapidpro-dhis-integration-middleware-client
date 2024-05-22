@@ -64,10 +64,10 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 })
 
 export class ContactComponent implements AfterViewInit {
-  displayedColumns: string[] = ['number','name', 'urn', 'facilityCode', 'sex', 'createdOn', 'registrationDate', 'age', 'fields', 'actions'];
+  title: string = "Contacts";
+  displayedColumns: string[] = ['number', 'name', 'urn', 'facilityCode', 'sex', 'createdOn', 'registrationDate', 'age', 'fields', 'actions'];
   pageSizeOptions: number[] = [10, 20, 50, 100, 250, 500, 1000];
   data: Contact[] = [];
-
   resultsLength = 0;
   isLoadingResults = true;
   areRecordsAvailable = false;

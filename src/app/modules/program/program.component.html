@@ -1,6 +1,7 @@
 <div fxLayout="row" fxLayoutAlign="space-between center">
-  <div>
-    <h3>Manage Programs</h3>
+  <div class="page-title">
+    <h1>{{ title }}</h1>
+    <span class="breadcrumb">Home / Programs</span>
   </div>
   <div fxLayout="row" fxLayoutGap="5px">
     <button (click)="syncPrograms()" class="mat-primary" mat-raised-button>
@@ -45,7 +46,8 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Action</th>
         <td mat-cell *matCellDef="let programs">
-          <button mat-icon-button matTooltip="Map Data Element" matTooltipPosition="left" (click)="openMappingDialog(programs.id)">
+          <button mat-icon-button matTooltip="Map Data Element" matTooltipPosition="left"
+                  (click)="openMappingDialog(programs.id)">
             <mat-icon>sync_alt</mat-icon>
           </button>
         </td>

@@ -1,5 +1,6 @@
 <div class="page-title">
-  <h1>Contacts</h1>
+  <h1>{{ title }}</h1>
+  <span class="breadcrumb">Home / Contacts</span>
 </div>
 
 <div class="example-container mat-elevation-z8">
@@ -86,7 +87,7 @@
         <th *matHeaderCellDef mat-header-cell>Action</th>
         <td *matCellDef="let row" mat-cell>
           <button mat-button matTooltip="Edit" matTooltipPosition="left" (click)="openDialog(row)">
-<!--            <pre>{{row | json}}</pre>-->
+            <!--            <pre>{{row | json}}</pre>-->
             <mat-icon (click)="openDialog(row)">edit</mat-icon>
           </button>
         </td>

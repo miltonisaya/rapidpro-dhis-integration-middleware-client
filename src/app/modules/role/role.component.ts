@@ -69,6 +69,7 @@ import {Authority} from "../authority/types/Authority";
 })
 
 export class RoleComponent implements AfterViewInit {
+  title: string = 'Roles';
   displayedColumns: string[] = ['number', 'name', 'code', 'description', 'actions'];
   pageSizeOptions: number[] = [10, 20, 50, 100, 250, 500, 1000];
   data: Role[] = [];

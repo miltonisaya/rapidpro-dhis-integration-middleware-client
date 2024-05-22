@@ -11,5 +11,6 @@ import { FlexModule } from '@angular/flex-layout';
     imports: [FlexModule, MatCard, MatCardTitle, MatCardContent, BarchartComponent]
 })
 export class DashboardComponent {
+  title: string = "Dashboard";
 
 }

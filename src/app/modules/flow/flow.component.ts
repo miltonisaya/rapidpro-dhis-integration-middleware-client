@@ -1,7 +1,7 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatButton, MatIconButton} from "@angular/material/button";
-import {MatFormField} from "@angular/material/form-field";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {
   MatCell,
   MatColumnDef,
@@ -13,7 +13,7 @@ import {
   MatTableModule
 } from "@angular/material/table";
 import {MatTooltip} from "@angular/material/tooltip";
-import {MatDialog, MatDialogActions, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
+import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {MatInput} from "@angular/material/input";
 import {MatSort, SortDirection} from "@angular/material/sort";
@@ -49,12 +49,15 @@ import {MatIcon} from "@angular/material/icon";
     MatSelect,
     MatOption,
     MatInput,
-    MatIcon
+    MatIcon,
+    MatDialogClose,
+    MatLabel
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   standalone: true
 })
 export class FlowComponent implements OnInit {
+  title: string = "Flows";
   flows: any = [];
   elementUuid: any;
   selectedFlowUuid: any = null;
