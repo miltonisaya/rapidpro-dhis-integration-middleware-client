@@ -13,8 +13,16 @@ import {MatButton} from "@angular/material/button";
 import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
-import {ApiResponse} from "../contact/contact.component";
 import {UpperCasePipe} from "@angular/common";
+
+export interface ProgramApiResponse {
+  data: Program[];
+  message: string;
+  page: number;
+  size: number;
+  status: number;
+  total: number;
+}
 
 @Component({
   selector: 'app-programs',
@@ -61,7 +69,6 @@ export class ProgramComponent implements OnInit {
    */
   getPrograms() {
     return this.programService.getDataElements().subscribe((response: any) => {
-      console.log("Response =>",response);
       this.programs = response.data;
       this.dataSource = new MatTableDataSource<Program>(this.programs);
       this.dataSource.paginator = this.paginator;
@@ -78,13 +85,8 @@ export class ProgramComponent implements OnInit {
   }
 
   syncPrograms() {
-    return this.programService.syncPrograms().subscribe((response: ApiResponse) => {
-      console.log("Response =>", response);
-      // this.getPrograms();
-      // if (response.status == '200') {
-      //   console.log("The message===>", response);
-      //   this.notifierService.showNotification(response.message, 'OK', 'success');
-      // }
+    return this.programService.syncPrograms().subscribe((response: ProgramApiResponse) => {
+      this.notifierService.showNotification(response.message, 'OK', 'success');
     }, error => {
       this.notifierService.showNotification(error.message, 'OK', 'error');
     });

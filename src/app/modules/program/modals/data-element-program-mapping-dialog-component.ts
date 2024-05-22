@@ -2,7 +2,8 @@ import {Component, CUSTOM_ELEMENTS_SCHEMA, Inject, NO_ERRORS_SCHEMA, OnInit} fro
 import {
   MAT_DIALOG_DATA,
   MatDialog,
-  MatDialogActions, MatDialogClose,
+  MatDialogActions,
+  MatDialogClose,
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle
@@ -19,7 +20,7 @@ import {MatButton} from "@angular/material/button";
 @Component({
   selector: 'app-flow-key-dialog',
   templateUrl: 'data-element-program-mapping-dialog-component.html',
-  styleUrls: ['data-element-program-mapping-dialog.component.sass'],
+  styleUrls: ['data-element-program-mapping-dialog.component.css'],
   standalone: true,
   imports: [
     FlexLayoutModule,
@@ -31,6 +32,7 @@ import {MatButton} from "@angular/material/button";
     MatDialogClose,
     MatButton
   ],
+  providers: [DataElementService, ProgramService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 
