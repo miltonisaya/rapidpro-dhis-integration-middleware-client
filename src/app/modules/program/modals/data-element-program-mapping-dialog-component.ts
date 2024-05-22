@@ -59,7 +59,9 @@ export class DataElementProgramMappingDialogComponent implements OnInit {
 
   getDataElements() {
     let params = {
-      pageSize: 1000
+      pageSize: 1000,
+      pageNo: 0,
+      sortBy:'name'
     };
     return this.dataElementService.getDataElements(params).subscribe((response: any) => {
       this.fetchedList = response.data.content;

@@ -1,10 +1,9 @@
-<section class="login-form-container"
-         fxFlexFill
+<section fxFlexFill
          fxLayout="column"
          fxLayout.xs="column"
          fxLayoutAlign="end none">
   <h1 class="dialog-header" fxLayout="row" fxLayoutAlign="center center" mat-dialog-title>
-    {{"Map DHIS2 Data Element"}}
+    {{ "Map DHIS2 Data Element" }}
   </h1>
   <br>
   <mat-divider></mat-divider>
@@ -24,7 +23,7 @@
     >
       <ng-template let-tm pTemplate="TeamA">
         <div class="ui-helper-clearfix">
-          <div style="font-size:14px;float:left;margin:15px 5px 0 0">{{tm.name}}</div>
+          <div style="font-size:14px;float:left;margin:15px 5px 0 0">{{ tm.name }}</div>
         </div>
       </ng-template>
     </p-pickList>
@@ -39,7 +38,7 @@
         mat-raised-button
         type="submit"
       >
-        {{"SAVE"}}
+        {{ "SAVE" }}
       </button>
     </div>
   </mat-dialog-actions>
