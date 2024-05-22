@@ -76,7 +76,7 @@ export class DataElementProgramMappingDialogComponent implements OnInit {
     return this.programService.mapDataElements(payload).subscribe((response: any) => {
       response.data.content;
       console.log("Response=>", response);
-      this.notifierService.showNotification(response.message.message, 'OK', 'success');
+      this.notifierService.showNotification(response.message, 'OK', 'success');
       this.matDialog.closeAll()
     }, error => {
       this.notifierService.showNotification(error.error.error, 'OK', 'error');

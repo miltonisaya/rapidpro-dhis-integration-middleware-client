@@ -13,12 +13,14 @@ import {MatButton} from "@angular/material/button";
 import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
+import {ApiResponse} from "../contact/contact.component";
+import {UpperCasePipe} from "@angular/common";
 
 @Component({
   selector: 'app-programs',
   templateUrl: './program.component.html',
   standalone: true,
-  styleUrls: ['./program.component.scss'],
+  styleUrls: ['./program.component.css'],
   providers: [NotifierService, ProgramService],
   imports: [
     FlexLayoutModule,
@@ -30,7 +32,8 @@ import {MatInputModule} from "@angular/material/input";
     MatButton,
     MatFormField,
     MatTable,
-    MatPaginator
+    MatPaginator,
+    UpperCasePipe
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
@@ -43,7 +46,7 @@ export class ProgramComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private ProgramService: ProgramService,
+    private programService: ProgramService,
     private notifierService: NotifierService,
     private dialog: MatDialog
   ) {
@@ -57,13 +60,14 @@ export class ProgramComponent implements OnInit {
    * This method returns data elements
    */
   getPrograms() {
-    return this.ProgramService.getDataElements().subscribe((response: any) => {
+    return this.programService.getDataElements().subscribe((response: any) => {
+      console.log("Response =>",response);
       this.programs = response.data;
-      this.dataSource = new MatTableDataSource<Program>(this.programs.content);
+      this.dataSource = new MatTableDataSource<Program>(this.programs);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }, error => {
-      this.notifierService.showNotification(error.error.error, 'OK', 'error');
+      this.notifierService.showNotification(error.message, 'OK', 'error');
       console.log(error);
     });
   }
@@ -74,14 +78,15 @@ export class ProgramComponent implements OnInit {
   }
 
   syncPrograms() {
-    return this.ProgramService.syncPrograms().subscribe((response: any) => {
-      this.getPrograms();
-      if (response.status == '200') {
-        console.log("The message===>", response);
-        this.notifierService.showNotification(response.message, 'OK', 'success');
-      }
+    return this.programService.syncPrograms().subscribe((response: ApiResponse) => {
+      console.log("Response =>", response);
+      // this.getPrograms();
+      // if (response.status == '200') {
+      //   console.log("The message===>", response);
+      //   this.notifierService.showNotification(response.message, 'OK', 'success');
+      // }
     }, error => {
-      this.notifierService.showNotification(error.error.error, 'OK', 'error');
+      this.notifierService.showNotification(error.message, 'OK', 'error');
     });
   }
 

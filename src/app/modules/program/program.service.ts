@@ -23,8 +23,8 @@ export class ProgramService {
   }
 
   syncPrograms() {
-    let requestUrl = `${BASE_URL}/programs/sync-programs`;
-    return this._http.get<any>(requestUrl);
+    let requestUrl = `${BASE_URL}/api/v1/programs/sync-programs`;
+    return this._http.get<ApiResponse>(requestUrl);
   }
 
   mapDataElements(payload: any): Observable<any> {

@@ -28,7 +28,7 @@
         <!-- Name Column -->
         <ng-container matColumnDef="name">
           <th *matHeaderCellDef mat-header-cell> Name</th>
-          <td *matCellDef="let programs" mat-cell> {{ programs.displayName }}</td>
+          <td *matCellDef="let programs" mat-cell> {{ programs.displayName | uppercase}}</td>
         </ng-container>
 
         <!-- Code Column -->
