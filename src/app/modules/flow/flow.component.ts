@@ -9,7 +9,8 @@ import {
   MatHeaderRow,
   MatRow,
   MatTable,
-  MatTableDataSource, MatTableModule
+  MatTableDataSource,
+  MatTableModule
 } from "@angular/material/table";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatDialog, MatDialogActions, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
@@ -162,7 +163,7 @@ export class FlowComponent implements OnInit {
     if (data) {
       const categoriesMappingData = {
         id: data.uuid,
-        dataElementId: data.dataElementUuid,
+        dataElementUuid: data.dataElementUuid,
         flowId: this.selectedFlowUuid,
         categoryName: data.name
       };
@@ -177,7 +178,7 @@ export class FlowComponent implements OnInit {
           this.dataSource = new MatTableDataSource<any>(this.flowKeys);
           this.dataSource.sort = this.sort;
         }, error => {
-          this.notifierService.showNotification(error.error.error, 'OK', 'error');
+          this.notifierService.showNotification(error.message, 'OK', 'error');
         });
       });
     } else {
@@ -189,8 +190,7 @@ export class FlowComponent implements OnInit {
     }
   }
 
-  applyFilter(any: KeyboardEvent): void {
-    // @ts-ignore
+  applyFilter(event: any): void {
     const filterValue: string = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }

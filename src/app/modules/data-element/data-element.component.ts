@@ -19,6 +19,15 @@ import {NotifierService} from "../notification/notifier.service";
 import {DataElementService} from "./data-element.service";
 import {DataElement} from "./types/dataElement";
 
+export interface DataElementApiResponse {
+  data: DataElement[];
+  page: number;
+  size: number;
+  status: number;
+  total: number;
+  message: string;
+}
+
 @Component({
   selector: 'app-data-elements',
   templateUrl: './data-element.component.html',
@@ -42,20 +51,19 @@ import {DataElement} from "./types/dataElement";
   standalone: true
 })
 export class DataElementComponent implements OnInit {
-
   displayedColumns: string[] = ["sno", 'name', 'code', 'dataType', 'dhis2uid'];
   dataElements: any = [];
   dataSource: MatTableDataSource<DataElement>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  pageSize = 10;
-  pageNo = 0;
+  pageSize: number = 10;
+  pageNo: number = 0;
   pageSizeOptions: number[] = [10, 25, 100, 1000];
   private params: { pageNo: number; pageSize: number; sortBy: string };
 
   constructor(
-    private DataElementService: DataElementService,
+    private dataElementService: DataElementService,
     private notifierService: NotifierService
   ) {
   }
@@ -64,9 +72,6 @@ export class DataElementComponent implements OnInit {
     this.getDataElements();
   }
 
-  /**
-   * This method returns data elements
-   */
   getDataElements() {
     this.params = {
       "pageNo": this.pageNo,
@@ -74,7 +79,7 @@ export class DataElementComponent implements OnInit {
       "sortBy": "name"
     }
 
-    return this.DataElementService.getDataElements(this.params).subscribe((response: any) => {
+    return this.dataElementService.getDataElements(this.params).subscribe((response: any) => {
       this.dataElements = response.data;
       this.dataSource = new MatTableDataSource<DataElement>(this.dataElements.content);
       this.dataSource.sort = this.sort;
@@ -89,19 +94,15 @@ export class DataElementComponent implements OnInit {
   }
 
   syncDataElements() {
-    return this.DataElementService.syncDataElements().subscribe((response: any) => {
+    return this.dataElementService.syncDataElements().subscribe(response => {
       this.getDataElements();
-      if (response.status == '200') {
-        this.notifierService.showNotification(response.message, 'OK', 'success');
-      }
+      this.notifierService.showNotification(response.message, 'OK', 'success');
     }, error => {
-      // console.log("The error===>",error.message);
       this.notifierService.showNotification(error.message, 'OK', 'error');
     });
   }
 
   pageChanged(e: any) {
-    console.log(e);
     this.pageSize = e.pageSize;
     this.pageNo = e.pageIndex;
     this.getDataElements();

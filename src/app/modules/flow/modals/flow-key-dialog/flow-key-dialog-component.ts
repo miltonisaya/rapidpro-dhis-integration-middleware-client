@@ -1,7 +1,8 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA, Inject, NO_ERRORS_SCHEMA, OnInit} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
-  MatDialogActions, MatDialogClose,
+  MatDialogActions,
+  MatDialogClose,
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle
@@ -14,7 +15,7 @@ import {DataElementService} from "../../../data-element/data-element.service";
 import {FlowKeyService} from "../../flowkey.service";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatDivider} from "@angular/material/divider";
-import {MatFormField, MatFormFieldControl, MatFormFieldModule} from "@angular/material/form-field";
+import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from "@angular/material/autocomplete";
 import {AsyncPipe, NgFor} from "@angular/common";
 import {MatButton} from "@angular/material/button";
@@ -43,8 +44,8 @@ import {MatInputModule} from "@angular/material/input";
     MatDialogClose,
     MatButton,
   ],
-  providers:[DataElementService],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA]
+  providers: [DataElementService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 
 export class FlowKeyDialogComponent implements OnInit {
@@ -76,7 +77,9 @@ export class FlowKeyDialogComponent implements OnInit {
 
   getDataElements() {
     let params = {
-      pageSize: 1000
+      pageSize: 1000,
+      pageNo: 0,
+      sortBy: 'name'
     };
     return this.dataElementService.getDataElements(params).subscribe((response: any) => {
       this.dataElements = response.data.content;
@@ -121,6 +124,7 @@ export class FlowKeyDialogComponent implements OnInit {
   }
 
   displayFn(dataElement: any): string {
+    console.log("Selected data element =>", dataElement);
     this.selectedDataElement = dataElement.uuid;
     return dataElement && dataElement.name ? dataElement.name : '';
   }
