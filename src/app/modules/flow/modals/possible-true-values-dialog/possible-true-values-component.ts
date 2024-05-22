@@ -14,6 +14,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
+import {DataElementService} from "../../../data-element/data-element.service";
 
 @Component({
   selector: 'app-flow-key-dialog',
@@ -29,6 +30,7 @@ import {MatButton} from "@angular/material/button";
     MatButton,
     MatDialogClose
   ],
+  providers:[DataElementService],
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
   styleUrls: ['possible-true-values-dialog.component.sass']
 })

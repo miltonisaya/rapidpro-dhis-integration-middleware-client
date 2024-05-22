@@ -1,7 +1,8 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA, Inject, OnInit} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
-  MatDialogActions, MatDialogClose,
+  MatDialogActions,
+  MatDialogClose,
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle
@@ -18,6 +19,11 @@ import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from "@angular/mater
 import {MatInput} from "@angular/material/input";
 import {AsyncPipe, CommonModule} from "@angular/common";
 import {MatButton} from "@angular/material/button";
+
+export interface CategoryDataElementMapping {
+  dataElementUuid: string;
+  categoryUuid: string
+}
 
 @Component({
   selector: 'app-flow-key-dialog',
@@ -40,6 +46,7 @@ import {MatButton} from "@angular/material/button";
     MatDialogClose,
     MatButton
   ],
+  providers: [DataElementService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   styleUrls: ['flow-category-dialog.component.sass']
 })
@@ -47,7 +54,7 @@ import {MatButton} from "@angular/material/button";
 export class FlowCategoryDialogComponent implements OnInit {
   dataElements: any;
   filteredOptions: any;
-  selectedDataElementYes: any;
+  selectedDataElement: any;
   dataElement = new FormControl();
 
   constructor(
@@ -72,7 +79,9 @@ export class FlowCategoryDialogComponent implements OnInit {
 
   getDataElements() {
     let params = {
-      pageSize: 1000
+      pageSize: 1000,
+      sortBy: 'name',
+      pageNo: 0
     };
     return this.dataElementService.getDataElements(params).subscribe((response: any) => {
       this.dataElements = response.data.content;
@@ -99,16 +108,15 @@ export class FlowCategoryDialogComponent implements OnInit {
   }
 
   mapCategoryAndDataElement() {
-    let data = {
+    console.log("Data element ===>", this.dataElement.value);
+    let data: CategoryDataElementMapping = {
       dataElementUuid: this.dataElement.value.uuid,
-      categoryId: this.data.id
+      categoryUuid: this.data.uuid
     };
 
-    this.flowKeyService.mapDataElementsWithCategory(data).subscribe((response: any) => {
-      if (response.status == '201') {
-        this.notifierService.showNotification(response.message, 'OK', 'success');
-        this.flowService.getKeysByFlowUuid(this.data.flowUuid);
-      }
+    this.flowKeyService.mapDataElementsWithCategory(data).subscribe(response => {
+      this.notifierService.showNotification(response.message, 'OK', 'success');
+      this.flowService.getKeysByFlowUuid(this.data.flowUuid);
     }, (error: { message: string; }) => {
       this.notifierService.showNotification(error.message, 'OK', 'error');
       this.flowService.getKeysByFlowUuid(this.data.flowUuid);
@@ -118,7 +126,7 @@ export class FlowCategoryDialogComponent implements OnInit {
   }
 
   displayFn(dataElement: any): string {
-    this.selectedDataElementYes = dataElement.uuid;
+    this.selectedDataElement = dataElement.uuid;
     return dataElement && dataElement.name ? dataElement.name : '';
   }
 
