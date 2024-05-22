@@ -26,6 +26,7 @@ import {merge, of as observableOf, startWith, switchMap} from 'rxjs';
 import {catchError, map} from "rxjs/operators";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {Contact} from "./types/Contact";
 
 @Component({
   selector: 'app-contacts',
@@ -68,9 +69,9 @@ export class ContactComponent implements AfterViewInit {
   displayedColumns: string[] = ['number', 'name', 'urn', 'facilityCode', 'sex', 'createdOn', 'registrationDate', 'age', 'fields', 'actions'];
   pageSizeOptions: number[] = [10, 20, 50, 100, 250, 500, 1000];
   data: Contact[] = [];
-  resultsLength = 0;
-  isLoadingResults = true;
-  areRecordsAvailable = false;
+  resultsLength: number = 0;
+  isLoadingResults: boolean = true;
+  areRecordsAvailable: boolean = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -143,24 +144,4 @@ export class ContactComponent implements AfterViewInit {
       });
     }
   }
-}
-
-export interface ApiResponse {
-  data: Contact[];
-  page: number;
-  size: number;
-  status: number;
-  total: number;
-}
-
-export interface Contact {
-  age: number;
-  createdOn: string;
-  facilityCode: string;
-  fields: string;
-  name: string;
-  registrationDate: string;
-  sex: string;
-  urn: string;
-  uuid: string;
 }

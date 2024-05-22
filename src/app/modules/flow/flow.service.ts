@@ -1,11 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { environment } from '../../../environments/environment';
-import {SortDirection} from "@angular/material/sort";
-import {ApiResponse} from "../contact/contact.component";
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {environment} from '../../../environments/environment';
+import {FlowApiResponse} from "./types/FlowApiResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -17,42 +15,28 @@ export class FlowService {
     description: new FormControl('', Validators.required)
   });
 
-  private API_ENDPOINT = `${environment.baseURL}/api/v1/flows`;
-  private syncApiEndpoint = `${environment.baseURL}/api/v1/flows/sync`;
-  private keysByFlowIdEndpoint = `${environment.baseURL}/api/v1/flows/get-rapid-pro-flow-keys-by-flow-id`;
-  private resetMappingEndpoint = `${environment.baseURL}/api/v1/flows/reset-mapping`;
+  private API_ENDPOINT: string = `${environment.baseURL}/api/v1/flows`;
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient) {
+  }
 
-  get(params: { pageNo: number; pageSize: number; sortBy: string }): Observable<ApiResponse> {
-    const requestUrl = `${this.API_ENDPOINT}?pageNumber=${params.pageNo}&pageSize=${params.pageSize}&sortBy=${params.sortBy}`;
-    return this._http.get<ApiResponse>(requestUrl);
+  get(params: { pageNo: number; pageSize: number; sortBy: string }): Observable<FlowApiResponse> {
+    const requestUrl: string = `${this.API_ENDPOINT}?pageNumber=${params.pageNo}&pageSize=${params.pageSize}&sortBy=${params.sortBy}`;
+    return this._http.get<FlowApiResponse>(requestUrl);
   }
 
   syncFlows(): Observable<any> {
-    return this._http.get<any>(this.syncApiEndpoint)
-      .pipe(
-        catchError(this.handleError('syncFlows', []))
-      );
+    const requestUrl = `${environment.baseURL}/api/v1/flows/sync`;
+    return this._http.get<any>(requestUrl);
   }
 
   findKeysWithCategoriesByFlowUuid(uuid: string): Observable<any> {
-    const requestUrl = `${environment.baseURL}/api/v1/keys/flow/${uuid}`;
-    return this._http.get<ApiResponse>(requestUrl);
+    const requestUrl: string = `${environment.baseURL}/api/v1/keys/flow/${uuid}`;
+    return this._http.get<FlowApiResponse>(requestUrl);
   }
 
   resetMapping(uuid: string): Observable<any> {
-    return this._http.put<any>(`${this.resetMappingEndpoint}/${uuid}`, { uuid })
-      .pipe(
-        tap(_ => console.log(`Reset mapping for flow with uuid=${uuid}`)),
-        catchError(this.handleError('resetMapping'))
-      );
-  }
-
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      console.error(`${operation} failed:`, error);  // log to console
-      return of(result as T);  // Let the app keep running by returning a safe result.
-    };
+    const requestUrl: string = `${environment.baseURL}/api/v1/keys/reset-mapping/${uuid}`;
+    return this._http.put<any>(requestUrl, {uuid});
   }
 }
