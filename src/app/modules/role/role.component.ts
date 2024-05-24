@@ -101,11 +101,7 @@ export class RoleComponent implements AfterViewInit {
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this.roleService!.get(
-            this.paginator.pageIndex,
-            this.paginator.pageSize,
-            this.sort.direction
-          ).pipe(catchError(() => observableOf(null)));
+          return this.roleService!.get(this.paginator.pageIndex, this.paginator.pageSize, this.sort.direction).pipe(catchError(() => observableOf(null)));
         }),
         map(data => {
           // Flip flag to show that loading has finished.
