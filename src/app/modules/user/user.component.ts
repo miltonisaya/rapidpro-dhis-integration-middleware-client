@@ -50,7 +50,7 @@ import {NgForOf} from "@angular/common";
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  displayedColumns: string[] = ["sno", 'name', 'username', 'email', 'roles', 'actions'];
+  displayedColumns: string[] = ["sno", 'name', 'email', 'roles', 'actions'];
   users: any = [];
   userId: string;
   dataSource: MatTableDataSource<User>;
@@ -97,7 +97,7 @@ export class UserComponent implements OnInit {
   }
 
   openDialog(data?: { uuid: string; email: string; name: string; phone: string; username: string; roles: any; }): void {
-    console.log(data);
+    console.log("Data =>", data);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

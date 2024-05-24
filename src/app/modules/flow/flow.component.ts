@@ -100,7 +100,7 @@ export class FlowComponent implements OnInit {
     return this.flowService.syncFlows().subscribe((response: any) => {
       this.getFlows();
     }, error => {
-      this.notifierService.showNotification(error.error.error, 'OK', 'error');
+      this.notifierService.showNotification(error.message, 'OK', 'error');
     });
   }
 

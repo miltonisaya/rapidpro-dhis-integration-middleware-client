@@ -31,12 +31,6 @@
       <td *matCellDef="let users" mat-cell> {{users.name}} </td>
     </ng-container>
 
-    <!-- Username Column -->
-    <ng-container matColumnDef="username">
-      <th *matHeaderCellDef mat-header-cell>Username</th>
-      <td *matCellDef="let users" mat-cell> {{users.username}} </td>
-    </ng-container>
-
     <!-- Email Column -->
     <ng-container matColumnDef="email">
       <th *matHeaderCellDef mat-header-cell>Email</th>
@@ -45,7 +39,7 @@
 
     <!-- Email Column -->
     <ng-container matColumnDef="roles">
-      <th *matHeaderCellDef mat-header-cell>Authority</th>
+      <th *matHeaderCellDef mat-header-cell>Roles</th>
       <td *matCellDef="let users" mat-cell>
         <div>
           <ng-container *ngFor="let item of users?.roles">

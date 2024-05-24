@@ -53,7 +53,7 @@ export class UsersService {
    *
    * @param data
    */
-  populateForm(data: { [x: string]: any; id?: string; email?: string; name?: string; phone?: string; username?: string; roles?: any; }) {
+  populateForm(data: any) {
     this.form.patchValue(data);
   }
 

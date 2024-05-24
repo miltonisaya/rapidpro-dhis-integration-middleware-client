@@ -88,6 +88,7 @@ export class ProgramComponent implements OnInit {
   syncPrograms() {
     return this.programService.syncPrograms().subscribe((response: ProgramApiResponse) => {
       this.notifierService.showNotification(response.message, 'OK', 'success');
+      this.getPrograms();
     }, error => {
       this.notifierService.showNotification(error.message, 'OK', 'error');
     });
