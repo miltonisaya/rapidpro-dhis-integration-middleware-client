@@ -1,9 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
-import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {Observable} from 'rxjs';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {environment} from "../../../environments/environment";
-import {SortDirection} from "@angular/material/sort";
 import {RoleApiResponse} from "./types/RoleApiResponse";
 
 export const BASE_URL: string = environment.baseURL;
@@ -26,8 +25,8 @@ export class RoleService {
    *
    * @param params
    */
-  get(params:any): Observable<RoleApiResponse> {
-    const requestUrl = `${this.API_ENDPOINT}?page=${params.page}&size=${params.pageSize}&sort=${params.sortBy}`;
+  get(params: { pageNo: number; pageSize: number; sortBy: string; }): Observable<RoleApiResponse> {
+    const requestUrl = `${this.API_ENDPOINT}?page=${params.pageNo}&size=${params.pageSize}&sort=${params.sortBy}`;
     return this._http.get<RoleApiResponse>(requestUrl);
   }
 
@@ -45,11 +44,11 @@ export class RoleService {
   }
 
   update(data: any): Observable<any> {
-    console.log('Payload Update =>',data);
+    console.log('Payload Update =>', data);
     return this._http.put(`${this.API_ENDPOINT}/${data.uuid}`, data);
   }
 
-  findUnAssignedAuthoritiesByRoleUuid(roleUuid:string):Observable<any>{
+  findUnAssignedAuthoritiesByRoleUuid(roleUuid: string): Observable<any> {
     return this._http.get(`${this.API_ENDPOINT}/authorities/${roleUuid}`);
   }
 
@@ -62,7 +61,7 @@ export class RoleService {
     });
   }
 
-  create(payload: any):Observable<any> {
+  create(payload: any): Observable<any> {
     return this._http.put(`${this.API_ENDPOINT}/roles`, payload);
   }
 }

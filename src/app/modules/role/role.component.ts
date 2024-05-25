@@ -28,7 +28,7 @@ import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogC
 import {Role} from "./types/Role";
 import {Authority} from "../authority/types/Authority";
 import {NotifierService} from "../notification/notifier.service";
-import {LoaderService} from "../loader/loader.service";
+import {RoleApiResponse} from "./types/RoleApiResponse";
 
 @Component({
   selector: 'app-roles',
@@ -71,19 +71,25 @@ import {LoaderService} from "../loader/loader.service";
 
 export class RoleComponent implements OnInit {
   title: string = 'Roles';
-  displayedColumns: string[] = ['number', 'name', 'code', 'description', 'actions'];
   data: Role[] = [];
   roleUuid: string;
   roles: any[];
   resultsLength = 0;
-  dataSource: MatTableDataSource<Role>;
+
+  //Pagination starts here
+  @ViewChild('paginator', {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  dataSource = new MatTableDataSource<Role>([]);
+  totalRecords = 0;
+  displayedColumns: string[] = ['number', 'name', 'code', 'description', 'actions'];
+  pageSize = 10;
+  pageIndex = 0;
+
+
   params: { pageNo: number; pageSize: number; sortBy: string };
-  pageSize: number = 10;
   pageNo: number = 0;
   pageSizeOptions: number[] = [10, 25, 100, 1000];
   @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private roleService: RoleService,
@@ -109,10 +115,12 @@ export class RoleComponent implements OnInit {
       "sortBy": "name"
     }
 
-    return this.roleService.get(this.params).subscribe((response: any) => {
+    return this.roleService.get(this.params).subscribe((response: RoleApiResponse) => {
       this.roles = response.data;
-      console.log('Roles =>',this.roles);
-      this.dataSource = new MatTableDataSource<Role>(this.roles);
+      this.dataSource.data = response.data || [];
+      console.log('Data Source Data ->', this.dataSource.data);
+
+      this.totalRecords = response.total ? response.total : 0;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }, error => {

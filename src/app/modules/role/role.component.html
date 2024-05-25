@@ -1,7 +1,6 @@
-
 <div fxFlexLayoutAlign="row" fxLayoutAlign="space-between center">
   <div class="page-title">
-    <h1>{{title}}</h1>
+    <h1>{{ title }}</h1>
     <span class="breadcrumb">Home / Roles</span>
   </div>
   <div fxLayoutGap="5px">
@@ -14,7 +13,7 @@
 
 <div class="table-content-wrapper-container mat-elevation-z8">
   <div class="table-container">
-    <table mat-table [dataSource]="data" class="app-table"
+    <table mat-table [dataSource]="dataSource" class="app-table"
            matSort matSortActive="registrationDate" matSortDisableClear matSortDirection="desc"
     >
       <!-- Number Column -->
@@ -59,8 +58,12 @@
     </table>
   </div>
 
-  <mat-paginator [length]="resultsLength" [pageSizeOptions]="pageSizeOptions"
-                 aria-label="Select page of GitHub search results"></mat-paginator>
+  <mat-paginator
+    (page)="pageChanged($event)"
+    [length]="resultsLength"
+    [pageSizeOptions]="pageSizeOptions"
+    aria-label="Select page of search results">
+  </mat-paginator>
 </div>
 
 <!--delete user dialog template-->
