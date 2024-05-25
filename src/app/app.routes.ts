@@ -21,7 +21,8 @@ export const APP_ROUTES: Route[] = [{
       canActivate: [AuthGuard]
     }, {
       path: "dashboard",
-      component: DashboardComponent
+      component: DashboardComponent,
+      canActivate: [AuthGuard]
     }, {
       path: "organisation-units",
       component: OrganisationUnitComponent,
