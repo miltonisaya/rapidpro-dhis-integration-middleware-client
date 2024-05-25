@@ -159,12 +159,11 @@ export class RoleComponent implements OnInit {
   delete() {
     console.log('Role deleted clicked');
     this.roleService.delete(this.roleUuid).subscribe({
-      next: (response) => {
+      next: (response: RoleApiResponse) => {
         console.log('Role deleted successfully', response);
       },
       error: (error) => {
-        console.error('Error deleting role:', error);
-        // Optionally handle errors, e.g., show a notification or message to the user
+        this.notifierService.showNotification(error.message, 'OK', 'error');
       }
     });
     this.dialogService.closeAll();
