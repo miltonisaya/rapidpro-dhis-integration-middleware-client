@@ -21,18 +21,12 @@ export class DefaultComponent {
   title: string = "ZanAfyaMaoni Interoperability Middleware";
 
   constructor(
-    private router: Router,
-    protected loaderService: LoaderService,
-    private changeDetectorRef: ChangeDetectorRef
+    private router: Router
   ) {
   }
 
   signOut(): void {
     localStorage.setItem("ZAN_AFYA_MAONI_USER", "");
     this.router.navigate(["login"]);
-  }
-
-  ngAfterContentChecked(): void {
-    this.changeDetectorRef.detectChanges();
   }
 }

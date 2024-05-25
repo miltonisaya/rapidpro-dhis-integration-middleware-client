@@ -60,7 +60,7 @@
 
   <mat-paginator
     (page)="pageChanged($event)"
-    [length]="resultsLength"
+    [length]="totalRecords"
     [pageSizeOptions]="pageSizeOptions"
     aria-label="Select page of search results">
   </mat-paginator>

@@ -26,9 +26,6 @@
         </mat-toolbar>
       </div>
       <div class="main">
-        <div class="progress-spinner" *ngIf="loaderService.isLoading | async">
-          <mat-spinner></mat-spinner>
-        </div>
         <router-outlet></router-outlet>
       </div>
     </div>

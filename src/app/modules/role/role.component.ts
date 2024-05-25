@@ -73,21 +73,17 @@ export class RoleComponent implements OnInit {
   title: string = 'Roles';
   data: Role[] = [];
   roleUuid: string;
-  roles: any[];
-  resultsLength = 0;
 
   //Pagination starts here
   @ViewChild('paginator', {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   dataSource = new MatTableDataSource<Role>([]);
-  totalRecords = 0;
   displayedColumns: string[] = ['number', 'name', 'code', 'description', 'actions'];
   pageSize = 10;
   pageIndex = 0;
-
-
   params: { pageNo: number; pageSize: number; sortBy: string };
   pageNo: number = 0;
+  totalRecords = 0;
   pageSizeOptions: number[] = [10, 25, 100, 1000];
   @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
 
@@ -116,10 +112,7 @@ export class RoleComponent implements OnInit {
     }
 
     return this.roleService.get(this.params).subscribe((response: RoleApiResponse) => {
-      this.roles = response.data;
       this.dataSource.data = response.data || [];
-      console.log('Data Source Data ->', this.dataSource.data);
-
       this.totalRecords = response.total ? response.total : 0;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -132,7 +125,7 @@ export class RoleComponent implements OnInit {
     this.roleUuid = uuid;
     this.dialogService.open(this.deleteDialog)
       .afterClosed().subscribe(() => {
-      // this.getUsers();
+      this.getRoles();
     });
   }
 
@@ -141,15 +134,15 @@ export class RoleComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     if (row) {
-      const contactData = {
+      const roleData = {
         uuid: row.uuid,
         name: row.name,
         code: row.code,
         description: row.description,
         authorities: row.authorities
       };
-      dialogConfig.data = contactData;
-      this.roleService.populateForm(contactData);
+      dialogConfig.data = roleData;
+      this.roleService.populateForm(roleData);
       this.dialogService.open(RoleDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.getRoles();
