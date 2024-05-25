@@ -6,4 +6,5 @@ export interface RoleApiResponse {
   size: number;
   status: number;
   total: number;
+  message: string;
 }

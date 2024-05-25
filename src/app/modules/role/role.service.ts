@@ -53,7 +53,7 @@ export class RoleService {
   }
 
   initializeFormGroup() {
-    return this.form.setValue({
+    return this.form.patchValue({
       id: '',
       name: '',
       code: '',
@@ -62,6 +62,6 @@ export class RoleService {
   }
 
   create(payload: any): Observable<any> {
-    return this._http.put(`${this.API_ENDPOINT}/roles`, payload);
+    return this._http.post(`${this.API_ENDPOINT}`, payload);
   }
 }

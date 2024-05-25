@@ -67,21 +67,19 @@ export class RoleDialogComponent implements OnInit {
 
   submitForm(): void {
     if (this.roleService.form.valid) {
-      if (this.roleService.form.get('uuid')?.value) {
+      if (this.roleService.form.get('uuid')?.value != '') {
         this.roleService.update(this.roleService.form.value)
           .subscribe((response) => {
-            console.log('Response =>', response);
-            // this.notifierService.showNotification(response.message, 'OK', 'success');
+            this.notifierService.showNotification(response.message, 'OK', 'success');
             this.dialogRef.close();
             this.onClose();
           }, error => {
-            console.log('Error =>', error);
-
-            // this.notifierService.showNotification(error.error.error, 'OK', 'error');
+            this.notifierService.showNotification(error.message, 'OK', 'error');
           });
       } else {
         this.roleService.create(this.roleService.form.value)
-          .subscribe(data => {
+          .subscribe(response => {
+            this.notifierService.showNotification(response.message, 'OK', 'error');
             this.onClose();
           }, error => {
             this.notifierService.showNotification(error.message, 'OK', 'error');
