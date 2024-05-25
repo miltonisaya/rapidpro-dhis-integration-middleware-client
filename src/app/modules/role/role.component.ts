@@ -95,13 +95,17 @@ export class RoleComponent implements AfterViewInit {
   loadData() {
     // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this.roleService!.get(this.paginator.pageIndex, this.paginator.pageSize, this.sort.direction).pipe(catchError(() => observableOf(null)));
+          let params = {
+            page: this.paginator.pageIndex,
+            size: this.paginator.pageSize,
+            sort: this.sort.direction
+          }
+          return this.roleService!.get(params).pipe(catchError(() => observableOf(null)));
         }),
         map(data => {
           // Flip flag to show that loading has finished.

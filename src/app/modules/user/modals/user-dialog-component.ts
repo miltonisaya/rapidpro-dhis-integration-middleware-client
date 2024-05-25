@@ -41,7 +41,7 @@ import {NgForOf} from "@angular/common";
     MatButton
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-  providers:[UsersService,RoleService]
+  providers: [UsersService, RoleService]
 })
 
 export class UserDialogComponent implements OnInit {
@@ -93,10 +93,12 @@ export class UserDialogComponent implements OnInit {
       size: 1000,
       sort: 'name'
     }
-    return this.rolesService.get(params.page,params.size,params.sort).subscribe((response: any) => {
-      this.roles = response.data.content;
-    }, (error: { error: { error: any; }; }) => {
-      this.notifierService.showNotification(error.error.error, 'OK', 'error');
+    return this.rolesService.get(params).subscribe(response => {
+      console.log("Roles =>", response);
+
+      this.roles = response.data;
+    }, (error) => {
+      this.notifierService.showNotification(error.message, 'OK', 'error');
     });
   }
 }
