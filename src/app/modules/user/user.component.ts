@@ -96,7 +96,7 @@ export class UserComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  openDialog(data?: { uuid: string; email: string; name: string; phone: string; username: string; roles: any; }): void {
+  openEditDialog(data?: any): void {
     console.log("Data =>", data);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;

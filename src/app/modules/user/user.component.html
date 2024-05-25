@@ -3,7 +3,7 @@
     <h3>Manage Users</h3>
   </div>
   <div fxLayoutGap="5px">
-    <button (click)="openDialog()" class="mat-primary" mat-raised-button>
+    <button (click)="openEditDialog()" class="mat-primary" mat-raised-button>
       <mat-icon>add</mat-icon>
       ADD NEW
     </button>
@@ -11,10 +11,10 @@
 </div>
 
 <div fxLayout="column" fxLayoutAlign="space-between stretch">
-<mat-form-field appearance="fill">
-  <mat-label>Filter</mat-label>
-  <input #input (keyup)="applyFilter($event)" autocomplete="off" matInput>
-</mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Filter</mat-label>
+    <input #input (keyup)="applyFilter($event)" autocomplete="off" matInput>
+  </mat-form-field>
 </div>
 
 <div class="mat-elevation-z8">
@@ -22,19 +22,19 @@
     <!-- SNo Column -->
     <ng-container matColumnDef="sno">
       <th *matHeaderCellDef mat-header-cell> No</th>
-      <td *matCellDef="let users; let i = index" mat-cell>{{i + 1}}</td>
+      <td *matCellDef="let users; let i = index" mat-cell>{{ i + 1 }}</td>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <th *matHeaderCellDef mat-header-cell> Name</th>
-      <td *matCellDef="let users" mat-cell> {{users.name}} </td>
+      <td *matCellDef="let users" mat-cell> {{ users.name }}</td>
     </ng-container>
 
     <!-- Email Column -->
     <ng-container matColumnDef="email">
       <th *matHeaderCellDef mat-header-cell>Email</th>
-      <td *matCellDef="let users" mat-cell> {{users.email}} </td>
+      <td *matCellDef="let users" mat-cell> {{ users.email }}</td>
     </ng-container>
 
     <!-- Email Column -->
@@ -44,7 +44,7 @@
         <div>
           <ng-container *ngFor="let item of users?.roles">
             <div>
-              <span>{{item.name}}</span>
+              <span>{{ item.name }}</span>
             </div>
           </ng-container>
         </div>
@@ -55,10 +55,10 @@
     <ng-container matColumnDef="actions">
       <th *matHeaderCellDef mat-header-cell>Action</th>
       <td *matCellDef="let users" mat-cell>
-        <button mat-icon-button matTooltip="Edit" matTooltipPosition="left">
-          <mat-icon (click)="openDialog(users)">edit</mat-icon>
+        <button mat-icon-button matTooltip="Edit" matTooltipPosition="left" (click)="openEditDialog(users)">
+          <mat-icon>edit</mat-icon>
         </button>
-        <button (click)="openDeleteDialog(users.id)" color="warn" mat-icon-button matTooltip="Delete"
+        <button (click)="openDeleteDialog(users.uuid)" color="warn" mat-icon-button matTooltip="Delete"
                 matTooltipPosition="right">
           <mat-icon>delete</mat-icon>
         </button>
@@ -70,7 +70,7 @@
 
     <!-- Row shown when there is no matching data. -->
     <tr *matNoDataRow class="mat-row">
-      <td class="mat-cell" colspan="3">No data matching the filter "{{input.value}}"</td>
+      <td class="mat-cell" colspan="3">No data matching the filter "{{ input.value }}"</td>
     </tr>
   </table>
   <mat-paginator
