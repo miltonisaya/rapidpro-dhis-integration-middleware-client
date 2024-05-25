@@ -9,6 +9,7 @@ import {LoginComponent} from "./layouts/login/login.component";
 import {Route} from "@angular/router";
 import {RoleComponent} from "./modules/role/role.component";
 import {OrganisationUnitComponent} from "./modules/organisation-unit/organisation-unit.component";
+import {AuthGuard} from "./auth/auth.guard";
 
 export const APP_ROUTES: Route[] = [{
   path: "",
@@ -16,28 +17,35 @@ export const APP_ROUTES: Route[] = [{
   children: [
     {
       path: "contacts",
-      component: ContactComponent
+      component: ContactComponent,
+      canActivate: [AuthGuard]
     }, {
       path: "dashboard",
       component: DashboardComponent
     }, {
       path: "organisation-units",
-      component: OrganisationUnitComponent
+      component: OrganisationUnitComponent,
+      canActivate: [AuthGuard]
     }, {
       path: "flows",
-      component: FlowComponent
+      component: FlowComponent,
+      canActivate: [AuthGuard]
     }, {
       path: "data-elements",
-      component: DataElementComponent
+      component: DataElementComponent,
+      canActivate: [AuthGuard]
     }, {
       path: "programs",
-      component: ProgramComponent
+      component: ProgramComponent,
+      canActivate: [AuthGuard]
     }, {
       path: "users",
-      component: UserComponent
+      component: UserComponent,
+      canActivate: [AuthGuard]
     }, {
       path: "roles",
-      component: RoleComponent
+      component: RoleComponent,
+      canActivate: [AuthGuard]
     }
   ]
 }, {
