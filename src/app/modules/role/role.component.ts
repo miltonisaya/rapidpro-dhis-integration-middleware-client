@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort, MatSortHeader} from "@angular/material/sort";
 import {
@@ -11,7 +11,8 @@ import {
   MatHeaderRowDef,
   MatRow,
   MatRowDef,
-  MatTable
+  MatTable,
+  MatTableDataSource
 } from "@angular/material/table";
 import {RoleService} from "./role.service";
 import {MatIcon} from '@angular/material/icon';
@@ -22,12 +23,12 @@ import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {FlexModule} from '@angular/flex-layout';
 import {RoleDialogComponent} from "./modals/role-dialog-component";
 import {CommonModule} from "@angular/common";
-import {merge, of as observableOf, startWith, switchMap} from 'rxjs';
-import {catchError, map} from "rxjs/operators";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
 import {Role} from "./types/Role";
 import {Authority} from "../authority/types/Authority";
+import {NotifierService} from "../notification/notifier.service";
+import {LoaderService} from "../loader/loader.service";
 
 @Component({
   selector: 'app-roles',
@@ -68,62 +69,55 @@ import {Authority} from "../authority/types/Authority";
   ]
 })
 
-export class RoleComponent implements AfterViewInit {
+export class RoleComponent implements OnInit {
   title: string = 'Roles';
   displayedColumns: string[] = ['number', 'name', 'code', 'description', 'actions'];
-  pageSizeOptions: number[] = [10, 20, 50, 100, 250, 500, 1000];
   data: Role[] = [];
   roleUuid: string;
+  roles: any[];
   resultsLength = 0;
-  isLoadingResults = true;
-  areRecordsAvailable = false;
+  dataSource: MatTableDataSource<Role>;
+  params: { pageNo: number; pageSize: number; sortBy: string };
+  pageSize: number = 10;
+  pageNo: number = 0;
+  pageSizeOptions: number[] = [10, 25, 100, 1000];
   @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private roleService: RoleService,
-    private dialogService: MatDialog
+    private dialogService: MatDialog,
+    private notifierService: NotifierService
   ) {
   }
 
-  ngAfterViewInit() {
-    this.loadData();
+  ngOnInit() {
+    this.getRoles();
   }
 
-  loadData() {
-    // If the user changes the sort order, reset back to the first page.
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          this.isLoadingResults = true;
-          let params = {
-            page: this.paginator.pageIndex,
-            size: this.paginator.pageSize,
-            sort: this.sort.direction
-          }
-          return this.roleService!.get(params).pipe(catchError(() => observableOf(null)));
-        }),
-        map(data => {
-          // Flip flag to show that loading has finished.
-          this.isLoadingResults = false;
-          this.areRecordsAvailable = data === null;
+  pageChanged(e: any) {
+    this.pageSize = e.pageSize;
+    this.pageNo = e.pageIndex;
+    this.getRoles();
+  }
 
-          if (data === null) {
-            return [];
-          }
+  getRoles() {
+    this.params = {
+      "pageNo": this.pageNo,
+      "pageSize": this.pageSize,
+      "sortBy": "name"
+    }
 
-          // Only refresh the result length if there is new data. In case of rate
-          // limit errors, we do not want to reset the paginator to zero, as that
-          // would prevent users from re-triggering requests.
-          this.resultsLength = data.total;
-          return data.data;
-        }),
-      )
-      .subscribe(data => (this.data = data));
+    return this.roleService.get(this.params).subscribe((response: any) => {
+      this.roles = response.data;
+      console.log('Roles =>',this.roles);
+      this.dataSource = new MatTableDataSource<Role>(this.roles);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }, error => {
+      this.notifierService.showNotification(error.message, 'OK', 'error');
+    });
   }
 
   openDeleteDialog(uuid: string) {
@@ -150,13 +144,13 @@ export class RoleComponent implements AfterViewInit {
       this.roleService.populateForm(contactData);
       this.dialogService.open(RoleDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
-        this.loadData();
+        this.getRoles();
       });
     } else {
       dialogConfig.data = {};
       this.dialogService.open(RoleDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
-        this.loadData();
+        this.getRoles();
       });
     }
   }
@@ -199,13 +193,13 @@ export class RoleComponent implements AfterViewInit {
       this.roleService.populateForm(roleData);
       this.dialogService.open(RoleDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
-        this.ngAfterViewInit();
+        this.ngOnInit();
       });
     } else {
       dialogConfig.minWidth = '400px';
       this.dialogService.open(RoleDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
-        this.ngAfterViewInit();
+        this.ngOnInit();
       });
     }
   }

@@ -89,9 +89,9 @@ export class UserDialogComponent implements OnInit {
    */
   getRoles() {
     const params = {
-      page: 1,
-      size: 1000,
-      sort: 'name'
+      pageNo: 1,
+      pageSize: 1000,
+      sortBy: 'name'
     }
     return this.rolesService.get(params).subscribe(response => {
       console.log("Roles =>", response);

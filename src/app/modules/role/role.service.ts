@@ -26,8 +26,8 @@ export class RoleService {
    *
    * @param params
    */
-  get(params:{size:number; page:number; sort:string;}): Observable<RoleApiResponse> {
-    const requestUrl = `${this.API_ENDPOINT}?page=${params.page}&size=${params.size}&sort=${params.sort}`;
+  get(params:any): Observable<RoleApiResponse> {
+    const requestUrl = `${this.API_ENDPOINT}?page=${params.page}&size=${params.pageSize}&sort=${params.sortBy}`;
     return this._http.get<RoleApiResponse>(requestUrl);
   }
 
