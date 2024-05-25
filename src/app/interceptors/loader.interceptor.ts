@@ -9,7 +9,7 @@ import {AuthService} from "../auth/auth.service";
 import {LoaderService} from "../modules/loader/loader.service";
 
 @Injectable()
-export class ErrorInterceptor implements HttpInterceptor {
+export class LoaderInterceptor implements HttpInterceptor {
   constructor(
     private loaderService: LoaderService
   ) {
