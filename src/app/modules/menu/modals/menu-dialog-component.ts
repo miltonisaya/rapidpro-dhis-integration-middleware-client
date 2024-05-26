@@ -22,7 +22,7 @@ import {MatList, MatListItem} from "@angular/material/list";
 import {MatIcon} from "@angular/material/icon";
 
 @Component({
-  selector: 'app-role-dialog',
+  selector: 'app-menu-dialog',
   templateUrl: 'menu-dialog-component.html',
   standalone: true,
   providers: [MenuService],

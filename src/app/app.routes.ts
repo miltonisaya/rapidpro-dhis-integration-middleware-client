@@ -10,6 +10,7 @@ import {Route} from "@angular/router";
 import {RoleComponent} from "./modules/role/role.component";
 import {OrganisationUnitComponent} from "./modules/organisation-unit/organisation-unit.component";
 import {AuthGuard} from "./auth/auth.guard";
+import {MenuComponent} from "./modules/menu/menu.component";
 
 export const APP_ROUTES: Route[] = [{
   path: "",
@@ -46,6 +47,10 @@ export const APP_ROUTES: Route[] = [{
     }, {
       path: "roles",
       component: RoleComponent,
+      canActivate: [AuthGuard]
+    }, {
+      path: "menus",
+      component: MenuComponent,
       canActivate: [AuthGuard]
     }
   ]

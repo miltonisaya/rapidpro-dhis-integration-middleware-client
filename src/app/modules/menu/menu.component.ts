@@ -31,7 +31,7 @@ import {NotifierService} from "../notification/notifier.service";
 import {MenuApiResponse} from "./types/MenuApiResponse";
 
 @Component({
-  selector: 'app-roles',
+  selector: 'app-menus',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
   standalone: true,

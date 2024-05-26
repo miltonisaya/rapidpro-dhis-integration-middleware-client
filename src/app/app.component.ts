@@ -8,6 +8,7 @@ import {ContactComponent} from "./modules/contact/contact.component";
 import {RoleComponent} from "./modules/role/role.component";
 import {LoaderService} from "./modules/loader/loader.service";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {MenuComponent} from "./modules/menu/menu.component";
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     FormsModule,
     ContactComponent,
     RoleComponent,
+    MenuComponent,
     MatProgressSpinner
   ],
   providers: [AuthService]
