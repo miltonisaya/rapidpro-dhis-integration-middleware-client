@@ -7,7 +7,7 @@
         [formGroup]="usersService.form"
         class="form">
     <h1 class="dialog-header" mat-dialog-title>
-      {{usersService.form.controls['uuid'].value ? "Edit User" : "Create User"}}
+      {{ usersService.form.controls['uuid'].value ? "Edit User" : "Create User" }}
     </h1>
     <mat-divider></mat-divider>
 
@@ -51,6 +51,7 @@
         </div>
       </div>
 
+      <pre>{{ roles | json }}</pre>
       <div fxLayout="column" fxLayoutAlign="stretch">
         <mat-form-field appearance="fill">
           <mat-label>Roles</mat-label>
@@ -59,7 +60,7 @@
                       multiple
                       required>
             <mat-option *ngFor="let role of roles" [value]="role">
-              {{role.name}}
+              {{ role.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -70,7 +71,7 @@
       <div fxLayout="row" fxLayoutGap="10px">
         <button mat-dialog-close mat-raised-button type="button">CANCEL</button>
         <button color="primary" mat-raised-button type="submit">
-          {{usersService.form.controls['uuid'].value ? "UPDATE" : "CREATE"}}
+          {{ usersService.form.controls['uuid'].value ? "UPDATE" : "CREATE" }}
         </button>
       </div>
     </mat-dialog-actions>

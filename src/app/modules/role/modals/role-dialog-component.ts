@@ -51,8 +51,8 @@ import {MatIcon} from "@angular/material/icon";
 })
 
 export class RoleDialogComponent implements OnInit {
+  title:string = 'Roles';
   params: { page: number; size: number; sort: string } = {size: 10, page: 0, sort: 'name'};
-
   constructor(
     public roleService: RoleService,
     public dialogRef: MatDialogRef<RoleDialogComponent>,

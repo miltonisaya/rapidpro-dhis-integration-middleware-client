@@ -17,7 +17,7 @@ import {MatInput} from "@angular/material/input";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {MatButton} from "@angular/material/button";
 import {MatTableModule} from "@angular/material/table";
-import {NgForOf} from "@angular/common";
+import {JsonPipe, NgForOf} from "@angular/common";
 
 @Component({
   selector: 'app-user-dialog',
@@ -38,7 +38,8 @@ import {NgForOf} from "@angular/common";
     MatOption,
     MatDialogActions,
     MatDialogClose,
-    MatButton
+    MatButton,
+    JsonPipe
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   providers: [UsersService, RoleService]
