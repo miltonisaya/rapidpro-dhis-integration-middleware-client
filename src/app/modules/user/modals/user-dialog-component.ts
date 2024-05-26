@@ -18,6 +18,7 @@ import {MatOption, MatSelect} from "@angular/material/select";
 import {MatButton} from "@angular/material/button";
 import {MatTableModule} from "@angular/material/table";
 import {JsonPipe, NgForOf} from "@angular/common";
+import {RoleApiResponse} from "../../role/types/RoleApiResponse";
 
 @Component({
   selector: 'app-user-dialog',
@@ -47,12 +48,15 @@ import {JsonPipe, NgForOf} from "@angular/common";
 
 export class UserDialogComponent implements OnInit {
   roles: any = [];
+  params: { pageNo: number; pageSize: number; sortBy: string };
+  pageSize = 10;
+  pageNo: number = 0;
 
   constructor(
     public usersService: UsersService,
     public dialogRef: MatDialogRef<UserDialogComponent>,
     public notifierService: NotifierService,
-    public rolesService: RoleService
+    public roleService: RoleService
   ) {
   }
 
@@ -85,20 +89,16 @@ export class UserDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  /**
-   * This method returns roles
-   */
   getRoles() {
-    const params = {
-      pageNo: 1,
-      pageSize: 1000,
-      sortBy: 'name'
+    this.params = {
+      "pageNo": this.pageNo,
+      "pageSize": this.pageSize,
+      "sortBy": "name"
     }
-    return this.rolesService.get(params).subscribe(response => {
-      console.log("Roles =>", response);
 
+    return this.roleService.get(this.params).subscribe((response: RoleApiResponse) => {
       this.roles = response.data;
-    }, (error) => {
+    }, error => {
       this.notifierService.showNotification(error.message, 'OK', 'error');
     });
   }
