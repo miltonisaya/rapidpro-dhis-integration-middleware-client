@@ -8,7 +8,7 @@ import {
   MatDialogTitle
 } from '@angular/material/dialog';
 import {NotifierService} from "../../notification/notifier.service";
-import {RoleService} from "../role.service";
+import {MenuService} from "../menu.service";
 import {FlexModule} from "@angular/flex-layout";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatDivider} from "@angular/material/divider";
@@ -23,9 +23,9 @@ import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-role-dialog',
-  templateUrl: 'role-dialog-component.html',
+  templateUrl: 'menu-dialog-component.html',
   standalone: true,
-  providers: [RoleService],
+  providers: [MenuService],
   imports: [
     FlexModule,
     ReactiveFormsModule,
@@ -47,15 +47,15 @@ import {MatIcon} from "@angular/material/icon";
     DragDropModule,
     MatIcon
   ],
-  styleUrls: ['role-dialog.component.css']
+  styleUrls: ['menu-dialog.component.css']
 })
 
-export class RoleDialogComponent implements OnInit {
+export class MenuDialogComponent implements OnInit {
   params: { page: number; size: number; sort: string } = {size: 10, page: 0, sort: 'name'};
 
   constructor(
-    public roleService: RoleService,
-    public dialogRef: MatDialogRef<RoleDialogComponent>,
+    public roleService: MenuService,
+    public dialogRef: MatDialogRef<MenuDialogComponent>,
     public notifierService: NotifierService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {

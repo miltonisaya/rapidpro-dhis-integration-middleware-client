@@ -1,7 +1,7 @@
-import {Role} from "./Role";
+import {Menu} from "./Menu";
 
-export interface RoleApiResponse {
-  data: Role[];
+export interface MenuApiResponse {
+  data: Menu[];
   page: number;
   size: number;
   status: number;

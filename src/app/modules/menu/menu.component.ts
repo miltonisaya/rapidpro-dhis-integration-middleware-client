@@ -14,26 +14,26 @@ import {
   MatTable,
   MatTableDataSource
 } from "@angular/material/table";
-import {RoleService} from "./role.service";
+import {MenuService} from "./menu.service";
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {FlexModule} from '@angular/flex-layout';
-import {RoleDialogComponent} from "./modals/role-dialog-component";
+import {MenuDialogComponent} from "./modals/menu-dialog-component";
 import {CommonModule} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
-import {Role} from "./types/Role";
+import {Menu} from "./types/Menu";
 import {Authority} from "../authority/types/Authority";
 import {NotifierService} from "../notification/notifier.service";
-import {RoleApiResponse} from "./types/RoleApiResponse";
+import {MenuApiResponse} from "./types/MenuApiResponse";
 
 @Component({
   selector: 'app-roles',
-  templateUrl: './role.component.html',
-  styleUrls: ['./role.component.css'],
+  templateUrl: './menu.component.html',
+  styleUrls: ['./menu.component.css'],
   standalone: true,
   imports: [
     FlexModule,
@@ -54,7 +54,7 @@ import {RoleApiResponse} from "./types/RoleApiResponse";
     MatRowDef,
     MatRow,
     MatPaginator,
-    RoleDialogComponent,
+    MenuDialogComponent,
     CommonModule,
     MatProgressSpinner,
     MatSort,
@@ -65,19 +65,19 @@ import {RoleApiResponse} from "./types/RoleApiResponse";
     MatDialogClose
   ],
   providers: [
-    RoleService
+    MenuService
   ]
 })
 
-export class RoleComponent implements OnInit {
+export class MenuComponent implements OnInit {
   title: string = 'Roles';
-  data: Role[] = [];
+  data: Menu[] = [];
   roleUuid: string;
 
   //Pagination starts here
   @ViewChild('paginator', {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  dataSource = new MatTableDataSource<Role>([]);
+  dataSource = new MatTableDataSource<Menu>([]);
   displayedColumns: string[] = ['number', 'name', 'code', 'description', 'actions'];
   pageSize = 10;
   pageIndex = 0;
@@ -88,7 +88,7 @@ export class RoleComponent implements OnInit {
   @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
 
   constructor(
-    private roleService: RoleService,
+    private roleService: MenuService,
     private dialogService: MatDialog,
     private notifierService: NotifierService
   ) {
@@ -111,7 +111,7 @@ export class RoleComponent implements OnInit {
       "sortBy": "name"
     }
 
-    return this.roleService.get(this.params).subscribe((response: RoleApiResponse) => {
+    return this.roleService.get(this.params).subscribe((response: MenuApiResponse) => {
       this.dataSource.data = response.data || [];
       this.totalRecords = response.total ? response.total : 0;
       this.dataSource.paginator = this.paginator;
@@ -143,13 +143,13 @@ export class RoleComponent implements OnInit {
       };
       dialogConfig.data = roleData;
       this.roleService.populateForm(roleData);
-      this.dialogService.open(RoleDialogComponent, dialogConfig)
+      this.dialogService.open(MenuDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.getRoles();
       });
     } else {
       dialogConfig.data = {};
-      this.dialogService.open(RoleDialogComponent, dialogConfig)
+      this.dialogService.open(MenuDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.getRoles();
       });
@@ -157,9 +157,9 @@ export class RoleComponent implements OnInit {
   }
 
   delete() {
-    console.log('Role deleted clicked');
+    console.log('Menu deleted clicked');
     this.roleService.delete(this.roleUuid).subscribe({
-      next: (response: RoleApiResponse) => {
+      next: (response: MenuApiResponse) => {
         this.notifierService.showNotification(response.message, 'OK', 'error');
       },
       error: (error) => {
@@ -191,13 +191,13 @@ export class RoleComponent implements OnInit {
         code: data.code,
       };
       this.roleService.populateForm(roleData);
-      this.dialogService.open(RoleDialogComponent, dialogConfig)
+      this.dialogService.open(MenuDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.ngOnInit();
       });
     } else {
       dialogConfig.minWidth = '400px';
-      this.dialogService.open(RoleDialogComponent, dialogConfig)
+      this.dialogService.open(MenuDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.ngOnInit();
       });

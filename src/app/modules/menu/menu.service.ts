@@ -3,14 +3,14 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {environment} from "../../../environments/environment";
-import {RoleApiResponse} from "./types/RoleApiResponse";
+import {MenuApiResponse} from "./types/MenuApiResponse";
 
 export const BASE_URL: string = environment.baseURL;
 export const RESOURCE_URL: string = 'api/v1/roles';
 
 @Injectable()
 
-export class RoleService {
+export class MenuService {
   form: FormGroup = new FormGroup({
     uuid: new FormControl(''),
     name: new FormControl('', [Validators.required]),
@@ -25,14 +25,14 @@ export class RoleService {
    *
    * @param params
    */
-  get(params: { pageNo: number; pageSize: number; sortBy: string; }): Observable<RoleApiResponse> {
+  get(params: { pageNo: number; pageSize: number; sortBy: string; }): Observable<MenuApiResponse> {
     const requestUrl = `${this.API_ENDPOINT}?page=${params.pageNo}&size=${params.pageSize}&sort=${params.sortBy}`;
-    return this._http.get<RoleApiResponse>(requestUrl);
+    return this._http.get<MenuApiResponse>(requestUrl);
   }
 
-  delete(uuid: string): Observable<RoleApiResponse> {
+  delete(uuid: string): Observable<MenuApiResponse> {
     const requestUrl = `${this.API_ENDPOINT}/${uuid}`;
-    return this._http.delete<RoleApiResponse>(requestUrl);
+    return this._http.delete<MenuApiResponse>(requestUrl);
   }
 
   /**

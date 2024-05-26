@@ -1,6 +1,6 @@
 import {Authority} from "../../authority/types/Authority";
 
-export interface Role {
+export interface Menu {
   name: string;
   code: string;
   description: string;
