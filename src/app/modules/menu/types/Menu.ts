@@ -1,9 +1,7 @@
-import {Authority} from "../../authority/types/Authority";
-
 export interface Menu {
   name: string;
-  code: string;
-  description: string;
+  url: string;
+  sortOrder: number;
   uuid: string;
-  authorities: Authority[];
+  icon: string;
 }

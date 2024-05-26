@@ -54,7 +54,7 @@ export class MenuDialogComponent implements OnInit {
   params: { page: number; size: number; sort: string } = {size: 10, page: 0, sort: 'name'};
 
   constructor(
-    public roleService: MenuService,
+    public menuService: MenuService,
     public dialogRef: MatDialogRef<MenuDialogComponent>,
     public notifierService: NotifierService,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -62,13 +62,16 @@ export class MenuDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.roleService.populateForm(this.data);
+    this.menuService.populateForm(this.data);
   }
 
   submitForm(): void {
-    if (this.roleService.form.valid) {
-      if (this.roleService.form.get('uuid')?.value != '') {
-        this.roleService.update(this.roleService.form.value)
+    console.log("Submit clicked!")
+    console.log(this.menuService.form.value);
+    if (this.menuService.form.valid) {
+      if (this.menuService.form.get('uuid')?.value != '') {
+        console.log("Updating menu")
+        this.menuService.update(this.menuService.form.value)
           .subscribe((response) => {
             this.notifierService.showNotification(response.message, 'OK', 'success');
             this.dialogRef.close();
@@ -77,7 +80,8 @@ export class MenuDialogComponent implements OnInit {
             this.notifierService.showNotification(error.message, 'OK', 'error');
           });
       } else {
-        this.roleService.create(this.roleService.form.value)
+        console.log("Creating menu")
+        this.menuService.create(this.menuService.form.value)
           .subscribe(response => {
             this.notifierService.showNotification(response.message, 'OK', 'error');
             this.onClose();
@@ -89,8 +93,8 @@ export class MenuDialogComponent implements OnInit {
   }
 
   onClose() {
-    this.roleService.form.reset();
-    this.roleService.initializeFormGroup();
+    this.menuService.form.reset();
+    this.menuService.initializeFormGroup();
     this.dialogRef.close();
   }
 }

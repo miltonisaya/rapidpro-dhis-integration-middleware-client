@@ -70,7 +70,7 @@ import {MenuApiResponse} from "./types/MenuApiResponse";
 })
 
 export class MenuComponent implements OnInit {
-  title: string = 'Roles';
+  title: string = 'Menus';
   data: Menu[] = [];
   roleUuid: string;
 
@@ -78,7 +78,7 @@ export class MenuComponent implements OnInit {
   @ViewChild('paginator', {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   dataSource = new MatTableDataSource<Menu>([]);
-  displayedColumns: string[] = ['number', 'name', 'code', 'description', 'actions'];
+  displayedColumns: string[] = ['number', 'name', 'icon', 'url','sortOrder', 'actions'];
   pageSize = 10;
   pageIndex = 0;
   params: { pageNo: number; pageSize: number; sortBy: string };
@@ -88,30 +88,30 @@ export class MenuComponent implements OnInit {
   @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
 
   constructor(
-    private roleService: MenuService,
+    private menuService: MenuService,
     private dialogService: MatDialog,
     private notifierService: NotifierService
   ) {
   }
 
   ngOnInit() {
-    this.getRoles();
+    this.getMenus();
   }
 
   pageChanged(e: any) {
     this.pageSize = e.pageSize;
     this.pageNo = e.pageIndex;
-    this.getRoles();
+    this.getMenus();
   }
 
-  getRoles() {
+  getMenus() {
     this.params = {
       "pageNo": this.pageNo,
       "pageSize": this.pageSize,
       "sortBy": "name"
     }
 
-    return this.roleService.get(this.params).subscribe((response: MenuApiResponse) => {
+    return this.menuService.get(this.params).subscribe((response: MenuApiResponse) => {
       this.dataSource.data = response.data || [];
       this.totalRecords = response.total ? response.total : 0;
       this.dataSource.paginator = this.paginator;
@@ -125,7 +125,7 @@ export class MenuComponent implements OnInit {
     this.roleUuid = uuid;
     this.dialogService.open(this.deleteDialog)
       .afterClosed().subscribe(() => {
-      this.getRoles();
+      this.getMenus();
     });
   }
 
@@ -134,31 +134,32 @@ export class MenuComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     if (row) {
-      const roleData = {
+      const formData = {
         uuid: row.uuid,
         name: row.name,
-        code: row.code,
-        description: row.description,
-        authorities: row.authorities
+        url: row.url,
+        icon: row.icon,
+        sortOrder: row.sortOrder
       };
-      dialogConfig.data = roleData;
-      this.roleService.populateForm(roleData);
+      dialogConfig.data = formData;
+      console.log('Form Data ->',formData);
+      this.menuService.populateForm(formData);
       this.dialogService.open(MenuDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
-        this.getRoles();
+        this.getMenus();
       });
     } else {
       dialogConfig.data = {};
       this.dialogService.open(MenuDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
-        this.getRoles();
+        this.getMenus();
       });
     }
   }
 
   delete() {
     console.log('Menu deleted clicked');
-    this.roleService.delete(this.roleUuid).subscribe({
+    this.menuService.delete(this.roleUuid).subscribe({
       next: (response: MenuApiResponse) => {
         this.notifierService.showNotification(response.message, 'OK', 'error');
       },
@@ -172,9 +173,9 @@ export class MenuComponent implements OnInit {
   openCreateDialog(data?: {
     uuid: string;
     name: string;
-    description: string;
-    code: string;
-    authorities: Authority[]
+    url: string;
+    icon: string;
+    sortOrder: number;
   }): void {
     // console.log(data);
     const dialogConfig = new MatDialogConfig();
@@ -187,10 +188,11 @@ export class MenuComponent implements OnInit {
       const roleData = {
         id: data.uuid,
         name: data.name,
-        description: data.description,
-        code: data.code,
+        icon: data.icon,
+        url: data.url,
+        sortOrder: data.sortOrder
       };
-      this.roleService.populateForm(roleData);
+      this.menuService.populateForm(roleData);
       this.dialogService.open(MenuDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.ngOnInit();

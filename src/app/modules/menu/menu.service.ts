@@ -6,7 +6,7 @@ import {environment} from "../../../environments/environment";
 import {MenuApiResponse} from "./types/MenuApiResponse";
 
 export const BASE_URL: string = environment.baseURL;
-export const RESOURCE_URL: string = 'api/v1/roles';
+export const RESOURCE_URL: string = 'api/v1/menus';
 
 @Injectable()
 
@@ -14,8 +14,10 @@ export class MenuService {
   form: FormGroup = new FormGroup({
     uuid: new FormControl(''),
     name: new FormControl('', [Validators.required]),
-    code: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required])
+    icon: new FormControl('', [Validators.required]),
+    url: new FormControl('', [Validators.required]),
+    sortOrder: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$"),
+    ])
   });
 
   private API_ENDPOINT = `${BASE_URL}/${RESOURCE_URL}`;
@@ -56,8 +58,9 @@ export class MenuService {
     return this.form.patchValue({
       id: '',
       name: '',
-      code: '',
-      description: '',
+      icon: '',
+      url: '',
+      sortOrder: '',
     });
   }
 
