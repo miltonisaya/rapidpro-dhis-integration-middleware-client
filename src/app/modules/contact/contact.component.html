@@ -4,19 +4,6 @@
 </div>
 
 <div class="example-container mat-elevation-z8">
-  @if (isLoadingResults || areRecordsAvailable) {
-    <div class="example-loading-shade">
-      @if (isLoadingResults) {
-        <mat-spinner></mat-spinner>
-      }
-      @if (areRecordsAvailable) {
-        <div class="example-rate-limit-reached">
-          Records not found
-        </div>
-      }
-    </div>
-  }
-
   <div class="table-container">
     <table mat-table [dataSource]="data" class="app-table"
            matSort matSortActive="registrationDate" matSortDisableClear matSortDirection="desc"

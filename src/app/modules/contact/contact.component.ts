@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort, MatSortHeader} from "@angular/material/sort";
 import {
@@ -11,7 +11,7 @@ import {
   MatHeaderRowDef,
   MatRow,
   MatRowDef,
-  MatTable
+  MatTable, MatTableDataSource
 } from "@angular/material/table";
 import {ContactService} from "./contact.service";
 import {MatIcon} from '@angular/material/icon';
@@ -22,11 +22,13 @@ import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {FlexModule} from '@angular/flex-layout';
 import {ContactDialogComponent} from "./modals/contact-dialog-component";
 import {CommonModule} from "@angular/common";
-import {merge, of as observableOf, startWith, switchMap} from 'rxjs';
-import {catchError, map} from "rxjs/operators";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {Contact} from "./types/Contact";
+import {RoleApiResponse} from "../role/types/RoleApiResponse";
+import {Role} from "../role/types/Role";
+import {ContactApiResponse} from "./types/ContactApiResponse";
+import {NotifierService} from "../notification/notifier.service";
 
 @Component({
   selector: 'app-contacts',
@@ -64,56 +66,53 @@ import {Contact} from "./types/Contact";
   ]
 })
 
-export class ContactComponent implements AfterViewInit {
+export class ContactComponent implements OnInit {
   title: string = "Contacts";
   displayedColumns: string[] = ['number', 'name', 'urn', 'facilityCode', 'sex', 'createdOn', 'registrationDate', 'age', 'fields', 'actions'];
   pageSizeOptions: number[] = [10, 20, 50, 100, 250, 500, 1000];
   data: Contact[] = [];
   resultsLength: number = 0;
-  isLoadingResults: boolean = true;
-  areRecordsAvailable: boolean = false;
-
+  params: { pageNo: number; pageSize: number; sortBy: string };
+  pageSize = 10;
+  pageIndex = 0;
+  pageNo: number = 0;
+  totalRecords = 0;
+  dataSource = new MatTableDataSource<Contact>([]);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private contactService: ContactService,
-    private dialogService: MatDialog
+    private dialogService: MatDialog,
+    private notifierService: NotifierService
   ) {
   }
 
-  ngAfterViewInit() {
-    // If the user changes the sort order, reset back to the first page.
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+  ngOnInit() {
+    this.getContacts();
+  }
 
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          this.isLoadingResults = true;
-          return this.contactService!.getContacts(
-            this.paginator.pageIndex,
-            this.paginator.pageSize,
-            this.sort.direction
-          ).pipe(catchError(() => observableOf(null)));
-        }),
-        map(data => {
-          // Flip flag to show that loading has finished.
-          this.isLoadingResults = false;
-          this.areRecordsAvailable = data === null;
+  pageChanged(e: any) {
+    this.pageSize = e.pageSize;
+    this.pageNo = e.pageIndex;
+    this.getContacts();
+  }
 
-          if (data === null) {
-            return [];
-          }
+  getContacts() {
+    this.params = {
+      "pageNo": this.pageNo,
+      "pageSize": this.pageSize,
+      "sortBy": "name"
+    }
 
-          // Only refresh the result length if there is new data. In case of rate
-          // limit errors, we do not want to reset the paginator to zero, as that
-          // would prevent users from re-triggering requests.
-          this.resultsLength = data.total;
-          return data.data;
-        }),
-      )
-      .subscribe(data => (this.data = data));
+    return this.contactService.get(this.params).subscribe((response: ContactApiResponse) => {
+      this.dataSource.data = response.data || [];
+      this.totalRecords = response.total ? response.total : 0;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }, error => {
+      this.notifierService.showNotification(error.message, 'OK', 'error');
+    });
   }
 
   openDialog(row: any): void {

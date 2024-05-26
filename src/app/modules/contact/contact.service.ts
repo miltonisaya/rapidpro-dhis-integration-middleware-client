@@ -4,7 +4,6 @@ import {Observable, of} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {environment} from "../../../environments/environment";
-import {SortDirection} from "@angular/material/sort";
 import {ContactApiResponse} from "./types/ContactApiResponse";
 
 export const BASE_URL: string = environment.baseURL;
@@ -25,8 +24,8 @@ export class ContactService {
   private API_ENDPOINT: string = `${BASE_URL}/${RESOURCE_URL}`;
   _http: HttpClient = inject(HttpClient);
 
-  getContacts(page: number, size: number, sort: SortDirection): Observable<ContactApiResponse> {
-    const requestUrl: string = `${this.API_ENDPOINT}?page=${page}&size=${size}&sort=${sort}`;
+  get(params: { pageNo: number; pageSize: number; sortBy: string }): Observable<ContactApiResponse> {
+    const requestUrl: string = `${this.API_ENDPOINT}?page=${params.pageNo}&size=${params.pageSize}&sort=${params.sortBy}`;
     return this._http.get<ContactApiResponse>(requestUrl);
   }
 
