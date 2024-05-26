@@ -26,7 +26,6 @@ import {CommonModule} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
 import {Menu} from "./types/Menu";
-import {Authority} from "../authority/types/Authority";
 import {NotifierService} from "../notification/notifier.service";
 import {MenuApiResponse} from "./types/MenuApiResponse";
 
@@ -77,10 +76,10 @@ export class MenuComponent implements OnInit {
   //Pagination starts here
   @ViewChild('paginator', {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  dataSource = new MatTableDataSource<Menu>([]);
-  displayedColumns: string[] = ['number', 'name', 'icon', 'url','sortOrder', 'actions'];
-  pageSize = 10;
-  pageIndex = 0;
+  dataSource: MatTableDataSource<Menu> = new MatTableDataSource<Menu>([]);
+  displayedColumns: string[] = ['number', 'name', 'icon', 'url', 'sortOrder', 'actions'];
+  pageSize: number = 10;
+  pageIndex: number = 0;
   params: { pageNo: number; pageSize: number; sortBy: string };
   pageNo: number = 0;
   totalRecords = 0;
@@ -130,7 +129,7 @@ export class MenuComponent implements OnInit {
   }
 
   openDialog(row: any): void {
-    const dialogConfig = new MatDialogConfig();
+    const dialogConfig: MatDialogConfig<any> = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     if (row) {
@@ -142,7 +141,6 @@ export class MenuComponent implements OnInit {
         sortOrder: row.sortOrder
       };
       dialogConfig.data = formData;
-      console.log('Form Data ->',formData);
       this.menuService.populateForm(formData);
       this.dialogService.open(MenuDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
