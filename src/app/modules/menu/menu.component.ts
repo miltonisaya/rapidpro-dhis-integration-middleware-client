@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort, MatSortHeader} from "@angular/material/sort";
 import {
@@ -65,7 +65,7 @@ import {MenuApiResponse} from "./types/MenuApiResponse";
   ],
   providers: [
     MenuService
-  ]
+  ], schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 
 export class MenuComponent implements OnInit {
@@ -107,7 +107,7 @@ export class MenuComponent implements OnInit {
     this.params = {
       "pageNo": this.pageNo,
       "pageSize": this.pageSize,
-      "sortBy": "name"
+      "sortBy": "sortOrder"
     }
 
     return this.menuService.get(this.params).subscribe((response: MenuApiResponse) => {
