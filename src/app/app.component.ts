@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
+import {AfterContentChecked, ChangeDetectorRef, Component} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {CommonModule} from "@angular/common";
 import {LoginComponent} from "./layouts/login/login.component";
@@ -25,7 +25,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
   ],
   providers: [AuthService]
 })
-export class AppComponent {
+export class AppComponent implements AfterContentChecked{
   constructor(
     protected loaderService: LoaderService,
     private changeDetectorRef: ChangeDetectorRef

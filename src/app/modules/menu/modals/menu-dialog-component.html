@@ -1,0 +1,119 @@
+<!--<section-->
+<!--  fxFlexFill-->
+<!--  fxLayout="row"-->
+<!--  fxLayoutAlign="space-between center"-->
+<!--&gt;-->
+<!--  <form #formDirective="ngForm"-->
+<!--        (ngSubmit)="submitForm()"-->
+<!--        [formGroup]="roleService.form"-->
+<!--  >-->
+<!--    <h1 class="dialog-header" mat-dialog-title>-->
+<!--      {{ roleService.form.controls['uuid'].value ? "Edit Role" : "Create Role" }}-->
+<!--    </h1>-->
+<!--    <mat-divider></mat-divider>-->
+<!--    <mat-dialog-content>-->
+<!--      <div class="dialog-content" fxLayout="column">-->
+<!--        <div fxLayout="row">-->
+<!--          <mat-form-field fxFlex="50">-->
+<!--            <mat-label>Name</mat-label>-->
+<!--            <input autocomplete="off"-->
+<!--                   formControlName="name"-->
+<!--                   matInput-->
+<!--                   maxlength="255"-->
+<!--                   placeholder="Enter name" required>-->
+<!--          </mat-form-field>-->
+
+<!--          <mat-form-field fxFlex="50">-->
+<!--            <mat-label>Code</mat-label>-->
+<!--            <input autocomplete="off"-->
+<!--                   formControlName="code"-->
+<!--                   matInput-->
+<!--                   maxlength="255"-->
+<!--                   placeholder="Enter code" required>-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
+
+<!--        <div fxLayout="column" fxLayoutAlign="stretch">-->
+<!--          <mat-form-field>-->
+<!--            <mat-label>Description</mat-label>-->
+<!--            <textarea-->
+<!--              formControlName="description"-->
+<!--              matInput-->
+<!--              cdkTextareaAutosize-->
+<!--              #autosize="cdkTextareaAutosize"-->
+<!--              cdkAutosizeMinRows="1"-->
+<!--              cdkAutosizeMaxRows="5">-->
+<!--          </textarea>-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </mat-dialog-content>-->
+<!--    <mat-dialog-actions fxLayout="row" fxLayoutAlign="end stretch">-->
+<!--      <div class="button">-->
+<!--        <button mat-dialog-close mat-raised-button type="button">CANCEL</button>-->
+<!--        <button color="primary" mat-raised-button type="submit">-->
+<!--          {{ roleService.form.controls['uuid'].value ? "UPDATE" : "CREATE" }}-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </mat-dialog-actions>-->
+<!--  </form>-->
+<!--</section>-->
+
+<h2 mat-dialog-title>
+  {{ roleService.form.controls['uuid'].value ? "Edit Role" : "Create Role" }}
+</h2>
+<form #formDirective="ngForm"
+      (ngSubmit)="submitForm()"
+      [formGroup]="roleService.form">
+  <mat-dialog-content class="mat-typography">
+    <div class="dialog-content" fxLayout="column" fxLayoutGap="20px">
+      <!-- Improved spacing between form fields and overall column alignment -->
+      <div fxLayout="row" fxLayoutGap="20px" fxLayout.xs="column">
+        <!-- Responsive settings for small screens, fields stack on top of each other -->
+        <mat-form-field fxFlex="50" fxFlex.xs="100">
+          <!-- Flex 100 on small screens for full width -->
+          <mat-label>Name</mat-label>
+          <input matInput
+                 formControlName="name"
+                 maxlength="255"
+                 placeholder="Enter name"
+                 required
+                 autocomplete="off">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50" fxFlex.xs="100">
+          <!-- Flex 100 on small screens for full width -->
+          <mat-label>Code</mat-label>
+          <input matInput
+                 formControlName="code"
+                 maxlength="255"
+                 placeholder="Enter code"
+                 required
+                 autocomplete="off">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="column" fxLayoutAlign="stretch">
+        <mat-form-field>
+          <mat-label>Description</mat-label>
+          <textarea matInput
+                    formControlName="description"
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"
+                    placeholder="Enter description">
+        </textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions fxLayout="row" fxLayoutAlign="end stretch">
+    <!-- Proper alignment of buttons with the stretch to ensure they are vertically centered -->
+    <button mat-dialog-close mat-raised-button type="button">CANCEL</button>
+    <button color="primary" mat-raised-button type="submit">
+      {{ roleService.form.controls['uuid'].value ? "UPDATE" : "CREATE" }}
+    </button>
+  </mat-dialog-actions>
+</form>
