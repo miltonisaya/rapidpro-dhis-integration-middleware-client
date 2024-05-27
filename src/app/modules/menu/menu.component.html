@@ -13,8 +13,12 @@
 
 <div class="table-content-wrapper-container mat-elevation-z8">
   <div class="table-container">
-    <table mat-table [dataSource]="dataSource" class="app-table"
-           matSort matSortActive="registrationDate" matSortDisableClear matSortDirection="desc"
+    <table mat-table
+           [dataSource]="dataSource"
+           matSort
+           matSortActive="sortOrder"
+           matSortDisableClear
+           matSortDirection="asc"
     >
       <!-- Number Column -->
       <ng-container matColumnDef="number">
@@ -54,8 +58,8 @@
       <ng-container matColumnDef="actions">
         <th *matHeaderCellDef mat-header-cell>Action</th>
         <td *matCellDef="let row" mat-cell>
-          <button mat-button matTooltip="Edit" matTooltipPosition="left" (click)="openDialog(row)">
-            <mat-icon (click)="openDialog(row)">edit</mat-icon>
+          <button mat-button matTooltip="Edit" matTooltipPosition="left" (click)="openEditDialog(row)">
+            <mat-icon (click)="openEditDialog(row)">edit</mat-icon>
           </button>
           <button mat-button matTooltip="Delete" matTooltipPosition="left" (click)="openDeleteDialog(row.uuid)">
             <mat-icon>delete</mat-icon>

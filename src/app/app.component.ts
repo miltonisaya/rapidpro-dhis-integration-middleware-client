@@ -10,6 +10,7 @@ import {LoaderService} from "./modules/loader/loader.service";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MenuComponent} from "./modules/menu/menu.component";
 import {MenuItemComponent} from "./modules/menu-item/menu-item.component";
+import {MatProgressBar} from "@angular/material/progress-bar";
 
 @Component({
   selector: 'app-root',
@@ -25,7 +26,8 @@ import {MenuItemComponent} from "./modules/menu-item/menu-item.component";
     RoleComponent,
     MenuComponent,
     MenuItemComponent,
-    MatProgressSpinner
+    MatProgressSpinner,
+    MatProgressBar
   ],
   providers: [AuthService]
 })

@@ -128,7 +128,7 @@ export class MenuComponent implements OnInit {
     });
   }
 
-  openDialog(row: any): void {
+  openEditDialog(row: any): void {
     const dialogConfig: MatDialogConfig<any> = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -141,6 +141,7 @@ export class MenuComponent implements OnInit {
         sortOrder: row.sortOrder
       };
       dialogConfig.data = formData;
+      dialogConfig.minWidth = '70%';
       this.menuService.populateForm(formData);
       this.dialogService.open(MenuDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
@@ -156,7 +157,6 @@ export class MenuComponent implements OnInit {
   }
 
   delete() {
-    console.log('MenuItem deleted clicked');
     this.menuService.delete(this.roleUuid).subscribe({
       next: (response: MenuApiResponse) => {
         this.notifierService.showNotification(response.message, 'OK', 'error');

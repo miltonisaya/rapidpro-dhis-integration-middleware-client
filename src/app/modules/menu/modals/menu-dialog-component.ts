@@ -20,12 +20,14 @@ import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {CdkDrag, CdkDropList, DragDropModule} from "@angular/cdk/drag-drop";
 import {MatList, MatListItem} from "@angular/material/list";
 import {MatIcon} from "@angular/material/icon";
+import {PickListModule} from "primeng/picklist";
+import {MenuItemService} from "../../menu-item/menu-item.service";
 
 @Component({
   selector: 'app-menu-dialog',
   templateUrl: 'menu-dialog-component.html',
   standalone: true,
-  providers: [MenuService],
+  providers: [MenuService, MenuItemService],
   imports: [
     FlexModule,
     ReactiveFormsModule,
@@ -45,16 +47,20 @@ import {MatIcon} from "@angular/material/icon";
     MatList,
     MatListItem,
     DragDropModule,
-    MatIcon
+    MatIcon,
+    PickListModule
   ],
   styleUrls: ['menu-dialog.component.css']
 })
 
 export class MenuDialogComponent implements OnInit {
   params: { page: number; size: number; sort: string } = {size: 10, page: 0, sort: 'name'};
+  sourceMenuItems: any[] | undefined;
+  targetMenuItems: any[] | undefined;
 
   constructor(
     public menuService: MenuService,
+    public menuItemService: MenuItemService,
     public dialogRef: MatDialogRef<MenuDialogComponent>,
     public notifierService: NotifierService,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -63,14 +69,25 @@ export class MenuDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.menuService.populateForm(this.data);
+    this.getSourceMenuItems();
+  }
+
+  getSourceMenuItems() {
+    this.menuItemService.getByMenuUuid(this.data.uuid)
+      .subscribe((response: any) => {
+        this.sourceMenuItems = response.sourceMenuItems;
+        this.targetMenuItems = response.targetMenuItems;
+        console.log('Source Menu Items =>',this.sourceMenuItems);
+        console.log('Target Menu Items =>',this.targetMenuItems);
+      }, (error: { message: string; }) => {
+        this.notifierService.showNotification(error.message, 'OK', 'error');
+      })
   }
 
   submitForm(): void {
-    console.log("Submit clicked!")
     console.log(this.menuService.form.value);
     if (this.menuService.form.valid) {
       if (this.menuService.form.get('uuid')?.value != '') {
-        console.log("Updating menu")
         this.menuService.update(this.menuService.form.value)
           .subscribe((response) => {
             this.notifierService.showNotification(response.message, 'OK', 'success');
@@ -80,7 +97,6 @@ export class MenuDialogComponent implements OnInit {
             this.notifierService.showNotification(error.message, 'OK', 'error');
           });
       } else {
-        console.log("Creating menu")
         this.menuService.create(this.menuService.form.value)
           .subscribe(response => {
             this.notifierService.showNotification(response.message, 'OK', 'error');
