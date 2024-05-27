@@ -9,6 +9,7 @@ import {RoleComponent} from "./modules/role/role.component";
 import {LoaderService} from "./modules/loader/loader.service";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MenuComponent} from "./modules/menu/menu.component";
+import {MenuItemComponent} from "./modules/menu-item/menu-item.component";
 
 @Component({
   selector: 'app-root',
@@ -23,11 +24,12 @@ import {MenuComponent} from "./modules/menu/menu.component";
     ContactComponent,
     RoleComponent,
     MenuComponent,
+    MenuItemComponent,
     MatProgressSpinner
   ],
   providers: [AuthService]
 })
-export class AppComponent implements AfterContentChecked{
+export class AppComponent implements AfterContentChecked {
   constructor(
     protected loaderService: LoaderService,
     private changeDetectorRef: ChangeDetectorRef
