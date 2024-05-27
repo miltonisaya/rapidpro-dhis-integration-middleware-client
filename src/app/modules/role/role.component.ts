@@ -158,7 +158,7 @@ export class RoleComponent implements OnInit {
   }
 
   delete() {
-    console.log('Menu deleted clicked');
+    console.log('MenuItem deleted clicked');
     this.roleService.delete(this.roleUuid).subscribe({
       next: (response: RoleApiResponse) => {
         this.notifierService.showNotification(response.message, 'OK', 'error');

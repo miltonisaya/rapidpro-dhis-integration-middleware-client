@@ -156,7 +156,7 @@ export class MenuComponent implements OnInit {
   }
 
   delete() {
-    console.log('Menu deleted clicked');
+    console.log('MenuItem deleted clicked');
     this.menuService.delete(this.roleUuid).subscribe({
       next: (response: MenuApiResponse) => {
         this.notifierService.showNotification(response.message, 'OK', 'error');
