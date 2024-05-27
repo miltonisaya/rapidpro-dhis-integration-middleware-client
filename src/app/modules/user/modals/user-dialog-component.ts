@@ -6,7 +6,7 @@ import {
   MatDialogRef,
   MatDialogTitle
 } from '@angular/material/dialog';
-import {UsersService} from '../users.service';
+import {UserService} from '../user.service';
 import {NotifierService} from "../../notification/notifier.service";
 import {RoleService} from "../../role/role.service";
 import {FlexLayoutModule} from "@angular/flex-layout";
@@ -43,7 +43,7 @@ import {RoleApiResponse} from "../../role/types/RoleApiResponse";
     JsonPipe
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-  providers: [UsersService, RoleService]
+  providers: [UserService, RoleService]
 })
 
 export class UserDialogComponent implements OnInit {
@@ -53,7 +53,7 @@ export class UserDialogComponent implements OnInit {
   pageNo: number = 0;
 
   constructor(
-    public usersService: UsersService,
+    public usersService: UserService,
     public dialogRef: MatDialogRef<UserDialogComponent>,
     public notifierService: NotifierService,
     public roleService: RoleService
@@ -73,7 +73,7 @@ export class UserDialogComponent implements OnInit {
             this.onClose();
           });
       } else {
-        this.usersService.createUser(this.usersService.form.value)
+        this.usersService.create(this.usersService.form.value)
           .subscribe(data => {
             this.onClose();
           }, error => {

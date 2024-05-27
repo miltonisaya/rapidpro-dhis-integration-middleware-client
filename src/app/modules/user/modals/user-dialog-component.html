@@ -39,16 +39,6 @@
                    required>
           </mat-form-field>
         </div>
-
-        <div fxLayout="column" fxLayoutAlign="stretch">
-          <mat-form-field>
-            <input autocomplete="off"
-                   formControlName="username"
-                   matInput
-                   placeholder="Enter Username"
-                   required>
-          </mat-form-field>
-        </div>
       </div>
 
       <div fxLayout="column" fxLayoutAlign="stretch">
@@ -76,4 +66,5 @@
     </mat-dialog-actions>
   </form>
 </section>
-<!--<pre>{{ roles | json }}</pre>-->
+
+<pre>{{ usersService.form.value | json }}</pre>

@@ -10,13 +10,12 @@ export const RESOURCE_URL: string = 'api/v1/users';
 
 @Injectable()
 
-export class UsersService {
+export class UserService {
   form: FormGroup = new FormGroup({
     uuid: new FormControl(''),
     name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
     phone: new FormControl('', [Validators.required]),
-    username: new FormControl('', [Validators.required]),
     roles: new FormControl([]),
   });
   private API_ENDPOINT = `${BASE_URL}/${RESOURCE_URL}`;
@@ -63,21 +62,12 @@ export class UsersService {
       email: '',
       name: '',
       phone: '',
-      username: '',
       roles: []
     });
   }
 
-  /**
-   * @param user
-   */
-  createUser(user: { name: any; }): Observable<any> {
-    console.log(user);
-    return this.http.post<any>(this.API_ENDPOINT + "/register", user)
-      // tslint:disable-next-line:no-shadowed-variable
-      .pipe(tap((response) => console.log(`Added user with name = ${user.name}`)),
-        catchError(this.handleError<any>('create objective'))
-      );
+  create(payload: any): Observable<any> {
+    return this.http.post(`${this.API_ENDPOINT}`, payload);
   }
 
   updateUser(user: { id: string; }): Observable<any> {

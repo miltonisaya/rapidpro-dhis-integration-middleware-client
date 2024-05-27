@@ -9,8 +9,7 @@ import {
 } from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
-import {UsersService} from './users.service';
-import {User} from './User';
+import {UserService} from './user.service';
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from '@angular/material/dialog';
 import {UserDialogComponent} from './modals/user-dialog-component';
 import {NotifierService} from "../notification/notifier.service";
@@ -20,7 +19,8 @@ import {MatFormField} from "@angular/material/form-field";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
-import {NgForOf} from "@angular/common";
+import {JsonPipe, NgForOf} from "@angular/common";
+import {User} from "./types/User";
 
 @Component({
   selector: 'app-users',
@@ -43,9 +43,10 @@ import {NgForOf} from "@angular/common";
     MatDialogClose,
     MatInput,
     NgForOf,
-    MatTableModule
+    MatTableModule,
+    JsonPipe
   ],
-  providers: [UsersService],
+  providers: [UserService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   styleUrls: ['./user.component.css']
 })
@@ -63,7 +64,7 @@ export class UserComponent implements OnInit {
   private params: { pageNo: number; pageSize: number };
 
   constructor(
-    private usersService: UsersService,
+    private userService: UserService,
     private notifierService: NotifierService,
     private matDialog: MatDialog,
   ) {
@@ -82,7 +83,7 @@ export class UserComponent implements OnInit {
       "pageSize": this.pageSize
     }
 
-    return this.usersService.getUsers(this.params).subscribe((response: any) => {
+    return this.userService.getUsers(this.params).subscribe((response: any) => {
       this.users = response.data;
       this.dataSource = new MatTableDataSource<User>(this.users);
     }, error => {
@@ -97,7 +98,7 @@ export class UserComponent implements OnInit {
   }
 
   openEditDialog(data?: any): void {
-    console.log("Data =>", data);
+    console.log("Edit user data =>",data);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -107,10 +108,9 @@ export class UserComponent implements OnInit {
         email: data.email,
         name: data.name,
         phone: data.phone,
-        username: data.username,
         roles: data.roles
       };
-      this.usersService.populateForm(userData);
+      this.userService.populateForm(userData);
       this.matDialog.open(UserDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.getUsers();
@@ -133,7 +133,7 @@ export class UserComponent implements OnInit {
   }
 
   delete() {
-    this.usersService.delete(this.userId)
+    this.userService.delete(this.userId)
       .subscribe(response => {
         this.notifierService.showNotification(response.message, 'OK', 'success');
       }, error => {
