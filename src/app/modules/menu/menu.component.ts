@@ -128,7 +128,7 @@ export class MenuComponent implements OnInit {
     });
   }
 
-  openEditDialog(row: any): void {
+  openEditDialog(row: Menu): void {
     const dialogConfig: MatDialogConfig<any> = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
