@@ -14,25 +14,25 @@ import {
   MatTable,
   MatTableDataSource
 } from "@angular/material/table";
-import {MenuService} from "./menu.service";
+import {MenuItemService} from "./menu-item.service";
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {FlexModule} from '@angular/flex-layout';
-import {MenuDialogComponent} from "./modals/menu-dialog-component";
+import {MenuItemDialogComponent} from "./modals/menu-item-dialog-component";
 import {CommonModule} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
-import {Menu} from "./types/Menu";
+import {MenuItem} from "./types/MenuItem";
 import {NotifierService} from "../notification/notifier.service";
-import {MenuApiResponse} from "./types/MenuApiResponse";
+import {MenuItemApiResponse} from "./types/MenuItemApiResponse";
 
 @Component({
-  selector: 'app-menus',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css'],
+  selector: 'app-menu-items',
+  templateUrl: './menu-item.component.html',
+  styleUrls: ['./menu-item.component.css'],
   standalone: true,
   imports: [
     FlexModule,
@@ -53,7 +53,7 @@ import {MenuApiResponse} from "./types/MenuApiResponse";
     MatRowDef,
     MatRow,
     MatPaginator,
-    MenuDialogComponent,
+    MenuItemDialogComponent,
     CommonModule,
     MatProgressSpinner,
     MatSort,
@@ -64,19 +64,19 @@ import {MenuApiResponse} from "./types/MenuApiResponse";
     MatDialogClose
   ],
   providers: [
-    MenuService
+    MenuItemService
   ], schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 
-export class MenuComponent implements OnInit {
-  title: string = 'Menus';
-  data: Menu[] = [];
+export class MenuItemComponent implements OnInit {
+  title: string = 'Menus Items';
+  data: MenuItem[] = [];
   roleUuid: string;
 
   //Pagination starts here
   @ViewChild('paginator', {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  dataSource: MatTableDataSource<Menu> = new MatTableDataSource<Menu>([]);
+  dataSource: MatTableDataSource<MenuItem> = new MatTableDataSource<MenuItem>([]);
   displayedColumns: string[] = ['number', 'name', 'icon', 'url', 'sortOrder', 'actions'];
   pageSize: number = 10;
   pageIndex: number = 0;
@@ -87,7 +87,7 @@ export class MenuComponent implements OnInit {
   @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
 
   constructor(
-    private menuService: MenuService,
+    private menuItemService: MenuItemService,
     private dialogService: MatDialog,
     private notifierService: NotifierService
   ) {
@@ -110,7 +110,7 @@ export class MenuComponent implements OnInit {
       "sortBy": "sortOrder"
     }
 
-    return this.menuService.get(this.params).subscribe((response: MenuApiResponse) => {
+    return this.menuItemService.get(this.params).subscribe((response: MenuItemApiResponse) => {
       this.dataSource.data = response.data || [];
       this.totalRecords = response.total ? response.total : 0;
       this.dataSource.paginator = this.paginator;
@@ -141,14 +141,14 @@ export class MenuComponent implements OnInit {
         sortOrder: row.sortOrder
       };
       dialogConfig.data = formData;
-      this.menuService.populateForm(formData);
-      this.dialogService.open(MenuDialogComponent, dialogConfig)
+      this.menuItemService.populateForm(formData);
+      this.dialogService.open(MenuItemDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.getMenus();
       });
     } else {
       dialogConfig.data = {};
-      this.dialogService.open(MenuDialogComponent, dialogConfig)
+      this.dialogService.open(MenuItemDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.getMenus();
       });
@@ -156,9 +156,9 @@ export class MenuComponent implements OnInit {
   }
 
   delete() {
-    console.log('Menu deleted clicked');
-    this.menuService.delete(this.roleUuid).subscribe({
-      next: (response: MenuApiResponse) => {
+    console.log('MenuItem deleted clicked');
+    this.menuItemService.delete(this.roleUuid).subscribe({
+      next: (response: MenuItemApiResponse) => {
         this.notifierService.showNotification(response.message, 'OK', 'error');
       },
       error: (error) => {
@@ -190,14 +190,14 @@ export class MenuComponent implements OnInit {
         url: data.url,
         sortOrder: data.sortOrder
       };
-      this.menuService.populateForm(roleData);
-      this.dialogService.open(MenuDialogComponent, dialogConfig)
+      this.menuItemService.populateForm(roleData);
+      this.dialogService.open(MenuItemDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.ngOnInit();
       });
     } else {
       dialogConfig.minWidth = '400px';
-      this.dialogService.open(MenuDialogComponent, dialogConfig)
+      this.dialogService.open(MenuItemDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.ngOnInit();
       });

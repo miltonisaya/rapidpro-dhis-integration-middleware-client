@@ -1,7 +1,7 @@
-import {Menu} from "./Menu";
+import {MenuItem} from "./MenuItem";
 
-export interface MenuApiResponse {
-  data: Menu[];
+export interface MenuItemApiResponse {
+  data: MenuItem[];
   page: number;
   size: number;
   status: number;

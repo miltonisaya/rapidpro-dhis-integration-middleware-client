@@ -22,8 +22,8 @@ import {MatList, MatListItem} from "@angular/material/list";
 import {MatIcon} from "@angular/material/icon";
 
 @Component({
-  selector: 'app-menu-dialog',
-  templateUrl: 'menu-dialog-component.html',
+  selector: 'app-menu-item-dialog',
+  templateUrl: 'menu-item-dialog-component.html',
   standalone: true,
   providers: [MenuItemService],
   imports: [
@@ -47,15 +47,15 @@ import {MatIcon} from "@angular/material/icon";
     DragDropModule,
     MatIcon
   ],
-  styleUrls: ['menu-dialog.component.css']
+  styleUrls: ['menu-item-dialog.component.css']
 })
 
-export class MenuDialogComponent implements OnInit {
+export class MenuItemDialogComponent implements OnInit {
   params: { page: number; size: number; sort: string } = {size: 10, page: 0, sort: 'name'};
 
   constructor(
     public menuService: MenuItemService,
-    public dialogRef: MatDialogRef<MenuDialogComponent>,
+    public dialogRef: MatDialogRef<MenuItemDialogComponent>,
     public notifierService: NotifierService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {

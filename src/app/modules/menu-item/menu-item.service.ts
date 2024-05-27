@@ -3,14 +3,14 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {environment} from "../../../environments/environment";
-import {MenuApiResponse} from "./types/MenuApiResponse";
+import {MenuItemApiResponse} from "./types/MenuItemApiResponse";
 
 export const BASE_URL: string = environment.baseURL;
-export const RESOURCE_URL: string = 'api/v1/menus';
+export const RESOURCE_URL: string = 'api/v1/menus-items';
 
 @Injectable()
 
-export class MenuService {
+export class MenuItemService {
   form: FormGroup = new FormGroup({
     uuid: new FormControl(''),
     name: new FormControl('', [Validators.required]),
@@ -27,14 +27,14 @@ export class MenuService {
    *
    * @param params
    */
-  get(params: { pageNo: number; pageSize: number; sortBy: string; }): Observable<MenuApiResponse> {
+  get(params: { pageNo: number; pageSize: number; sortBy: string; }): Observable<MenuItemApiResponse> {
     const requestUrl = `${this.API_ENDPOINT}?page=${params.pageNo}&size=${params.pageSize}&sort=${params.sortBy}`;
-    return this._http.get<MenuApiResponse>(requestUrl);
+    return this._http.get<MenuItemApiResponse>(requestUrl);
   }
 
-  delete(uuid: string): Observable<MenuApiResponse> {
+  delete(uuid: string): Observable<MenuItemApiResponse> {
     const requestUrl = `${this.API_ENDPOINT}/${uuid}`;
-    return this._http.delete<MenuApiResponse>(requestUrl);
+    return this._http.delete<MenuItemApiResponse>(requestUrl);
   }
 
   /**
