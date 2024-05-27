@@ -82,7 +82,7 @@ export class SidebarComponent implements OnInit {
             id: '62f15367-03c8-4601-9d12-c4dea7k1c5d6',
             name: 'Menu Items',
             icon: 'menu_open',
-            url: 'menus-items',
+            url: 'menu-items',
             sortOrder: 6,
             children: [],
           },

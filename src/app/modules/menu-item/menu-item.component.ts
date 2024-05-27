@@ -14,19 +14,19 @@ import {
   MatTable,
   MatTableDataSource
 } from "@angular/material/table";
-import {MenuItemService} from "./menu-item.service";
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {FlexModule} from '@angular/flex-layout';
-import {MenuItemDialogComponent} from "./modals/menu-item-dialog-component";
 import {CommonModule} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
-import {MenuItem} from "./types/MenuItem";
 import {NotifierService} from "../notification/notifier.service";
+import {MenuItemDialogComponent} from "./modals/menu-item-dialog-component";
+import {MenuItemService} from "./menu-item.service";
+import {MenuItem} from "./types/MenuItem";
 import {MenuItemApiResponse} from "./types/MenuItemApiResponse";
 
 @Component({
@@ -69,7 +69,7 @@ import {MenuItemApiResponse} from "./types/MenuItemApiResponse";
 })
 
 export class MenuItemComponent implements OnInit {
-  title: string = 'Menus Items';
+  title: string = 'Menus';
   data: MenuItem[] = [];
   roleUuid: string;
 
@@ -87,7 +87,7 @@ export class MenuItemComponent implements OnInit {
   @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
 
   constructor(
-    private menuItemService: MenuItemService,
+    private menuService: MenuItemService,
     private dialogService: MatDialog,
     private notifierService: NotifierService
   ) {
@@ -110,7 +110,7 @@ export class MenuItemComponent implements OnInit {
       "sortBy": "sortOrder"
     }
 
-    return this.menuItemService.get(this.params).subscribe((response: MenuItemApiResponse) => {
+    return this.menuService.get(this.params).subscribe((response: MenuItemApiResponse) => {
       this.dataSource.data = response.data || [];
       this.totalRecords = response.total ? response.total : 0;
       this.dataSource.paginator = this.paginator;
@@ -141,7 +141,7 @@ export class MenuItemComponent implements OnInit {
         sortOrder: row.sortOrder
       };
       dialogConfig.data = formData;
-      this.menuItemService.populateForm(formData);
+      this.menuService.populateForm(formData);
       this.dialogService.open(MenuItemDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.getMenus();
@@ -157,7 +157,7 @@ export class MenuItemComponent implements OnInit {
 
   delete() {
     console.log('MenuItem deleted clicked');
-    this.menuItemService.delete(this.roleUuid).subscribe({
+    this.menuService.delete(this.roleUuid).subscribe({
       next: (response: MenuItemApiResponse) => {
         this.notifierService.showNotification(response.message, 'OK', 'error');
       },
@@ -190,7 +190,7 @@ export class MenuItemComponent implements OnInit {
         url: data.url,
         sortOrder: data.sortOrder
       };
-      this.menuItemService.populateForm(roleData);
+      this.menuService.populateForm(roleData);
       this.dialogService.open(MenuItemDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.ngOnInit();
