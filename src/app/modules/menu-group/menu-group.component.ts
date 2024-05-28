@@ -141,7 +141,7 @@ export class MenuGroupComponent implements OnInit {
         sortOrder: row.sortOrder
       };
       dialogConfig.data = formData;
-      dialogConfig.minWidth = '70%';
+      dialogConfig.minWidth = '50%';
       this.menuService.populateForm(formData);
       this.dialogService.open(MenuGroupDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
