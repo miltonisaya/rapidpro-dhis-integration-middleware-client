@@ -22,6 +22,7 @@ import {MatList, MatListItem} from "@angular/material/list";
 import {MatIcon} from "@angular/material/icon";
 import {PickListModule} from "primeng/picklist";
 import {MenuItemService} from "../../menu-item/menu-item.service";
+import {MenuItem} from "../../menu-item/types/MenuItem";
 
 @Component({
   selector: 'app-menu-dialog',
@@ -55,8 +56,8 @@ import {MenuItemService} from "../../menu-item/menu-item.service";
 
 export class MenuDialogComponent implements AfterViewInit {
   params: { page: number; size: number; sort: string } = {size: 10, page: 0, sort: 'name'};
-  sourceMenuItems: any[] | undefined;
-  targetMenuItems: any[] | undefined;
+  assignedMenuItems: MenuItem[]
+  unassignedMenuItems: MenuItem[];
 
   constructor(
     public menuService: MenuService,
@@ -69,17 +70,16 @@ export class MenuDialogComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.menuService.populateForm(this.data);
-    this.getSourceMenuItems();
+    this.getMenuItems();
   }
 
-  async getSourceMenuItems() {
+  async getMenuItems() {
     const uuid = await this.data.uuid;
     this.menuItemService.getByMenuUuid(uuid)
-      .subscribe((response: any) => {
-        this.sourceMenuItems = response.sourceMenuItems;
-        this.targetMenuItems = response.targetMenuItems;
-        console.log('Source Menu Items =>', this.sourceMenuItems);
-        console.log('Target Menu Items =>', this.targetMenuItems);
+      .subscribe((response:any) => {
+        console.log('Menu items =>',response);
+        this.unassignedMenuItems = response.data.assignedMenuItems;
+        this.assignedMenuItems = response.data.unassignedMenuItems;
       }, (error: { message: string; }) => {
         this.notifierService.showNotification(error.message, 'OK', 'error');
       })

@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  {{ menuService.form.controls['uuid'].value ? "Edit Menu Item" : "Create Menu Item" }}
+  {{ menuService.form.controls['uuid'].value ? "Edit Menu" : "Create Menu" }}
 </h2>
 <form #formDirective="ngForm"
       (ngSubmit)="submitForm()"
@@ -47,27 +47,31 @@
         </mat-form-field>
 
         <p-pickList
-          [source]="sourceMenuItems"
-          [target]="targetMenuItems"
+          [source]="assignedMenuItems"
+          [target]="unassignedMenuItems"
           sourceHeader="Available"
           targetHeader="Selected"
           [dragdrop]="true"
           [responsive]="true"
-          [sourceStyle]="{ height: '15rem' }"
-          [targetStyle]="{ height: '15rem' }"
-          breakpoint="768px">
+          [sourceStyle]="{ height: '30rem' }"
+          [targetStyle]="{ height: '30rem' }"
+          filterBy="name"
+          sourceFilterPlaceholder="Search by name"
+          targetFilterPlaceholder="Search by name"
+          breakpoint="1400px">
           <ng-template let-product pTemplate="item">
             <div class="flex flex-wrap p-2 align-items-center gap-3">
               <div class="flex-1 flex flex-column gap-2">
-                <span class="font-bold">{{ product.name }}</span>
-                <div class="flex align-items-center gap-2">
+                    <span class="font-bold">
+                        {{ product.name }}
+                    </span>
+                <div class="flex align-products-center gap-2">
                   <i class="pi pi-tag text-sm"></i>
-                  <span>{{ product.category }}</span>
+                  <span>
+                            {{ product.category }}
+                        </span>
                 </div>
               </div>
-              <span class="font-bold text-900">
-                    {{ '$' + product.price }}
-                </span>
             </div>
           </ng-template>
         </p-pickList>
@@ -83,3 +87,5 @@
   </mat-dialog-actions>
 </form>
 
+<!--<pre>Source Menus{{ assignedMenuItems | json }}</pre>-->
+<!--<pre>Target Menus{{ unassignedMenuItems | json }}</pre>-->
