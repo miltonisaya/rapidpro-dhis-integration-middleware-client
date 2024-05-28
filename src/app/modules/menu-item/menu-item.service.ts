@@ -6,7 +6,7 @@ import {environment} from "../../../environments/environment";
 import {MenuItemApiResponse} from "./types/MenuItemApiResponse";
 
 export const BASE_URL: string = environment.baseURL;
-export const RESOURCE_URL: string = 'api/v1/menus-items';
+export const RESOURCE_URL: string = 'api/v1/menu-items';
 
 @Injectable()
 

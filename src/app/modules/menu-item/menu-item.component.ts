@@ -87,7 +87,7 @@ export class MenuItemComponent implements OnInit {
   @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
 
   constructor(
-    private menuService: MenuItemService,
+    private menuItemService: MenuItemService,
     private dialogService: MatDialog,
     private notifierService: NotifierService
   ) {
@@ -110,7 +110,7 @@ export class MenuItemComponent implements OnInit {
       "sortBy": "sortOrder"
     }
 
-    return this.menuService.get(this.params).subscribe((response: MenuItemApiResponse) => {
+    return this.menuItemService.get(this.params).subscribe((response: MenuItemApiResponse) => {
       this.dataSource.data = response.data || [];
       this.totalRecords = response.total ? response.total : 0;
       this.dataSource.paginator = this.paginator;
@@ -141,7 +141,7 @@ export class MenuItemComponent implements OnInit {
         sortOrder: row.sortOrder
       };
       dialogConfig.data = formData;
-      this.menuService.populateForm(formData);
+      this.menuItemService.populateForm(formData);
       this.dialogService.open(MenuItemDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.getMenus();
@@ -156,8 +156,7 @@ export class MenuItemComponent implements OnInit {
   }
 
   delete() {
-    console.log('MenuItem deleted clicked');
-    this.menuService.delete(this.roleUuid).subscribe({
+    this.menuItemService.delete(this.roleUuid).subscribe({
       next: (response: MenuItemApiResponse) => {
         this.notifierService.showNotification(response.message, 'OK', 'error');
       },
@@ -190,7 +189,7 @@ export class MenuItemComponent implements OnInit {
         url: data.url,
         sortOrder: data.sortOrder
       };
-      this.menuService.populateForm(roleData);
+      this.menuItemService.populateForm(roleData);
       this.dialogService.open(MenuItemDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.ngOnInit();
