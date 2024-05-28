@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnInit} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
@@ -53,7 +53,7 @@ import {MenuItemService} from "../../menu-item/menu-item.service";
   styleUrls: ['menu-dialog.component.css']
 })
 
-export class MenuDialogComponent implements OnInit {
+export class MenuDialogComponent implements AfterViewInit {
   params: { page: number; size: number; sort: string } = {size: 10, page: 0, sort: 'name'};
   sourceMenuItems: any[] | undefined;
   targetMenuItems: any[] | undefined;
@@ -67,31 +67,30 @@ export class MenuDialogComponent implements OnInit {
   ) {
   }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.menuService.populateForm(this.data);
     this.getSourceMenuItems();
   }
 
-  getSourceMenuItems() {
-    this.menuItemService.getByMenuUuid(this.data.uuid)
+  async getSourceMenuItems() {
+    const uuid = await this.data.uuid;
+    this.menuItemService.getByMenuUuid(uuid)
       .subscribe((response: any) => {
         this.sourceMenuItems = response.sourceMenuItems;
         this.targetMenuItems = response.targetMenuItems;
-        console.log('Source Menu Items =>',this.sourceMenuItems);
-        console.log('Target Menu Items =>',this.targetMenuItems);
+        console.log('Source Menu Items =>', this.sourceMenuItems);
+        console.log('Target Menu Items =>', this.targetMenuItems);
       }, (error: { message: string; }) => {
         this.notifierService.showNotification(error.message, 'OK', 'error');
       })
   }
 
   submitForm(): void {
-    console.log(this.menuService.form.value);
     if (this.menuService.form.valid) {
       if (this.menuService.form.get('uuid')?.value != '') {
         this.menuService.update(this.menuService.form.value)
           .subscribe((response) => {
             this.notifierService.showNotification(response.message, 'OK', 'success');
-            this.dialogRef.close();
             this.onClose();
           }, error => {
             this.notifierService.showNotification(error.message, 'OK', 'error');
