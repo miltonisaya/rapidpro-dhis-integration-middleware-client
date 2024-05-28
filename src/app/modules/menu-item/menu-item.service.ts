@@ -70,6 +70,6 @@ export class MenuItemService {
 
   getByMenuUuid(uuid: string) {
     let requestUrl = `${this.API_ENDPOINT}/menu/${uuid}`;
-    return this._http.get(requestUrl);
+    return this._http.get<MenuItemApiResponse>(requestUrl);
   }
 }

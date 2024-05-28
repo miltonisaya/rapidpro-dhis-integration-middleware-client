@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  {{ menuService.form.controls['uuid'].value ? "Edit MenuItem" : "Create MenuItem" }}
+  {{ menuService.form.controls['uuid'].value ? "Edit Menu Item" : "Create Menu Item" }}
 </h2>
 <form #formDirective="ngForm"
       (ngSubmit)="submitForm()"
@@ -56,5 +56,3 @@
     </button>
   </mat-dialog-actions>
 </form>
-
-<!--<pre>{{ data | json }}</pre>-->

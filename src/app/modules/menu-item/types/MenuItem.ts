@@ -4,4 +4,5 @@ export interface MenuItem {
   sortOrder: number;
   uuid: string;
   icon: string;
+  menuUuid: string;
 }
