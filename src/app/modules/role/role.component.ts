@@ -29,7 +29,7 @@ import {Role} from "./types/Role";
 import {Authority} from "../authority/types/Authority";
 import {NotifierService} from "../notification/notifier.service";
 import {RoleApiResponse} from "./types/RoleApiResponse";
-import {Menu} from "../menu/types/Menu";
+import {MenuGroup} from "../menu-group/types/MenuGroup";
 
 @Component({
   selector: 'app-roles',
@@ -135,7 +135,7 @@ export class RoleComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     if (row) {
-      const menuData: Menu = {
+      const menuData: MenuGroup = {
         uuid: row.uuid,
         name: row.name,
         url: row.url,

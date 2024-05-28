@@ -1,4 +1,4 @@
-export interface Menu {
+export interface MenuGroup {
   name: string;
   url: string;
   sortOrder: number;

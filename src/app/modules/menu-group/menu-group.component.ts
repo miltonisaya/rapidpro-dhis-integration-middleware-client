@@ -14,25 +14,25 @@ import {
   MatTable,
   MatTableDataSource
 } from "@angular/material/table";
-import {MenuService} from "./menu.service";
+import {MenuGroupService} from "./menu-group.service";
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {FlexModule} from '@angular/flex-layout';
-import {MenuDialogComponent} from "./modals/menu-dialog-component";
+import {MenuGroupDialogComponent} from "./modals/menu-group-dialog-component";
 import {CommonModule} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
-import {Menu} from "./types/Menu";
+import {MenuGroup} from "./types/MenuGroup";
 import {NotifierService} from "../notification/notifier.service";
 import {MenuApiResponse} from "./types/MenuApiResponse";
 
 @Component({
   selector: 'app-menus',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css'],
+  templateUrl: './menu-group.component.html',
+  styleUrls: ['./menu-group.component.css'],
   standalone: true,
   imports: [
     FlexModule,
@@ -53,7 +53,7 @@ import {MenuApiResponse} from "./types/MenuApiResponse";
     MatRowDef,
     MatRow,
     MatPaginator,
-    MenuDialogComponent,
+    MenuGroupDialogComponent,
     CommonModule,
     MatProgressSpinner,
     MatSort,
@@ -64,19 +64,19 @@ import {MenuApiResponse} from "./types/MenuApiResponse";
     MatDialogClose
   ],
   providers: [
-    MenuService
+    MenuGroupService
   ], schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 
-export class MenuComponent implements OnInit {
-  title: string = 'Menus';
-  data: Menu[] = [];
+export class MenuGroupComponent implements OnInit {
+  title: string = 'Menu Groups';
+  data: MenuGroup[] = [];
   roleUuid: string;
 
   //Pagination starts here
   @ViewChild('paginator', {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  dataSource: MatTableDataSource<Menu> = new MatTableDataSource<Menu>([]);
+  dataSource: MatTableDataSource<MenuGroup> = new MatTableDataSource<MenuGroup>([]);
   displayedColumns: string[] = ['number', 'name', 'icon', 'url', 'sortOrder', 'actions'];
   pageSize: number = 10;
   pageIndex: number = 0;
@@ -87,7 +87,7 @@ export class MenuComponent implements OnInit {
   @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
 
   constructor(
-    private menuService: MenuService,
+    private menuService: MenuGroupService,
     private dialogService: MatDialog,
     private notifierService: NotifierService
   ) {
@@ -128,7 +128,7 @@ export class MenuComponent implements OnInit {
     });
   }
 
-  openEditDialog(row: Menu): void {
+  openEditDialog(row: MenuGroup): void {
     const dialogConfig: MatDialogConfig<any> = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -143,13 +143,13 @@ export class MenuComponent implements OnInit {
       dialogConfig.data = formData;
       dialogConfig.minWidth = '70%';
       this.menuService.populateForm(formData);
-      this.dialogService.open(MenuDialogComponent, dialogConfig)
+      this.dialogService.open(MenuGroupDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.getMenus();
       });
     } else {
       dialogConfig.data = {};
-      this.dialogService.open(MenuDialogComponent, dialogConfig)
+      this.dialogService.open(MenuGroupDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.getMenus();
       });
@@ -191,13 +191,13 @@ export class MenuComponent implements OnInit {
         sortOrder: data.sortOrder
       };
       this.menuService.populateForm(roleData);
-      this.dialogService.open(MenuDialogComponent, dialogConfig)
+      this.dialogService.open(MenuGroupDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.ngOnInit();
       });
     } else {
       dialogConfig.minWidth = '400px';
-      this.dialogService.open(MenuDialogComponent, dialogConfig)
+      this.dialogService.open(MenuGroupDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
         this.ngOnInit();
       });

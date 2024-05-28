@@ -8,7 +8,7 @@ import {ContactComponent} from "./modules/contact/contact.component";
 import {RoleComponent} from "./modules/role/role.component";
 import {LoaderService} from "./modules/loader/loader.service";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {MenuComponent} from "./modules/menu/menu.component";
+import {MenuGroupComponent} from "./modules/menu-group/menu-group.component";
 import {MenuItemComponent} from "./modules/menu-item/menu-item.component";
 import {MatProgressBar} from "@angular/material/progress-bar";
 
@@ -24,7 +24,7 @@ import {MatProgressBar} from "@angular/material/progress-bar";
     FormsModule,
     ContactComponent,
     RoleComponent,
-    MenuComponent,
+    MenuGroupComponent,
     MenuItemComponent,
     MatProgressSpinner,
     MatProgressBar

@@ -10,7 +10,7 @@ export const RESOURCE_URL: string = 'api/v1/menus';
 
 @Injectable()
 
-export class MenuService {
+export class MenuGroupService {
   form: FormGroup = new FormGroup({
     uuid: new FormControl(''),
     name: new FormControl('', [Validators.required]),

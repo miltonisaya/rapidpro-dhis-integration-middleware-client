@@ -10,7 +10,7 @@ import {Route} from "@angular/router";
 import {RoleComponent} from "./modules/role/role.component";
 import {OrganisationUnitComponent} from "./modules/organisation-unit/organisation-unit.component";
 import {AuthGuard} from "./auth/auth.guard";
-import {MenuComponent} from "./modules/menu/menu.component";
+import {MenuGroupComponent} from "./modules/menu-group/menu-group.component";
 import {MenuItemComponent} from "./modules/menu-item/menu-item.component";
 
 export const APP_ROUTES: Route[] = [{
@@ -50,8 +50,8 @@ export const APP_ROUTES: Route[] = [{
       component: RoleComponent,
       canActivate: [AuthGuard]
     }, {
-      path: "menus",
-      component: MenuComponent,
+      path: "menu-groups",
+      component: MenuGroupComponent,
       canActivate: [AuthGuard]
     }, {
       path: "menu-items",

@@ -8,7 +8,7 @@ import {
   MatDialogTitle
 } from '@angular/material/dialog';
 import {NotifierService} from "../../notification/notifier.service";
-import {MenuService} from "../menu.service";
+import {MenuGroupService} from "../menu-group.service";
 import {FlexModule} from "@angular/flex-layout";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatDivider} from "@angular/material/divider";
@@ -26,9 +26,9 @@ import {MenuItem} from "../../menu-item/types/MenuItem";
 
 @Component({
   selector: 'app-menu-dialog',
-  templateUrl: 'menu-dialog-component.html',
+  templateUrl: 'menu-group-dialog-component.html',
   standalone: true,
-  providers: [MenuService, MenuItemService],
+  providers: [MenuGroupService, MenuItemService],
   imports: [
     FlexModule,
     ReactiveFormsModule,
@@ -51,18 +51,18 @@ import {MenuItem} from "../../menu-item/types/MenuItem";
     MatIcon,
     PickListModule
   ],
-  styleUrls: ['menu-dialog.component.css']
+  styleUrls: ['menu-group-dialog.component.css']
 })
 
-export class MenuDialogComponent implements AfterViewInit {
+export class MenuGroupDialogComponent implements AfterViewInit {
   params: { page: number; size: number; sort: string } = {size: 10, page: 0, sort: 'name'};
   assignedMenuItems: MenuItem[]
   unassignedMenuItems: MenuItem[];
 
   constructor(
-    public menuService: MenuService,
+    public menuService: MenuGroupService,
     public menuItemService: MenuItemService,
-    public dialogRef: MatDialogRef<MenuDialogComponent>,
+    public dialogRef: MatDialogRef<MenuGroupDialogComponent>,
     public notifierService: NotifierService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -77,7 +77,7 @@ export class MenuDialogComponent implements AfterViewInit {
     const uuid = await this.data.uuid;
     this.menuItemService.getByMenuUuid(uuid)
       .subscribe((response:any) => {
-        console.log('Menu items =>',response);
+        console.log('MenuGroup items =>',response);
         this.unassignedMenuItems = response.data.assignedMenuItems;
         this.assignedMenuItems = response.data.unassignedMenuItems;
       }, (error: { message: string; }) => {

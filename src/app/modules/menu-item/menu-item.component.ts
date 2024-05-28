@@ -69,7 +69,7 @@ import {MenuItemApiResponse} from "./types/MenuItemApiResponse";
 })
 
 export class MenuItemComponent implements OnInit {
-  title: string = 'Menu Items';
+  title: string = 'MenuGroup Items';
   data: MenuItem[] = [];
   roleUuid: string;
 

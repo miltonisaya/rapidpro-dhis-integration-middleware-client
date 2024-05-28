@@ -1,7 +1,7 @@
-import {Menu} from "./Menu";
+import {MenuGroup} from "./MenuGroup";
 
 export interface MenuApiResponse {
-  data: Menu[];
+  data: MenuGroup[];
   page: number;
   size: number;
   status: number;
