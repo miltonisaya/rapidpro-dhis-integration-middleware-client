@@ -101,6 +101,7 @@ export class ProgramComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.minWidth = '50%';
     // if (data) {
     //   const flowKeysData = {
     //     id: data.id,

@@ -9,24 +9,47 @@
   <mat-divider></mat-divider>
   <mat-dialog-content>
     <p-pickList
-      [responsive]="true"
-      [sourceStyle]="{'height':'200px'}"
       [source]="fetchedList"
-      [targetStyle]="{'height':'200px'}"
       [target]="selectedDataElementsList"
-      dragdrop="true"
-      filterBy="Name"
-      sourceFilterPlaceholder="Search by Name"
       sourceHeader="Available"
-      targetFilterPlaceholder="Search by Name"
       targetHeader="Selected"
-    >
-      <ng-template let-tm pTemplate="TeamA">
-        <div class="ui-helper-clearfix">
-          <div style="font-size:14px;float:left;margin:15px 5px 0 0">{{ tm.name }}</div>
+      [dragdrop]="true"
+      [responsive]="true"
+      [sourceStyle]="{ height: '10rem' }"
+      [targetStyle]="{ height: '10rem' }"
+      filterBy="name"
+      sourceFilterPlaceholder="Search by name"
+      targetFilterPlaceholder="Search by name"
+      breakpoint="762px">
+      <ng-template let-product pTemplate="item">
+        <div class="flex flex-wrap p-2 align-items-center gap-3">
+          <div class="flex-1 flex flex-column gap-2">
+                    <span class="font-bold">
+                        {{ product.name }}
+                    </span>
+          </div>
         </div>
       </ng-template>
     </p-pickList>
+<!--    <p-pickList-->
+<!--      [responsive]="true"-->
+<!--      [sourceStyle]="{'height':'10rem'}"-->
+<!--      [source]="fetchedList"-->
+<!--      [targetStyle]="{'height':'10rem'}"-->
+<!--      [target]="selectedDataElementsList"-->
+<!--      dragdrop="true"-->
+<!--      filterBy="Name"-->
+<!--      sourceFilterPlaceholder="Search by Name"-->
+<!--      sourceHeader="Available"-->
+<!--      targetFilterPlaceholder="Search by Name"-->
+<!--      targetHeader="Selected"-->
+<!--    >-->
+<!--      <ng-template let-tm pTemplate="TeamA">-->
+<!--        <div class="ui-helper-clearfix">-->
+<!--          <div>{{ tm.name }}</div>-->
+<!--        </div>-->
+<!--      </ng-template>-->
+<!--    </p-pickList>-->
   </mat-dialog-content>
 
   <mat-dialog-actions fxLayout="row" fxLayoutAlign="end none">
