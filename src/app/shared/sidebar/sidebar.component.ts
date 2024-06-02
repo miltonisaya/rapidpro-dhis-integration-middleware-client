@@ -118,7 +118,13 @@ export class SidebarComponent implements OnInit {
         icon: 'table_chart',
         url: 'organisation-units',
         sortOrder: 2,
-        children: [],
+        children: [{
+          id: 'aa280394-1bd2-4f3f-8380-5d06cf7cee46',
+          name: 'Manage Organisation Units',
+          icon: 'language',
+          url: 'organisation-units',
+          sortOrder: 2
+        }],
       },
       {
         id: '8716bd51-5d38-4c32-a3ad-9647ad30e889',
