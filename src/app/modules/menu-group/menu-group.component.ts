@@ -94,16 +94,16 @@ export class MenuGroupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getMenus();
+    this.getMenuGroups();
   }
 
   pageChanged(e: any) {
     this.pageSize = e.pageSize;
     this.pageNo = e.pageIndex;
-    this.getMenus();
+    this.getMenuGroups();
   }
 
-  getMenus() {
+  getMenuGroups() {
     this.params = {
       "pageNo": this.pageNo,
       "pageSize": this.pageSize,
@@ -116,7 +116,7 @@ export class MenuGroupComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }, error => {
-      this.notifierService.showNotification(error.message, 'OK', 'error');
+      this.notifierService.showNotification(error.error.message, 'OK', 'error');
     });
   }
 
@@ -124,7 +124,7 @@ export class MenuGroupComponent implements OnInit {
     this.roleUuid = uuid;
     this.dialogService.open(this.deleteDialog)
       .afterClosed().subscribe(() => {
-      this.getMenus();
+      this.getMenuGroups();
     });
   }
 
@@ -145,13 +145,13 @@ export class MenuGroupComponent implements OnInit {
       this.menuService.populateForm(formData);
       this.dialogService.open(MenuGroupDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
-        this.getMenus();
+        this.getMenuGroups();
       });
     } else {
       dialogConfig.data = {};
       this.dialogService.open(MenuGroupDialogComponent, dialogConfig)
         .afterClosed().subscribe(() => {
-        this.getMenus();
+        this.getMenuGroups();
       });
     }
   }

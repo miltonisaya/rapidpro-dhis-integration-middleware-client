@@ -48,7 +48,7 @@
 
         <p-pickList
           [source]="assignedMenuItems"
-          [target]="unassignedMenuItems"
+          [target]="selectedMenuItems"
           sourceHeader="Available"
           targetHeader="Selected"
           [dragdrop]="true"
@@ -81,5 +81,5 @@
   </mat-dialog-actions>
 </form>
 
-<!--<pre>Source Menus{{ assignedMenuItems | json }}</pre>-->
+<pre>Selected Menus{{ selectedMenuItems | json }}</pre>
 <!--<pre>Target Menus{{ unassignedMenuItems | json }}</pre>-->

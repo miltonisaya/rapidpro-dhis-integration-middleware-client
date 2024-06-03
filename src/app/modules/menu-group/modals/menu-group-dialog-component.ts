@@ -57,7 +57,7 @@ import {MenuItem} from "../../menu-item/types/MenuItem";
 export class MenuGroupDialogComponent implements AfterViewInit {
   params: { page: number; size: number; sort: string } = {size: 10, page: 0, sort: 'name'};
   assignedMenuItems: MenuItem[]
-  unassignedMenuItems: MenuItem[];
+  selectedMenuItems: MenuItem[];
 
   constructor(
     public menuService: MenuGroupService,
@@ -78,7 +78,7 @@ export class MenuGroupDialogComponent implements AfterViewInit {
     this.menuItemService.getByMenuUuid(uuid)
       .subscribe((response:any) => {
         console.log('MenuGroup items =>',response);
-        this.unassignedMenuItems = response.data.assignedMenuItems;
+        this.selectedMenuItems = response.data.assignedMenuItems;
         this.assignedMenuItems = response.data.unassignedMenuItems;
       }, (error: { message: string; }) => {
         this.notifierService.showNotification(error.message, 'OK', 'error');
@@ -88,7 +88,9 @@ export class MenuGroupDialogComponent implements AfterViewInit {
   submitForm(): void {
     if (this.menuService.form.valid) {
       if (this.menuService.form.get('uuid')?.value != '') {
-        this.menuService.update(this.menuService.form.value)
+        let data = this.menuService.form.value;
+        data.selectedMenuItems = this.selectedMenuItems;
+        this.menuService.update(data)
           .subscribe((response) => {
             this.notifierService.showNotification(response.message, 'OK', 'success');
             this.onClose();
@@ -96,7 +98,9 @@ export class MenuGroupDialogComponent implements AfterViewInit {
             this.notifierService.showNotification(error.message, 'OK', 'error');
           });
       } else {
-        this.menuService.create(this.menuService.form.value)
+        let data = this.menuService.form.value;
+        data.selectedMenuItems = this.selectedMenuItems;
+        this.menuService.create(data)
           .subscribe(response => {
             this.notifierService.showNotification(response.message, 'OK', 'error');
             this.onClose();

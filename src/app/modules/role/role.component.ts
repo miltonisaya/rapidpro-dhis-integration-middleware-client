@@ -118,7 +118,7 @@ export class RoleComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }, error => {
-      this.notifierService.showNotification(error.message, 'OK', 'error');
+      this.notifierService.showNotification(error.error.message, 'OK', 'error');
     });
   }
 
@@ -164,7 +164,7 @@ export class RoleComponent implements OnInit {
         this.notifierService.showNotification(response.message, 'OK', 'error');
       },
       error: (error) => {
-        this.notifierService.showNotification(error.message, 'OK', 'error');
+        this.notifierService.showNotification(error.error.message, 'OK', 'error');
       }
     });
     this.dialogService.closeAll();

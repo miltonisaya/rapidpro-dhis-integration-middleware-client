@@ -78,7 +78,7 @@ export class ProgramComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }, error => {
-      this.notifierService.showNotification(error.message, 'OK', 'error');
+      this.notifierService.showNotification(error.error.message, 'OK', 'error');
       console.log(error);
     });
   }
@@ -93,7 +93,7 @@ export class ProgramComponent implements OnInit {
       this.notifierService.showNotification(response.message, 'OK', 'success');
       this.getPrograms();
     }, error => {
-      this.notifierService.showNotification(error.message, 'OK', 'error');
+      this.notifierService.showNotification(error.error.message, 'OK', 'error');
     });
   }
 

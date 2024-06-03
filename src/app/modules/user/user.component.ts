@@ -87,7 +87,7 @@ export class UserComponent implements OnInit {
       this.users = response.data;
       this.dataSource = new MatTableDataSource<User>(this.users);
     }, error => {
-      this.notifierService.showNotification(error.message, 'OK', 'error');
+      this.notifierService.showNotification(error.error.message, 'OK', 'error');
       console.log(error);
     });
   }
@@ -137,7 +137,7 @@ export class UserComponent implements OnInit {
       .subscribe(response => {
         this.notifierService.showNotification(response.message, 'OK', 'success');
       }, error => {
-        this.notifierService.showNotification(error.message, 'OK', 'error')
+        this.notifierService.showNotification(error.error.message, 'OK', 'error');
       });
     this.matDialog.closeAll();
   }

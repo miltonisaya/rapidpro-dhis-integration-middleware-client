@@ -161,7 +161,7 @@ export class MenuItemComponent implements OnInit {
         this.notifierService.showNotification(response.message, 'OK', 'error');
       },
       error: (error) => {
-        this.notifierService.showNotification(error.message, 'OK', 'error');
+        this.notifierService.showNotification(error.error.message, 'OK', 'error');
       }
     });
     this.dialogService.closeAll();

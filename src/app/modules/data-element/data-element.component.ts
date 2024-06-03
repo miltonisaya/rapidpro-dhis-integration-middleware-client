@@ -84,7 +84,7 @@ export class DataElementComponent implements OnInit {
       this.dataSource = new MatTableDataSource<DataElement>(this.dataElements.content);
       this.dataSource.sort = this.sort;
     }, error => {
-      this.notifierService.showNotification(error.message, 'OK', 'error');
+      this.notifierService.showNotification(error.error.message, 'OK', 'error');
     });
   }
 
@@ -98,7 +98,7 @@ export class DataElementComponent implements OnInit {
       this.getDataElements();
       this.notifierService.showNotification(response.message, 'OK', 'success');
     }, error => {
-      this.notifierService.showNotification(error.message, 'OK', 'error');
+      this.notifierService.showNotification(error.error.message, 'OK', 'error');
     });
   }
 

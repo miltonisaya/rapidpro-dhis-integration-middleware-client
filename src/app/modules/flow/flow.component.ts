@@ -138,7 +138,7 @@ export class FlowComponent implements OnInit {
           this.dataSource = new MatTableDataSource<any>(this.flowKeys);
           this.dataSource.sort = this.sort;
         }, error => {
-          this.notifierService.showNotification(error.error.error, 'OK', 'error');
+          this.notifierService.showNotification(error.error.message, 'OK', 'error');
         });
       });
     } else {
@@ -153,7 +153,7 @@ export class FlowComponent implements OnInit {
           this.dataSource = new MatTableDataSource<any>(this.flowKeys);
           this.dataSource.sort = this.sort;
         }, error => {
-          this.notifierService.showNotification(error.error.error, 'OK', 'error');
+          this.notifierService.showNotification(error.error.message, 'OK', 'error');
         });
       });
     }
