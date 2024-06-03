@@ -27,7 +27,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
 import {MenuGroup} from "./types/MenuGroup";
 import {NotifierService} from "../notification/notifier.service";
-import {MenuApiResponse} from "./types/MenuApiResponse";
+import {MenuGroupApiResponse} from "./types/MenuGroupApiResponse";
 
 @Component({
   selector: 'app-menus',
@@ -110,7 +110,7 @@ export class MenuGroupComponent implements OnInit {
       "sortBy": "sortOrder"
     }
 
-    return this.menuService.get(this.params).subscribe((response: MenuApiResponse) => {
+    return this.menuService.get(this.params).subscribe((response: MenuGroupApiResponse) => {
       this.dataSource.data = response.data || [];
       this.totalRecords = response.total ? response.total : 0;
       this.dataSource.paginator = this.paginator;
@@ -158,7 +158,7 @@ export class MenuGroupComponent implements OnInit {
 
   delete() {
     this.menuService.delete(this.roleUuid).subscribe({
-      next: (response: MenuApiResponse) => {
+      next: (response: MenuGroupApiResponse) => {
         this.notifierService.showNotification(response.message, 'OK', 'error');
       },
       error: (error) => {

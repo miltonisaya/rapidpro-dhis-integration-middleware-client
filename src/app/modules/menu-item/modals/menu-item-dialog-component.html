@@ -30,6 +30,15 @@
 
       <div fxLayout="column" fxLayoutAlign="stretch">
         <mat-form-field fxFlex.xs="100">
+          <mat-label>Menu Group</mat-label>
+          <mat-select formControlName="menuGroupUuid">
+            @for (menuGroup of menuGroups; track menuGroup) {
+              <mat-option [value]="menuGroup.uuid">{{ menuGroup.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex.xs="100">
           <mat-label>Icon</mat-label>
           <input matInput
                  formControlName="icon"
@@ -56,3 +65,4 @@
     </button>
   </mat-dialog-actions>
 </form>
+<pre>{{ menuService.form.value | json }}</pre>

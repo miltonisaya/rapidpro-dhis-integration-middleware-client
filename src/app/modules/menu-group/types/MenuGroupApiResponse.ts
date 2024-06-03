@@ -1,6 +1,6 @@
 import {MenuGroup} from "./MenuGroup";
 
-export interface MenuApiResponse {
+export interface MenuGroupApiResponse {
   data: MenuGroup[];
   page: number;
   size: number;

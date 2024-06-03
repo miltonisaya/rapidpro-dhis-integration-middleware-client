@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {environment} from "../../../environments/environment";
-import {MenuApiResponse} from "./types/MenuApiResponse";
+import {MenuGroupApiResponse} from "./types/MenuGroupApiResponse";
 
 export const BASE_URL: string = environment.baseURL;
 export const RESOURCE_URL: string = 'api/v1/menus';
@@ -27,14 +27,14 @@ export class MenuGroupService {
    *
    * @param params
    */
-  get(params: { pageNo: number; pageSize: number; sortBy: string; }): Observable<MenuApiResponse> {
+  get(params: { pageNo: number; pageSize: number; sortBy: string; }): Observable<MenuGroupApiResponse> {
     const requestUrl = `${this.API_ENDPOINT}?page=${params.pageNo}&size=${params.pageSize}&sort=${params.sortBy}`;
-    return this._http.get<MenuApiResponse>(requestUrl);
+    return this._http.get<MenuGroupApiResponse>(requestUrl);
   }
 
-  delete(uuid: string): Observable<MenuApiResponse> {
+  delete(uuid: string): Observable<MenuGroupApiResponse> {
     const requestUrl = `${this.API_ENDPOINT}/${uuid}`;
-    return this._http.delete<MenuApiResponse>(requestUrl);
+    return this._http.delete<MenuGroupApiResponse>(requestUrl);
   }
 
   /**

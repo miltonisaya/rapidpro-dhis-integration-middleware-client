@@ -16,6 +16,7 @@ export class MenuItemService {
     name: new FormControl('', [Validators.required]),
     icon: new FormControl('', [Validators.required]),
     url: new FormControl('', [Validators.required]),
+    menuGroupUuid: new FormControl('', [Validators.required]),
     sortOrder: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$"),
     ])
   });
@@ -46,7 +47,6 @@ export class MenuItemService {
   }
 
   update(data: any): Observable<any> {
-    console.log('Payload Update =>', data);
     return this._http.put(`${this.API_ENDPOINT}/${data.uuid}`, data);
   }
 
@@ -61,6 +61,7 @@ export class MenuItemService {
       icon: '',
       url: '',
       sortOrder: '',
+      menuGroupUuid:''
     });
   }
 
