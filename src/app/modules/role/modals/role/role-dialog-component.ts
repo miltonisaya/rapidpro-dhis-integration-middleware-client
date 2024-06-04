@@ -7,8 +7,8 @@ import {
   MatDialogRef,
   MatDialogTitle
 } from '@angular/material/dialog';
-import {NotifierService} from "../../notification/notifier.service";
-import {RoleService} from "../role.service";
+import {NotifierService} from "../../../notification/notifier.service";
+import {RoleService} from "../../role.service";
 import {FlexModule} from "@angular/flex-layout";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatDivider} from "@angular/material/divider";

@@ -21,7 +21,7 @@ import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {FlexModule} from '@angular/flex-layout';
-import {RoleDialogComponent} from "./modals/role-dialog-component";
+import {RoleDialogComponent} from "./modals/role/role-dialog-component";
 import {CommonModule} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
@@ -203,6 +203,10 @@ export class RoleComponent implements OnInit {
         this.ngOnInit();
       });
     }
+  }
+
+  openPermissionsDialog(uuid: string) {
+    console.log('Open set permissions clicked ', uuid);
   }
 }
 
