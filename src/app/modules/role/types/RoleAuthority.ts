@@ -1,9 +1,6 @@
 import {Authority} from "../../authority/types/Authority";
 
-export interface RoleAuthorityApiResponse {
-  data: [
-    
-  ];
-  authorities: Authority[];
+export interface RoleAuthority {
   resource: string;
+  authorities: Authority[];
 }
