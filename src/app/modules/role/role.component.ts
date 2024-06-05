@@ -30,6 +30,7 @@ import {Authority} from "../authority/types/Authority";
 import {NotifierService} from "../notification/notifier.service";
 import {RoleApiResponse} from "./types/RoleApiResponse";
 import {MenuGroup} from "../menu-group/types/MenuGroup";
+import {RolePermissionDialog} from "./modals/permissions/permissions-dialog-component";
 
 @Component({
   selector: 'app-roles',
@@ -158,7 +159,6 @@ export class RoleComponent implements OnInit {
   }
 
   delete() {
-    console.log('MenuItem deleted clicked');
     this.roleService.delete(this.roleUuid).subscribe({
       next: (response: RoleApiResponse) => {
         this.notifierService.showNotification(response.message, 'OK', 'error');
@@ -206,7 +206,17 @@ export class RoleComponent implements OnInit {
   }
 
   openPermissionsDialog(uuid: string) {
-    console.log('Open set permissions clicked ', uuid);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.minWidth = '400px';
+    dialogConfig.height = 'auto';
+    dialogConfig.data = uuid;
+    const dialogRef = this.dialogService.open(RolePermissionDialog,dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }
 
