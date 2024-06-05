@@ -1,96 +1,46 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle
-} from '@angular/material/dialog';
-import {NotifierService} from "../../../notification/notifier.service";
-import {RoleService} from "../../role.service";
-import {FlexModule} from "@angular/flex-layout";
+import {Component, CUSTOM_ELEMENTS_SCHEMA, Inject, NO_ERRORS_SCHEMA, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
+import {AuthorityService} from "../../../authority/authority.service";
+import {MatCard, MatCardContent, MatCardHeader} from "@angular/material/card";
+import {MatCheckbox} from "@angular/material/checkbox";
 import {ReactiveFormsModule} from "@angular/forms";
-import {MatDivider} from "@angular/material/divider";
-import {MatFormField, MatLabel} from "@angular/material/form-field";
-import {MatInput} from "@angular/material/input";
-import {MatButton} from "@angular/material/button";
-import {CommonModule} from "@angular/common";
-import {CdkTextareaAutosize} from "@angular/cdk/text-field";
-import {CdkDrag, CdkDropList, DragDropModule} from "@angular/cdk/drag-drop";
-import {MatList, MatListItem} from "@angular/material/list";
-import {MatIcon} from "@angular/material/icon";
+import {FlexLayoutModule} from "@angular/flex-layout";
+import {JsonPipe, NgForOf} from "@angular/common";
+import {MatFormField} from "@angular/material/form-field";
+import {MatListOption, MatSelectionList} from "@angular/material/list";
+import {RoleAuthority} from "../../types/RoleAuthority";
 
 @Component({
-  selector: 'app-role-dialog',
-  templateUrl: 'role-dialog-component.html',
+  selector: 'app-permissions-dialog',
+  templateUrl: 'permissions-dialog-component.html',
+  styleUrls: ['permissions-dialog.component.css'],
   standalone: true,
-  providers: [RoleService],
-  imports: [
-    FlexModule,
-    ReactiveFormsModule,
-    MatDialogTitle,
-    MatDivider,
-    MatDialogContent,
-    MatFormField,
-    MatInput,
-    MatDialogActions,
-    MatDialogClose,
-    MatButton,
-    CommonModule,
-    CdkTextareaAutosize,
-    MatLabel,
-    CdkDropList,
-    CdkDrag,
-    MatList,
-    MatListItem,
-    DragDropModule,
-    MatIcon
-  ],
-  styleUrls: ['role-dialog.component.css']
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  imports: [MatDialogModule, MatButtonModule, MatCard, MatCardContent, MatCardHeader, MatCheckbox, ReactiveFormsModule, FlexLayoutModule, NgForOf, MatFormField, JsonPipe, MatSelectionList, MatListOption],
 })
+export class RolePermissionDialog implements OnInit {
+  roleAuthorities: RoleAuthority[];
 
-export class RoleDialogComponent implements OnInit {
-  title:string = 'Roles';
-  params: { page: number; size: number; sort: string } = {size: 10, page: 0, sort: 'name'};
   constructor(
-    public roleService: RoleService,
-    public dialogRef: MatDialogRef<RoleDialogComponent>,
-    public notifierService: NotifierService,
+    public authorityService: AuthorityService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
 
   ngOnInit(): void {
-    this.roleService.populateForm(this.data);
+    this.getAuthoritiesByRole();
+    this.authorityService.initializeFormGroup();
   }
 
-  submitForm(): void {
-    if (this.roleService.form.valid) {
-      if (this.roleService.form.get('uuid')?.value != '') {
-        this.roleService.update(this.roleService.form.value)
-          .subscribe((response) => {
-            this.notifierService.showNotification(response.message, 'OK', 'success');
-            this.dialogRef.close();
-            this.onClose();
-          }, error => {
-            this.notifierService.showNotification(error.message, 'OK', 'error');
-          });
-      } else {
-        this.roleService.create(this.roleService.form.value)
-          .subscribe(response => {
-            this.notifierService.showNotification(response.message, 'OK', 'error');
-            this.onClose();
-          }, error => {
-            this.notifierService.showNotification(error.message, 'OK', 'error');
-          });
-      }
-    }
+  getAuthoritiesByRole() {
+    this.authorityService.findByRole(this.data).subscribe(response => {
+      this.roleAuthorities = response.data;
+      console.log('Api response =>', response.data);
+    })
   }
 
-  onClose() {
-    this.roleService.form.reset();
-    this.roleService.initializeFormGroup();
-    this.dialogRef.close();
+  submitForm() {
+    console.log('Form Values =>', this.authorityService.form.value);
   }
 }
