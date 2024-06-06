@@ -1,22 +1,24 @@
 <h2 mat-dialog-title>
-<!--  {{ authorityService.form.controls['uuid'].value ? "Edit Role Permissions" : "Create Role Permissions" }}-->
+  <!--  {{ authorityService.form.controls['uuid'].value ? "Edit Role Permissions" : "Create Role Permissions" }}-->
 </h2>
 
 <form #formDirective="ngForm"
       (ngSubmit)="submitForm()"
       [formGroup]="authorityService.form">
   <mat-dialog-content>
-    <div fxLayout="row wrap" fxLayoutGap="20px">
-      <ng-container *ngFor="let permission of roleAuthorities; let i = index">
-        <div fxFlex="20" fxLayoutGap="2">
-          <mat-card class="mat-elevation-z4" appearance="raised">
+
+    <div fxLayout="row wrap" fxLayoutGap="5">
+      <ng-container *ngFor="let resource of roleAuthorities" formArrayName="authorities">
+        <div fxFlex="25">
+          <mat-card>
             <mat-card-header>
-              <mat-card-title><h1>{{ permission.resource }}</h1></mat-card-title>
+              <mat-card-title>{{ resource.resource }}</mat-card-title>
             </mat-card-header>
-            <mat-card-content style="min-height:250px; font-size: xx-small;">
-              <div *ngFor="let authority of permission.authorities" formArrayName="authorities">
-                <mat-checkbox class="right-align">{{ authority.name }}</mat-checkbox>
-              </div>
+            <mat-card-content>
+              <ng-container *ngFor="let permission of resource.authorities | keyvalue; let i = index">
+                <mat-checkbox [formControlName]="i">{{ permission.value }}</mat-checkbox>
+                <br/>
+              </ng-container>
             </mat-card-content>
           </mat-card>
         </div>
@@ -26,7 +28,7 @@
 </form>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Save</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Assign Permissions</button>
 </mat-dialog-actions>
 
-<pre>Form Value: {{ authorityService.form.value | json }}</pre>
+<pre>Form Value: {{ authorityService.form.controls['authorities'].value }}</pre>

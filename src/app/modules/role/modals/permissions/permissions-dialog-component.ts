@@ -6,7 +6,7 @@ import {MatCard, MatCardContent, MatCardHeader} from "@angular/material/card";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {ReactiveFormsModule} from "@angular/forms";
 import {FlexLayoutModule} from "@angular/flex-layout";
-import {JsonPipe, NgForOf} from "@angular/common";
+import {JsonPipe, KeyValuePipe, NgForOf} from "@angular/common";
 import {MatFormField} from "@angular/material/form-field";
 import {MatListOption, MatSelectionList} from "@angular/material/list";
 import {RoleAuthority} from "../../types/RoleAuthority";
@@ -17,7 +17,7 @@ import {RoleAuthority} from "../../types/RoleAuthority";
   styleUrls: ['permissions-dialog.component.css'],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-  imports: [MatDialogModule, MatButtonModule, MatCard, MatCardContent, MatCardHeader, MatCheckbox, ReactiveFormsModule, FlexLayoutModule, NgForOf, MatFormField, JsonPipe, MatSelectionList, MatListOption],
+  imports: [MatDialogModule, MatButtonModule, MatCard, MatCardContent, MatCardHeader, MatCheckbox, ReactiveFormsModule, FlexLayoutModule, NgForOf, MatFormField, JsonPipe, MatSelectionList, MatListOption, KeyValuePipe],
 })
 export class RolePermissionDialog implements OnInit {
   roleAuthorities: RoleAuthority[];
@@ -30,13 +30,14 @@ export class RolePermissionDialog implements OnInit {
 
   ngOnInit(): void {
     this.getAuthoritiesByRole();
-    this.authorityService.initializeFormGroup();
+    this.authorityService.initializeFormGroup(this.data);
   }
 
   getAuthoritiesByRole() {
     this.authorityService.findByRole(this.data).subscribe(response => {
       this.roleAuthorities = response.data;
-      console.log('Api response =>', response.data);
+      this.authorityService.initAuthorities(response.data);
+      // console.log('Api response =>', response.data);
     })
   }
 

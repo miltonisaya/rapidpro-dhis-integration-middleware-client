@@ -54,7 +54,7 @@ import {MenuItem} from "../../menu-item/types/MenuItem";
   styleUrls: ['menu-group-dialog.component.css']
 })
 
-export class MenuGroupDialogComponent implements AfterViewInit {
+export class MenuGroupDialogComponent implements OnInit {
   params: { page: number; size: number; sort: string } = {size: 10, page: 0, sort: 'name'};
   assignedMenuItems: MenuItem[]
   selectedMenuItems: MenuItem[];
@@ -68,7 +68,7 @@ export class MenuGroupDialogComponent implements AfterViewInit {
   ) {
   }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.menuService.populateForm(this.data);
     this.getMenuItems();
   }
