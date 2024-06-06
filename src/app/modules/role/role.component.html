@@ -50,7 +50,8 @@
           <button mat-button matTooltip="Delete" matTooltipPosition="left" (click)="openDeleteDialog(row.uuid)">
             <mat-icon>delete</mat-icon>
           </button>
-          <button mat-button matTooltip="Set Permissions" matTooltipPosition="left" (click)="openPermissionsDialog(row.uuid)">
+          <button mat-button matTooltip="Set Permissions" matTooltipPosition="left"
+                  (click)="openPermissionsDialog(row.uuid)">
             <mat-icon>settings</mat-icon>
           </button>
         </td>
@@ -79,3 +80,43 @@
     <button (click)="delete()" mat-button>YES</button>
   </mat-dialog-actions>
 </ng-template>
+
+
+<app-dialog
+  [fullScreen]="true"
+  [open]="permissionDialogOpen"
+  (onClose)="handleClose($event)"
+  title="Role Permissions"
+>
+  <ng-template>
+    <div fxLayout="column" style="height: 100vh; overflow-y: auto; overflow-x: hidden; padding: 16px;">
+      <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-bottom: 16px;">
+        <div fxFlex="100%">
+          <span class="role-title">Permission For Role {{ currentRole.name }}</span>
+        </div>
+        <button mat-icon-button color="primary"  class="mat-mdc-raised-button" (click)="savePermissions()"><mat-icon>save</mat-icon></button>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="16px">
+        <div fxFlex="1 1 calc(25% - 16px)" *ngFor="let resource of roleAuthorities" style="box-sizing: border-box;">
+          <div class="permission-container">
+            <div class="permission-header">
+              <span class="permission-title">{{ resource.resource }}</span>
+            </div>
+            <div class="permission-content">
+              <ng-container *ngFor="let permission of resource.authorities">
+                <mat-checkbox [checked]="isSelected(permission.id)"
+                              (change)="togglePermission(permission.id)">
+                  {{ permission.name }}
+                </mat-checkbox>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  </ng-template>
+</app-dialog>

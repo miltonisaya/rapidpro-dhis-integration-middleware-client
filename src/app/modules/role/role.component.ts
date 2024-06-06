@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort, MatSortHeader} from "@angular/material/sort";
 import {
@@ -24,13 +24,20 @@ import {FlexModule} from '@angular/flex-layout';
 import {RoleDialogComponent} from "./modals/role/role-dialog-component";
 import {CommonModule} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
 import {Role} from "./types/Role";
 import {Authority} from "../authority/types/Authority";
 import {NotifierService} from "../notification/notifier.service";
 import {RoleApiResponse} from "./types/RoleApiResponse";
 import {MenuGroup} from "../menu-group/types/MenuGroup";
-import {RolePermissionDialog} from "./modals/permissions/permissions-dialog-component";
+import {lastValueFrom} from "rxjs";
+import {AuthorityService} from "../authority/authority.service";
+import {DialogComponent} from "../../components/dialog-component";
+import {MatDialogActions, MatDialogClose, MatDialogContent} from "@angular/material/dialog";
+import {MatCard, MatCardContent, MatCardHeader} from "@angular/material/card";
+import {MatCheckbox} from "@angular/material/checkbox";
+import {RoleAuthority} from "./types/RoleAuthority";
+import {MatGridList, MatGridTile} from "@angular/material/grid-list";
+import {BreakpointObserver} from "@angular/cdk/layout";
 
 @Component({
   selector: 'app-roles',
@@ -62,19 +69,34 @@ import {RolePermissionDialog} from "./modals/permissions/permissions-dialog-comp
     MatSort,
     MatSortHeader,
     MatButton,
+    DialogComponent,
     MatDialogContent,
     MatDialogActions,
-    MatDialogClose
+    MatDialogClose,
+    MatCard,
+    MatCardContent,
+    MatCardHeader,
+    MatCheckbox,
+    MatGridList,
+    MatGridTile
   ],
   providers: [
     RoleService
-  ]
+  ], schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 
 export class RoleComponent implements OnInit {
   title: string = 'Roles';
   data: Role[] = [];
   roleUuid: string;
+  currentRole: any | null = null;
+  permissionDialogOpen: boolean = false;
+
+  //Permissions Config
+  roleAuthorities: RoleAuthority[];
+  selectedAuthorities: number[] = [];
+  selectedPermissions: number[] = [111, 113];
+
 
   //Pagination starts here
   @ViewChild('paginator', {static: true}) paginator: MatPaginator;
@@ -91,8 +113,9 @@ export class RoleComponent implements OnInit {
 
   constructor(
     private roleService: RoleService,
-    private dialogService: MatDialog,
-    private notifierService: NotifierService
+    private authorityService: AuthorityService,
+    private notifierService: NotifierService,
+    private breakpointObserver: BreakpointObserver
   ) {
   }
 
@@ -125,16 +148,16 @@ export class RoleComponent implements OnInit {
 
   openDeleteDialog(uuid: string) {
     this.roleUuid = uuid;
-    this.dialogService.open(this.deleteDialog)
-      .afterClosed().subscribe(() => {
-      this.getRoles();
-    });
+    // this.dialogService.open(this.deleteDialog)
+    //   .afterClosed().subscribe(() => {
+    //   this.getRoles();
+    // });
   }
 
   openDialog(row: any): void {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
+    // const dialogConfig = new MatDialogConfig();
+    // dialogConfig.disableClose = true;
+    // dialogConfig.autoFocus = true;
     if (row) {
       const menuData: MenuGroup = {
         uuid: row.uuid,
@@ -143,18 +166,18 @@ export class RoleComponent implements OnInit {
         sortOrder: row.sortOrder,
         icon: row.icon
       };
-      dialogConfig.data = menuData;
-      this.roleService.populateForm(menuData);
-      this.dialogService.open(RoleDialogComponent, dialogConfig)
-        .afterClosed().subscribe(() => {
-        this.getRoles();
-      });
+      // dialogConfig.data = menuData;
+      // this.roleService.populateForm(menuData);
+      // this.dialogService.open(RoleDialogComponent, dialogConfig)
+      //   .afterClosed().subscribe(() => {
+      //   this.getRoles();
+      // });
     } else {
-      dialogConfig.data = {};
-      this.dialogService.open(RoleDialogComponent, dialogConfig)
-        .afterClosed().subscribe(() => {
-        this.getRoles();
-      });
+      // dialogConfig.data = {};
+      // this.dialogService.open(RoleDialogComponent, dialogConfig)
+      //   .afterClosed().subscribe(() => {
+      //   this.getRoles();
+      // });
     }
   }
 
@@ -167,7 +190,7 @@ export class RoleComponent implements OnInit {
         this.notifierService.showNotification(error.error.message, 'OK', 'error');
       }
     });
-    this.dialogService.closeAll();
+    // this.dialogService.closeAll();
   }
 
   openCreateDialog(data?: {
@@ -178,12 +201,12 @@ export class RoleComponent implements OnInit {
     authorities: Authority[]
   }): void {
     // console.log(data);
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.minWidth = '400px';
-    dialogConfig.height = 'auto';
-    dialogConfig.panelClass = "dialog-config"
+    // const dialogConfig = new MatDialogConfig();
+    // dialogConfig.disableClose = true;
+    // dialogConfig.autoFocus = true;
+    // dialogConfig.minWidth = '400px';
+    // dialogConfig.height = 'auto';
+    // dialogConfig.panelClass = "dialog-config"
     if (data) {
       const roleData = {
         id: data.uuid,
@@ -192,31 +215,54 @@ export class RoleComponent implements OnInit {
         code: data.code,
       };
       this.roleService.populateForm(roleData);
-      this.dialogService.open(RoleDialogComponent, dialogConfig)
-        .afterClosed().subscribe(() => {
-        this.ngOnInit();
-      });
+      // this.dialogService.open(RoleDialogComponent, dialogConfig)
+      //   .afterClosed().subscribe(() => {
+      //   this.ngOnInit();
+      // });
     } else {
-      dialogConfig.minWidth = '400px';
-      this.dialogService.open(RoleDialogComponent, dialogConfig)
-        .afterClosed().subscribe(() => {
-        this.ngOnInit();
-      });
+      // dialogConfig.minWidth = '400px';
+      // this.dialogService.open(RoleDialogComponent, dialogConfig)
+      //   .afterClosed().subscribe(() => {
+      //   this.ngOnInit();
+      // });
     }
   }
 
-  openPermissionsDialog(uuid: string) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.minWidth = '400px';
-    dialogConfig.height = 'auto';
-    dialogConfig.data = uuid;
-    const dialogRef = this.dialogService.open(RolePermissionDialog,dialogConfig);
+  async openPermissionsDialog(uuid: string) {
+    const role = await lastValueFrom((this.roleService.findByUuid(uuid)));
+    this.currentRole = role.data;
+    this.permissionDialogOpen = true;
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    let res = await lastValueFrom(this.authorityService.findByRole(uuid));
+    this.roleAuthorities = res.data;
+    this.selectedPermissions = role.data.authorities.map((a: { id: any; }) => a.id);
+  }
+
+  togglePermission(permissionId: number): void {
+    const index = this.selectedPermissions.indexOf(permissionId);
+    if (index > -1) {
+      this.selectedPermissions.splice(index, 1);
+    } else {
+      this.selectedPermissions.push(permissionId);
+    }
+  }
+
+  isSelected(permissionId: number): boolean {
+    return this.selectedPermissions.includes(permissionId);
+  }
+
+  handleClose($event: boolean) {
+    this.permissionDialogOpen = false;
+  }
+
+  savePermissions() {
+    const payload = {
+      authorityIds: this.selectedPermissions,
+      roleUuid: this.currentRole.uuid
+    }
+
+    //Close the dialog
+    this.permissionDialogOpen = false;
   }
 }
 
