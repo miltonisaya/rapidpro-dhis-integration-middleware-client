@@ -48,10 +48,6 @@ export class RoleService {
     return this._http.put(`${this.API_ENDPOINT}/${data.uuid}`, data);
   }
 
-  findUnAssignedAuthoritiesByRoleUuid(roleUuid: string): Observable<any> {
-    return this._http.get(`${this.API_ENDPOINT}/authorities/${roleUuid}`);
-  }
-
   initializeFormGroup() {
     return this.form.patchValue({
       id: '',
@@ -63,5 +59,9 @@ export class RoleService {
 
   create(payload: any): Observable<any> {
     return this._http.post(`${this.API_ENDPOINT}`, payload);
+  }
+
+  findByUuid(uuid: string):Observable<any> {
+    return this._http.get(`${this.API_ENDPOINT}/${uuid}`);
   }
 }
