@@ -1,20 +1,25 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { FormArray, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { Authority } from './types/Authority';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Authority} from "./types/Authority";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthorityService {
   private baseUrl = 'http://localhost:8081/api/v1';
-  form: FormGroup = new FormGroup({
-    roleUuid: new FormControl('', Validators.required),
-    authorities: new FormArray([])
+
+  form: FormGroup = this.fb.group({
+    roleUuid: this.fb.control('', Validators.required),
+    authorities: this.fb.array([])
   });
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private fb: FormBuilder
+  ) {
+  }
 
   initializeFormGroup(roleUuid: string) {
     this.form.patchValue({
@@ -23,21 +28,30 @@ export class AuthorityService {
     });
   }
 
-  initAuthorities(data: any) {
-    const authoritiesFormArray = this.form.get('authorities') as FormArray;
+  async addItemToAuthorities(authorities: any) {
+    authorities.map((authority: Authority) => {
+      const item = this.fb.group({
+        uuid: this.fb.control(authority.uuid),
+        name: this.fb.control(authority.name),
+        action: this.fb.control(authority.action),
+        resource: this.fb.control(authority.resource)
+      });
+      this.authorities.push(item);
+    });
+    return this.authorities;
   }
 
-  createAuthorityControl(authority: Authority): FormGroup {
-    return new FormGroup({
-      name: new FormControl(authority.name),
-      uuid: new FormControl(authority.uuid),
-      action: new FormControl(authority.action),
-      resource: new FormControl(authority.resource),
-    });
+  get authorities() {
+    return this.form.get('authorities') as FormArray;
   }
 
   findByRole(uuid: string): Observable<any> {
     let requestUrl = `${this.baseUrl}/authorities/role/${uuid}`;
+    return this.http.get(requestUrl);
+  }
+
+  findAllAuthorityPermissions(): Observable<any> {
+    let requestUrl = `${this.baseUrl}/authorities/permissions`;
     return this.http.get(requestUrl);
   }
 }
