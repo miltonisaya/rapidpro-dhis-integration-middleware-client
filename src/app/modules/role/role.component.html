@@ -130,7 +130,7 @@
       <mat-dialog-content class="mat-typography">
         <div class="dialog-content" fxLayout="column" fxLayoutGap="20px">
           <div fxLayout="row" fxLayoutGap="20px" fxLayout.xs="column">
-            <mat-form-field fxFlex="50" fxFlex.xs="100">
+            <mat-form-field fxFlex="50" fxFlex.xs="100" appearance="outline">
               <mat-label>Name</mat-label>
               <input matInput
                      formControlName="name"
@@ -140,7 +140,7 @@
                      autocomplete="off">
             </mat-form-field>
 
-            <mat-form-field fxFlex="50" fxFlex.xs="100">
+            <mat-form-field fxFlex="50" fxFlex.xs="100" appearance="outline">
               <mat-label>Code</mat-label>
               <input matInput
                      formControlName="code"
@@ -152,7 +152,7 @@
           </div>
 
           <div fxLayout="column" fxLayoutAlign="stretch">
-            <mat-form-field>
+            <mat-form-field appearance="outline">
               <mat-label>Description</mat-label>
               <textarea matInput
                         formControlName="description"

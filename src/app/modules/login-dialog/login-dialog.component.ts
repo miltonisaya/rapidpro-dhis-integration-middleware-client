@@ -8,13 +8,14 @@ import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { FlexModule } from '@angular/flex-layout';
+import {MatButton} from "@angular/material/button";
 
 @Component({
     selector: 'app-login-dialog',
     templateUrl: './login-dialog.component.html',
     styleUrls: ['./login-dialog.component.css'],
     standalone: true,
-    imports: [ReactiveFormsModule, FlexModule, MatFormField, MatLabel, MatIcon, MatInput]
+  imports: [ReactiveFormsModule, FlexModule, MatFormField, MatLabel, MatIcon, MatInput, MatButton]
 })
 export class LoginDialogComponent {
   formGroup: FormGroup = new FormGroup({
