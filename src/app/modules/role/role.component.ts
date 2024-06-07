@@ -38,6 +38,7 @@ import {RoleAuthority} from "./types/RoleAuthority";
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {ReactiveFormsModule} from "@angular/forms";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
+import {ConfirmDialogComponent} from "../../components/confirm/confirm.dialog";
 
 @Component({
   selector: 'app-roles',
@@ -79,7 +80,8 @@ import {CdkTextareaAutosize} from "@angular/cdk/text-field";
     MatGridList,
     MatGridTile,
     ReactiveFormsModule,
-    CdkTextareaAutosize
+    CdkTextareaAutosize,
+    ConfirmDialogComponent
   ],
   providers: [
     RoleService
@@ -100,7 +102,6 @@ export class RoleComponent implements OnInit {
   //Create/Update Dialog Config
   createEditDialogOpen: boolean = false;
 
-
   //Pagination starts here
   @ViewChild('paginator', {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -113,6 +114,7 @@ export class RoleComponent implements OnInit {
   totalRecords = 0;
   pageSizeOptions: number[] = [10, 25, 100, 1000];
   @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
+  isConfirmDeleteDialogOpen = false;
 
   constructor(
     public roleService: RoleService,
@@ -150,10 +152,8 @@ export class RoleComponent implements OnInit {
 
   openDeleteDialog(uuid: string) {
     this.roleUuid = uuid;
-    // this.dialogService.open(this.deleteDialog)
-    //   .afterClosed().subscribe(() => {
-    //   this.getRoles();
-    // });
+    this.isConfirmDeleteDialogOpen = true;
+    this.getRoles();
   }
 
   openEditDialog(row: any): void {
@@ -170,16 +170,16 @@ export class RoleComponent implements OnInit {
       this.roleService.populateForm(menuData);
   }
 
-  delete() {
-    this.roleService.delete(this.roleUuid).subscribe({
-      next: (response: RoleApiResponse) => {
-        this.notifierService.showNotification(response.message, 'OK', 'error');
-      },
-      error: (error) => {
-        this.notifierService.showNotification(error.error.message, 'OK', 'error');
-      }
-    });
-  }
+  // delete() {
+  //   this.roleService.delete(this.roleUuid).subscribe({
+  //     next: (response: RoleApiResponse) => {
+  //       this.notifierService.showNotification(response.message, 'OK', 'error');
+  //     },
+  //     error: (error) => {
+  //       this.notifierService.showNotification(error.error.message, 'OK', 'error');
+  //     }
+  //   });
+  // }
 
   openCreateDialog(data?: {
     uuid: string;
@@ -271,6 +271,24 @@ export class RoleComponent implements OnInit {
           });
       }
     }
+  }
+
+  closeConfirmDialog(event: any) {
+    this.isConfirmDeleteDialogOpen = false;
+  }
+
+  async handleConfirmDelete() {
+    console.log("Handling confirm delete")
+    this.roleService.delete(this.roleUuid).subscribe({
+      next: (response: RoleApiResponse) => {
+        this.notifierService.showNotification(response.message, 'OK', 'error');
+        this.getRoles();
+      },
+      error: (error) => {
+        this.notifierService.showNotification(error.error.message, 'OK', 'error');
+        this.getRoles();
+      }
+    });
   }
 }
 
