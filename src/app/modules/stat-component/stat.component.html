@@ -1,0 +1,48 @@
+<div
+  class="flex flex-col w-1/4 p-8 border-r border-gray-300 last:border-r-0 m-2"
+>
+  <div class="flex items-center justify-between">
+    <div class="flex items-center space-x-4">
+      <div class="bg-gray-100 p-2 rounded-full border border-gray-300">
+        <mat-icon>{{ stat.icon }}</mat-icon>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">{{ stat.title }}</p>
+        <div class="flex items-center space-x-2">
+          <h3 class="text-lg font-semibold text-gray-900">{{ stat.value }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="bg-gray-100 p-1 rounded-full border-0 border-gray-300">
+      <mat-icon
+        class="h-8 w-8 fill-green-400 bg-green-400 text-white rounded-full"
+        >info_outline</mat-icon
+      >
+    </div>
+  </div>
+  <div class="flex justify-between mt-2">
+    <span class="pt-1 text-xs text-gray-500">{{ stat.description }}</span>
+    <div class="flex items-center gap-x-1">
+      <span
+        class="text-xs font-medium"
+        [ngClass]="{
+          'text-green-500': stat.status === 'up',
+          'text-rose-500': stat.status === 'down'
+        }"
+      >
+        {{ stat.percentage }}
+      </span>
+      <div class="p-1 border border-gray-300">
+        <mat-icon
+          class="h-2 w-2"
+          [ngClass]="{
+            'text-green-500': stat.status === 'up',
+            'text-rose-500': stat.status === 'down'
+          }"
+        >
+          {{ stat.status === "up" ? "arrow_upward" : "arrow_downward" }}
+        </mat-icon>
+      </div>
+    </div>
+  </div>
+</div>

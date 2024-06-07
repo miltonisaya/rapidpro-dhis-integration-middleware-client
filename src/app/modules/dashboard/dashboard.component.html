@@ -3,27 +3,9 @@
   <span class="breadcrumb">Home / Dashboard</span>
 </div>
 <div
-  fxLayout="row"
-  fxLayoutAlign="space-between center"
-  fxLayoutGap="20px"
-  class="stats-cards"
+  class="flex flex-row justify-between bg-white rounded-md border border-gray-300 mt-4"
 >
-  <mat-card fxFlex="25" class="card card-one">
-    <mat-card-title>Total # of registered clients</mat-card-title>
-    <mat-card-content> 145,493 </mat-card-content>
-  </mat-card>
-  <mat-card fxFlex="25" class="card card-two">
-    <mat-card-title>Total # of registered clients this year</mat-card-title>
-    <mat-card-content> 25,443 </mat-card-content>
-  </mat-card>
-  <mat-card fxFlex="25" class="card card-three">
-    <mat-card-title>Total # of registered clients this month</mat-card-title>
-    <mat-card-content> 5,493 </mat-card-content>
-  </mat-card>
-  <mat-card fxFlex="25" class="card card-four">
-    <mat-card-title>Total # of registered clients today</mat-card-title>
-    <mat-card-content> 493 </mat-card-content>
-  </mat-card>
+  <app-stats *ngFor="let stat of stats" [stat]="stat"></app-stats>
 </div>
 
 <div
