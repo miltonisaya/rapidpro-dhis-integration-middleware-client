@@ -49,9 +49,8 @@ export class AuthorityService {
     let requestUrl = `${this.baseUrl}/authorities/role/${uuid}`;
     return this.http.get(requestUrl);
   }
-
-  findAllAuthorityPermissions(): Observable<any> {
-    let requestUrl = `${this.baseUrl}/authorities/permissions`;
-    return this.http.get(requestUrl);
+  saveRoleAuthorities(payload: { roleUuid: any; authorityIds: number[] }): Observable<any> {
+    let requestUrl = `${this.baseUrl}/authorities/role-authorities`;
+    return this.http.post(requestUrl, payload);
   }
 }

@@ -261,6 +261,12 @@ export class RoleComponent implements OnInit {
       roleUuid: this.currentRole.uuid
     }
 
+    this.authorityService.saveRoleAuthorities(payload).subscribe(response => {
+      this.notifierService.showNotification(response.message, 'OK', 'success')
+    }, error => {
+      this.notifierService.showNotification(error.error.message, 'OK', 'error')
+    })
+
     //Close the dialog
     this.permissionDialogOpen = false;
   }
