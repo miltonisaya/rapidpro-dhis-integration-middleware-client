@@ -1,35 +1,35 @@
 <div class="login-page-container" fxLayout="column" fxLayoutAlign="center center">
   <div class="login-page-content">
-      <div fxLayout="column" fxLayoutAlign="center center">
-        <img src="assets/smz_logo.png" alt="" height="120" width="160">
-        <h2 fxLayout="column" fxLayoutAlign="center center" style="font-size: 1em;">ZanAfyaMaoni Interoperability
-          Middleware</h2>
-      </div>
-        <form (ngSubmit)="loginProcess()" [formGroup]="loginFormGroup" fxLayout="column">
-          <mat-form-field>
-            <mat-label>Username</mat-label>
-            <mat-icon matSuffix>perm_identity</mat-icon>
-            <input autocomplete="off" formControlName="email" matInput placeholder="Email">
-            <div class="validation-error"
-                 *ngIf="loginFormGroup.controls['email'].invalid && (loginFormGroup.controls['email'].dirty || loginFormGroup.controls['email'].touched)">
-              <div *ngIf="loginFormGroup.controls['email'].errors">
-                Email is required
-              </div>
-            </div>
-          </mat-form-field>
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <img src="assets/smz_logo.png" alt="" height="120" width="160">
+      <h2 fxLayout="column" fxLayoutAlign="center center" style="font-size: 1em;">ZanAfyaMaoni Interoperability
+        Middleware</h2>
+    </div>
+    <form (ngSubmit)="loginProcess()" [formGroup]="loginFormGroup" fxLayout="column">
+      <mat-form-field appearance="outline">
+        <mat-label>Username</mat-label>
+        <mat-icon matSuffix>perm_identity</mat-icon>
+        <input autocomplete="off" formControlName="email" matInput placeholder="Email">
+        <div class="validation-error"
+             *ngIf="loginFormGroup.controls['email'].invalid && (loginFormGroup.controls['email'].dirty || loginFormGroup.controls['email'].touched)">
+          <div *ngIf="loginFormGroup.controls['email'].errors">
+            Email is required
+          </div>
+        </div>
+      </mat-form-field>
 
-          <mat-form-field>
-            <mat-label>Password</mat-label>
-            <mat-icon matSuffix>vpn_key</mat-icon>
-            <input autocomplete="off" formControlName="password" matInput placeholder="Password" type="password">
-            <div class="validation-error"
-                 *ngIf="loginFormGroup.controls['password'].invalid && (loginFormGroup.controls['password'].dirty || loginFormGroup.controls['password'].touched)">
-              <div *ngIf="loginFormGroup.controls['password'].errors">
-                Password is required
-              </div>
-            </div>
-          </mat-form-field>
-          <button color="primary" mat-raised-button type="submit">Login</button>
-        </form>
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <mat-icon matSuffix>vpn_key</mat-icon>
+        <input autocomplete="off" formControlName="password" matInput placeholder="Password" type="password">
+        <div class="validation-error"
+             *ngIf="loginFormGroup.controls['password'].invalid && (loginFormGroup.controls['password'].dirty || loginFormGroup.controls['password'].touched)">
+          <div *ngIf="loginFormGroup.controls['password'].errors">
+            Password is required
+          </div>
+        </div>
+      </mat-form-field>
+      <button color="primary" mat-raised-button type="submit">Login</button>
+    </form>
   </div>
 </div>
