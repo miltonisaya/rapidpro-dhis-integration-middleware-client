@@ -9,6 +9,7 @@ import {MatIcon} from '@angular/material/icon';
 import {MatFormField} from '@angular/material/form-field';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {FlexModule} from '@angular/flex-layout';
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-login',
@@ -24,12 +25,13 @@ import {FlexModule} from '@angular/flex-layout';
     MatFormField,
     MatIcon,
     MatInput,
-    MatButton
+    MatButton,
+    NgIf
   ]
 })
 export class LoginComponent {
   loginFormGroup: FormGroup = new FormGroup({
-    email: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required])
   });
 

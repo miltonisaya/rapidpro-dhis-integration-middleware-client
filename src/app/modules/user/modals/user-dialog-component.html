@@ -1,0 +1,70 @@
+<section class="login-form-container"
+         fxFlexFill
+         fxLayout="row"
+         fxLayoutAlign="center center">
+  <form #formDirective="ngForm"
+        (ngSubmit)="submitForm(usersService.form)"
+        [formGroup]="usersService.form"
+        class="form">
+    <h1 class="dialog-header" mat-dialog-title>
+      {{ usersService.form.controls['uuid'].value ? "Edit User" : "Create User" }}
+    </h1>
+    <mat-divider></mat-divider>
+
+    <mat-dialog-content>
+      <div class="dialog-content" fxLayout="column" fxLayoutGap="10px">
+        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between stretch">
+          <mat-form-field fxFlex="45">
+            <input autocomplete="off"
+                   formControlName="name"
+                   matInput
+                   placeholder="Enter name" required>
+          </mat-form-field>
+
+          <mat-form-field fxFlex="45">
+            <input autocomplete="off"
+                   formControlName="phone"
+                   matInput
+                   placeholder="Enter Phone"
+                   required>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="stretch">
+          <mat-form-field>
+            <input autocomplete="off"
+                   formControlName="email"
+                   matInput
+                   placeholder="Enter Email"
+                   required>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div fxLayout="column" fxLayoutAlign="stretch">
+        <mat-form-field appearance="fill">
+          <mat-label>Roles</mat-label>
+          <mat-select [compareWith]="usersService.compareObjects"
+                      formControlName="roles"
+                      multiple
+                      required>
+            <mat-option *ngFor="let role of roles" [value]="role">
+              {{ role.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
+      <div fxLayout="row" fxLayoutGap="10px">
+        <button mat-dialog-close mat-raised-button type="button">CANCEL</button>
+        <button color="primary" mat-raised-button type="submit">
+          {{ usersService.form.controls['uuid'].value ? "UPDATE" : "CREATE" }}
+        </button>
+      </div>
+    </mat-dialog-actions>
+  </form>
+</section>
+
+<pre>{{ usersService.form.value | json }}</pre>

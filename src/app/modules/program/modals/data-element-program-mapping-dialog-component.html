@@ -1,0 +1,74 @@
+<section fxFlexFill
+         fxLayout="column"
+         fxLayout.xs="column"
+         fxLayoutAlign="end none">
+  <h1 class="dialog-header" fxLayout="row" fxLayoutAlign="center center" mat-dialog-title>
+    {{ "Map DHIS2 Data Element" }}
+  </h1>
+  <br>
+  <mat-divider></mat-divider>
+  <mat-dialog-content>
+    <p-pickList
+      [source]="fetchedList"
+      [target]="selectedDataElementsList"
+      sourceHeader="Available"
+      targetHeader="Selected"
+      [dragdrop]="true"
+      [responsive]="true"
+      [sourceStyle]="{ height: '10rem' }"
+      [targetStyle]="{ height: '10rem' }"
+      filterBy="name"
+      sourceFilterPlaceholder="Search by name"
+      targetFilterPlaceholder="Search by name"
+      breakpoint="762px">
+      <ng-template let-product pTemplate="item">
+        <div class="flex flex-wrap p-2 align-items-center gap-3">
+          <div class="flex-1 flex flex-column gap-2">
+                    <span class="font-bold">
+                        {{ product.name }}
+                    </span>
+          </div>
+        </div>
+      </ng-template>
+    </p-pickList>
+<!--    <p-pickList-->
+<!--      [responsive]="true"-->
+<!--      [sourceStyle]="{'height':'10rem'}"-->
+<!--      [source]="fetchedList"-->
+<!--      [targetStyle]="{'height':'10rem'}"-->
+<!--      [target]="selectedDataElementsList"-->
+<!--      dragdrop="true"-->
+<!--      filterBy="Name"-->
+<!--      sourceFilterPlaceholder="Search by Name"-->
+<!--      sourceHeader="Available"-->
+<!--      targetFilterPlaceholder="Search by Name"-->
+<!--      targetHeader="Selected"-->
+<!--    >-->
+<!--      <ng-template let-tm pTemplate="TeamA">-->
+<!--        <div class="ui-helper-clearfix">-->
+<!--          <div>{{ tm.name }}</div>-->
+<!--        </div>-->
+<!--      </ng-template>-->
+<!--    </p-pickList>-->
+  </mat-dialog-content>
+
+  <mat-dialog-actions fxLayout="row" fxLayoutAlign="end none">
+    <div class="button">
+      <button mat-dialog-close mat-raised-button type="button">CANCEL</button>
+      <button
+        (click)="saveData()"
+        color="primary"
+        mat-raised-button
+        type="submit"
+      >
+        {{ "SAVE" }}
+      </button>
+    </div>
+  </mat-dialog-actions>
+</section>
+
+<!--<div style="overflow: scroll";>-->
+<!--  List1 <pre>{{list1 | json}}</pre>-->
+<!--  myList <pre>{{myList | json}}</pre>-->
+<!--</div>-->
+

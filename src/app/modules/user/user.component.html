@@ -1,1 +1,101 @@
-<p>users works!</p>
+<div fxFlexLayoutAlign="row" fxLayoutAlign="space-between center">
+  <div>
+    <h3>Manage Users</h3>
+  </div>
+  <div fxLayoutGap="5px">
+    <button (click)="openEditDialog()" class="mat-primary" mat-raised-button>
+      <mat-icon>add</mat-icon>
+      ADD NEW
+    </button>
+  </div>
+</div>
+
+<div fxLayout="column" fxLayoutAlign="space-between stretch">
+  <mat-form-field appearance="fill">
+    <mat-label>Filter</mat-label>
+    <input #input (keyup)="applyFilter($event)" autocomplete="off" matInput>
+  </mat-form-field>
+</div>
+
+<div class="mat-elevation-z8">
+  <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table>
+    <!-- SNo Column -->
+    <ng-container matColumnDef="sno">
+      <th *matHeaderCellDef mat-header-cell> No</th>
+      <td *matCellDef="let users; let i = index" mat-cell>{{ i + 1 }}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th *matHeaderCellDef mat-header-cell> Name</th>
+      <td *matCellDef="let users" mat-cell> {{ users.name }}</td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="email">
+      <th *matHeaderCellDef mat-header-cell>Email</th>
+      <td *matCellDef="let users" mat-cell> {{ users.email }}</td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="roles">
+      <th *matHeaderCellDef mat-header-cell>Roles</th>
+      <td *matCellDef="let users" mat-cell>
+        <div>
+          <ng-container *ngFor="let item of users?.roles">
+            <div>
+              <span>{{ item.name }}</span>
+            </div>
+          </ng-container>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="actions">
+      <th *matHeaderCellDef mat-header-cell>Action</th>
+      <td *matCellDef="let users" mat-cell>
+        <button mat-icon-button matTooltip="Edit" matTooltipPosition="left" (click)="openEditDialog(users)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button (click)="openDeleteDialog(users.uuid)" color="warn" mat-icon-button matTooltip="Delete"
+                matTooltipPosition="right">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+
+    <tr *matNoDataRow class="mat-row">
+      <td class="mat-cell" colspan="3">No data matching the filter "{{ input.value }}"</td>
+    </tr>
+  </table>
+  <mat-paginator
+    (page)="pageChanged($event)"
+    [length]="users?.totalElements"
+    [pageSizeOptions]="pageSizeOptions"
+    [pageSize]="pageSize"
+    class="mat-elevation-z8"
+  ></mat-paginator>
+</div>
+
+
+<!--delete user dialog template-->
+<ng-template #deleteDialog>
+  <mat-dialog-content>
+    <h3>Are you sure you want to delete this user?</h3>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>NO</button>
+    <button (click)="delete()" mat-button>YES</button>
+  </mat-dialog-actions>
+</ng-template>
+<!--delete user dialog template-->
+
+<!--<pre>{{users.content | json}}</pre>-->
+
+
+
+

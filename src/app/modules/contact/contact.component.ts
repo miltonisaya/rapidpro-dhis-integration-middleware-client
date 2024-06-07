@@ -1,6 +1,6 @@
-import {Component, input, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort, MatSortHeader} from "@angular/material/sort";
 import {
   MatCell,
   MatCellDef,
@@ -11,22 +11,29 @@ import {
   MatHeaderRowDef,
   MatRow,
   MatRowDef,
-  MatTable,
-  MatTableDataSource
+  MatTable, MatTableDataSource
 } from "@angular/material/table";
-import {NotifierService} from "../notification/notifier.service";
 import {ContactService} from "./contact.service";
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
-import {MatIconButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {FlexModule} from '@angular/flex-layout';
+import {ContactDialogComponent} from "./modals/contact-dialog-component";
+import {CommonModule} from "@angular/common";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {Contact} from "./types/Contact";
+import {RoleApiResponse} from "../role/types/RoleApiResponse";
+import {Role} from "../role/types/Role";
+import {ContactApiResponse} from "./types/ContactApiResponse";
+import {NotifierService} from "../notification/notifier.service";
 
 @Component({
   selector: 'app-contacts',
   templateUrl: './contact.component.html',
-  styleUrl: './contact.component.css',
+  styleUrls: ['./contact.component.css'],
   standalone: true,
   imports: [
     FlexModule,
@@ -46,7 +53,13 @@ import {FlexModule} from '@angular/flex-layout';
     MatHeaderRow,
     MatRowDef,
     MatRow,
-    MatPaginator
+    MatPaginator,
+    ContactDialogComponent,
+    CommonModule,
+    MatProgressSpinner,
+    MatSort,
+    MatSortHeader,
+    MatButton
   ],
   providers: [
     ContactService
@@ -54,54 +67,80 @@ import {FlexModule} from '@angular/flex-layout';
 })
 
 export class ContactComponent implements OnInit {
-  displayedColumns: string[] = ["sno", 'name', 'facilityCode', 'urn', 'sex', 'age', 'actions'];
-  contacts: any = [];
-  @ViewChild('deleteDialog') deleteDialog: TemplateRef<any> | undefined;
-  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
-  @ViewChild(MatSort) sort: MatSort | undefined;
+  title: string = "Contacts";
+  displayedColumns: string[] = ['number', 'name', 'urn', 'facilityCode', 'sex', 'createdOn', 'registrationDate', 'age', 'fields', 'actions'];
+  pageSizeOptions: number[] = [10, 20, 50, 100, 250, 500, 1000];
+  data: Contact[] = [];
+  resultsLength: number = 0;
+  params: { pageNo: number; pageSize: number; sortBy: string };
   pageSize = 10;
-  pageNo = 0;
-  pageSizeOptions: number[] = [10, 25, 100, 1000];
-  dataSource: any;
-  private params: { pageNo: number; pageSize: number; } | undefined;
+  pageIndex = 0;
+  pageNo: number = 0;
+  totalRecords = 0;
+  dataSource = new MatTableDataSource<Contact>([]);
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private notifierService: NotifierService,
-    private contactService: ContactService
+    private contactService: ContactService,
+    private dialogService: MatDialog,
+    private notifierService: NotifierService
   ) {
   }
 
-  ngOnInit(): void {
-    console.log("Fetching contacts ...")
+  ngOnInit() {
+    this.getContacts();
+  }
+
+  pageChanged(e: any) {
+    this.pageSize = e.pageSize;
+    this.pageNo = e.pageIndex;
     this.getContacts();
   }
 
   getContacts() {
     this.params = {
       "pageNo": this.pageNo,
-      "pageSize": this.pageSize
+      "pageSize": this.pageSize,
+      "sortBy": "name"
     }
 
-    return this.contactService.getContacts(this.params).subscribe((response: any) => {
-      console.log("Contacts =>", response);
-      this.contacts = response.data;
-      this.dataSource = new MatTableDataSource<any>(this.contacts);
+    return this.contactService.get(this.params).subscribe((response: ContactApiResponse) => {
+      this.dataSource.data = response.data || [];
+      this.totalRecords = response.total ? response.total : 0;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     }, error => {
-      this.notifierService.showNotification(error.error, 'OK', 'error');
+      this.notifierService.showNotification(error.error.message, 'OK', 'error');
     });
   }
 
-  openDialog(contacts: any) {
-    console.log("Opening dialog!")
-  }
-
-  protected readonly input = input;
-
-  pageChanged($event: PageEvent) {
-    console.log("Page changed!")
-  }
-
-  applyFilter($event: KeyboardEvent) {
-    console.log("Filter Applied!")
+  openDialog(row: any): void {
+    console.log("Open dialog clicked!");
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    if (row) {
+      const contactData = {
+        uuid: row.uuid,
+        facilityCode: row.facilityCode,
+        name: row.name,
+        registrationDate: row.registrationDate,
+        urn: row.urn,
+        sex: row.sex
+      };
+      dialogConfig.data = contactData;
+      this.contactService.populateForm(contactData);
+      this.dialogService.open(ContactDialogComponent, dialogConfig)
+        .afterClosed().subscribe(() => {
+        // this.getContacts();
+      });
+    } else {
+      dialogConfig.data = {};
+      this.dialogService.open(ContactDialogComponent, dialogConfig)
+        .afterClosed().subscribe(() => {
+        // this.getContacts();
+      });
+    }
   }
 }

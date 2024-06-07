@@ -43,7 +43,7 @@ export class LoginDialogComponent {
           this.dialog.closeAll();
         }
       }, error => {
-        this.notifierService.showNotification(error.error.error, 'OK', 'error');
+        this.notifierService.showNotification(error.error.message, 'OK', 'error');
       });
   }
 }

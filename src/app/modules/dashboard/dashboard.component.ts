@@ -22,6 +22,7 @@ import { NgFor } from '@angular/common';
 })
 export class DashboardComponent implements OnInit {
   stats: any[];
+  title: string = "Dashboard";
 
   ngOnInit() {
     this.stats = [

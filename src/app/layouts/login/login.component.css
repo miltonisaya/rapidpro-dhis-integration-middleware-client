@@ -1,5 +1,21 @@
 .img {
-  border-color: black;
-  border-width: 2px;
-  border-radius: 2rem;
+
+}
+
+.validation-error {
+  font-size: x-small;
+  color: red;
+}
+
+.login-page-container{
+  background: grey;
+  height: 100vh;
+}
+
+.login-page-content {
+  background: white;
+  min-height: 40vh;
+  min-width: 20vw;
+  padding: 10px;
+  border-radius: 20px;
 }

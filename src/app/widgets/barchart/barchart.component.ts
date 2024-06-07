@@ -1,4 +1,4 @@
-import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import Chart from 'chart.js/auto';
 
 @Component({
@@ -7,14 +7,14 @@ import Chart from 'chart.js/auto';
     styleUrl: './barchart.component.css',
     standalone: true
 })
-export class BarchartComponent {
+export class BarchartComponent implements OnInit{
   @ViewChild('canvas', {static: true}) canvasRef!: ElementRef;
   chart: any;
 
   constructor(private renderer: Renderer2) {
   }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.chart = new Chart(this.canvasRef.nativeElement, {
       type: 'bar',
       data: {

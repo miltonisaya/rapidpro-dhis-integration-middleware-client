@@ -1,0 +1,122 @@
+<div fxFlexLayoutAlign="row" fxLayoutAlign="space-between center">
+  <div class="page-title">
+    <h1>{{ title }}</h1>
+    <span class="breadcrumb">Home / Roles</span>
+  </div>
+  <div fxLayoutGap="5px">
+    <button (click)="openCreateDialog()" class="mat-primary" mat-raised-button>
+      <mat-icon>add</mat-icon>
+      CREATE
+    </button>
+  </div>
+</div>
+
+<div class="table-content-wrapper-container mat-elevation-z8">
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" class="app-table"
+           matSort matSortActive="registrationDate" matSortDisableClear matSortDirection="desc"
+    >
+      <!-- Number Column -->
+      <ng-container matColumnDef="number">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let row; let i = index">{{ i + 1 }}</td>
+      </ng-container>
+
+      <!-- Title Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+      </ng-container>
+
+      <!-- State Column -->
+      <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef>Code</th>
+        <td mat-cell *matCellDef="let row">{{ row.code }}</td>
+      </ng-container>
+
+      <!-- State Column -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let row">{{ row.description }}</td>
+      </ng-container>
+
+      <!-- Action Column -->
+      <ng-container matColumnDef="actions">
+        <th *matHeaderCellDef mat-header-cell>Action</th>
+        <td *matCellDef="let row" mat-cell>
+          <button mat-button matTooltip="Edit" matTooltipPosition="left" (click)="openDialog(row)">
+            <mat-icon (click)="openDialog(row)">edit</mat-icon>
+          </button>
+          <button mat-button matTooltip="Delete" matTooltipPosition="left" (click)="openDeleteDialog(row.uuid)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-button matTooltip="Set Permissions" matTooltipPosition="left"
+                  (click)="openPermissionsDialog(row.uuid)">
+            <mat-icon>settings</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <mat-paginator
+    (page)="pageChanged($event)"
+    [length]="totalRecords"
+    [pageSizeOptions]="pageSizeOptions"
+    aria-label="Select page of search results">
+  </mat-paginator>
+</div>
+
+<!--delete user dialog template-->
+<ng-template #deleteDialog>
+  <mat-dialog-content>
+    <h3>Are you sure you want to delete this user?</h3>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>NO</button>
+    <button (click)="delete()" mat-button>YES</button>
+  </mat-dialog-actions>
+</ng-template>
+
+
+<app-dialog
+  [fullScreen]="true"
+  [open]="permissionDialogOpen"
+  (onClose)="handleClose($event)"
+  title="Role Permissions"
+>
+  <ng-template>
+    <div fxLayout="column" style="height: 100vh; overflow-y: auto; overflow-x: hidden; padding: 16px;">
+      <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-bottom: 16px;">
+        <div fxFlex="100%">
+          <span class="role-title">Permission For Role {{ currentRole.name }}</span>
+        </div>
+        <button mat-icon-button color="primary"  class="mat-mdc-raised-button" (click)="savePermissions()"><mat-icon>save</mat-icon></button>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="16px">
+        <div fxFlex="1 1 calc(25% - 16px)" *ngFor="let resource of roleAuthorities" style="box-sizing: border-box;">
+          <div class="permission-container">
+            <div class="permission-header">
+              <span class="permission-title">{{ resource.resource }}</span>
+            </div>
+            <div class="permission-content">
+              <ng-container *ngFor="let permission of resource.authorities">
+                <mat-checkbox [checked]="isSelected(permission.id)"
+                              (change)="togglePermission(permission.id)">
+                  {{ permission.name }}
+                </mat-checkbox>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  </ng-template>
+</app-dialog>

@@ -1,75 +1,90 @@
 <div class="page-title">
-  <h1>Contacts</h1>
+  <h1>{{ title }}</h1>
+  <span class="breadcrumb">Home / Contacts</span>
 </div>
 
-<div fxLayout="column" fxLayoutAlign="space-evenly stretch">
-  <mat-form-field fxLayout="column" fxLayoutAlign="space-evenly stretch">
-    <mat-label>Filter</mat-label>
-    <input #input (keyup)="applyFilter($event)" autocomplete="off" matInput>
-  </mat-form-field>
-</div>
+<div class="example-container mat-elevation-z8">
+  <div class="table-container">
+    <table mat-table [dataSource]="data" class="app-table"
+           matSort matSortActive="registrationDate" matSortDisableClear matSortDirection="desc"
+    >
+      <!-- Number Column -->
+      <ng-container matColumnDef="number">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let row; let i = index">{{ i + 1 }}</td>
+      </ng-container>
 
-<div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <!-- SNo Column -->
-    <ng-container matColumnDef="sno">
-      <th mat-header-cell *matHeaderCellDef> No</th>
-      <td mat-cell *matCellDef="let contacts; let i = index">{{ i + 1 }}</td>
-    </ng-container>
+      <!-- Title Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+      </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name</th>
-      <td mat-cell *matCellDef="let contacts">{{ contacts.name }}</td>
-    </ng-container>
+      <!-- State Column -->
+      <ng-container matColumnDef="urn">
+        <th mat-header-cell *matHeaderCellDef>URN</th>
+        <td mat-cell *matCellDef="let row">{{ row.urn }}</td>
+      </ng-container>
 
-    <!-- Facility Column -->
-    <ng-container matColumnDef="facilityCode">
-      <th mat-header-cell *matHeaderCellDef>Facility Code</th>
-      <td mat-cell *matCellDef="let contacts">{{ contacts.facilityCode }}</td>
-    </ng-container>
+      <!-- Created Column -->
+      <ng-container matColumnDef="facilityCode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+          Facility Code
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.facilityCode }}</td>
+      </ng-container>
 
-    <!-- URN Column -->
-    <ng-container matColumnDef="urn">
-      <th mat-header-cell *matHeaderCellDef>URN</th>
-      <td mat-cell *matCellDef="let contacts">{{ contacts.urn }}</td>
-    </ng-container>
+      <ng-container matColumnDef="sex">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+          Sex
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.sex }}</td>
+      </ng-container>
 
-    <!-- Sex Column -->
-    <ng-container matColumnDef="sex">
-      <th mat-header-cell *matHeaderCellDef>Sex</th>
-      <td mat-cell *matCellDef="let contacts">{{ contacts.sex }}</td>
-    </ng-container>
+      <ng-container matColumnDef="createdOn">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+          Created On
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.createdOn }}</td>
+      </ng-container>
 
-    <!-- Age Column -->
-    <ng-container matColumnDef="age">
-      <th mat-header-cell *matHeaderCellDef>Age</th>
-      <td mat-cell *matCellDef="let contacts">{{ contacts.age }}</td>
-    </ng-container>
+      <ng-container matColumnDef="registrationDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+          Date of registration
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.registrationDate | date }}</td>
+      </ng-container>
 
-    <!-- Action Column -->
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Action</th>
-      <td mat-cell *matCellDef="let contacts">
-        <button mat-icon-button matTooltip="Edit" matTooltipPosition="left">
-          <mat-icon (click)="openDialog(contacts)">edit</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="age">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+          Age
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.age }}</td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <ng-container matColumnDef="fields">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+          Fields
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.fields }}</td>
+      </ng-container>
 
-    <!-- Row shown when there is no matching data. -->
-    <tr matNoDataRow class="mat-row">
-      <td class="mat-cell" colspan="6">No data matching the filter "{{ input.value }}"</td>
-    </tr>
-  </table>
-  <mat-paginator
-    (page)="pageChanged($event)"
-    [length]="dataSource?.length"
-    [pageSizeOptions]="pageSizeOptions"
-    [pageSize]="pageSize"
-    class="mat-elevation-z8"
-  ></mat-paginator>
+      <!-- Action Column -->
+      <ng-container matColumnDef="actions">
+        <th *matHeaderCellDef mat-header-cell>Action</th>
+        <td *matCellDef="let row" mat-cell>
+          <button mat-button matTooltip="Edit" matTooltipPosition="left" (click)="openDialog(row)">
+            <!--            <pre>{{row | json}}</pre>-->
+            <mat-icon (click)="openDialog(row)">edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <mat-paginator [length]="resultsLength" [pageSizeOptions]="pageSizeOptions"
+                 aria-label="Select page of GitHub search results"></mat-paginator>
 </div>

@@ -1,0 +1,92 @@
+<div fxFlexLayoutAlign="row" fxLayoutAlign="space-between center">
+  <div class="page-title">
+    <h1>{{ title }}</h1>
+    <span class="breadcrumb">Home / Menus</span>
+  </div>
+  <div fxLayoutGap="5px">
+    <button (click)="openCreateDialog()" class="mat-primary" mat-raised-button>
+      <mat-icon>add</mat-icon>
+      CREATE
+    </button>
+  </div>
+</div>
+
+<div class="table-content-wrapper-container mat-elevation-z8">
+  <div class="table-container">
+    <table mat-table
+           [dataSource]="dataSource"
+           matSort
+           matSortActive="sortOrder"
+           matSortDisableClear
+           matSortDirection="asc"
+    >
+      <!-- Number Column -->
+      <ng-container matColumnDef="number">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let row; let i = index">{{ i + 1 }}</td>
+      </ng-container>
+
+      <!-- Title Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+      </ng-container>
+
+      <!-- State Column -->
+      <ng-container matColumnDef="icon">
+        <th mat-header-cell *matHeaderCellDef>Icon</th>
+        <td mat-cell *matCellDef="let row">
+          <mat-icon>{{ row.icon }}</mat-icon>
+          <br>
+          {{ row.icon }}
+        </td>
+      </ng-container>
+
+      <!-- URL Column -->
+      <ng-container matColumnDef="url">
+        <th mat-header-cell *matHeaderCellDef>URL</th>
+        <td mat-cell *matCellDef="let row">{{ row.url }}</td>
+      </ng-container>
+
+      <!-- Sort Order Column -->
+      <ng-container matColumnDef="sortOrder">
+        <th mat-header-cell *matHeaderCellDef>Sort Order</th>
+        <td mat-cell *matCellDef="let row">{{ row.sortOrder }}</td>
+      </ng-container>
+
+      <!-- Action Column -->
+      <ng-container matColumnDef="actions">
+        <th *matHeaderCellDef mat-header-cell>Action</th>
+        <td *matCellDef="let row" mat-cell>
+          <button mat-button matTooltip="Edit" matTooltipPosition="left" (click)="openEditDialog(row)">
+            <mat-icon (click)="openEditDialog(row)">edit</mat-icon>
+          </button>
+          <button mat-button matTooltip="Delete" matTooltipPosition="left" (click)="openDeleteDialog(row.uuid)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <mat-paginator
+    (page)="pageChanged($event)"
+    [length]="totalRecords"
+    [pageSizeOptions]="pageSizeOptions"
+    aria-label="Select page of search results">
+  </mat-paginator>
+</div>
+
+<!--delete user dialog template-->
+<ng-template #deleteDialog>
+  <mat-dialog-content>
+    <h3>Are you sure you want to delete this user?</h3>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>NO</button>
+    <button (click)="delete()" mat-button>YES</button>
+  </mat-dialog-actions>
+</ng-template>

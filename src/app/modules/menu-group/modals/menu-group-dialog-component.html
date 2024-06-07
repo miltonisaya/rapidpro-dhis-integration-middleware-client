@@ -1,0 +1,85 @@
+<h2 mat-dialog-title>
+  {{ menuService.form.controls['uuid'].value ? "Edit Menu Group" : "Create Menu Group" }}
+</h2>
+<form #formDirective="ngForm"
+      (ngSubmit)="submitForm()"
+      [formGroup]="menuService.form">
+  <mat-dialog-content class="mat-typography">
+    <div class="dialog-content" fxLayout="column" fxLayoutGap="20px">
+      <div fxLayout="row" fxLayoutGap="20px" fxLayout.xs="column">
+        <mat-form-field fxFlex="50" fxFlex.xs="100">
+          <mat-label>Name</mat-label>
+          <input matInput
+                 formControlName="name"
+                 maxlength="255"
+                 placeholder="Enter name"
+                 required
+                 autocomplete="off">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50" fxFlex.xs="100">
+          <mat-label>Sort Order</mat-label>
+          <input matInput
+                 type="number"
+                 formControlName="sortOrder"
+                 placeholder="Enter Sort Order"
+                 required
+                 autocomplete="off">
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="column" fxLayoutAlign="stretch">
+        <mat-form-field fxFlex.xs="100">
+          <mat-label>Icon</mat-label>
+          <input matInput
+                 formControlName="icon"
+                 maxlength="255"
+                 placeholder="Enter code"
+                 required
+                 autocomplete="off">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>URL</mat-label>
+          <input matInput
+                 formControlName="url"
+                 placeholder="Enter URL">
+        </mat-form-field>
+
+        <p-pickList
+          [source]="assignedMenuItems"
+          [target]="selectedMenuItems"
+          sourceHeader="Available"
+          targetHeader="Selected"
+          [dragdrop]="true"
+          [responsive]="true"
+          [sourceStyle]="{ height: '10rem' }"
+          [targetStyle]="{ height: '10rem' }"
+          filterBy="name"
+          sourceFilterPlaceholder="Search by name"
+          targetFilterPlaceholder="Search by name"
+          breakpoint="762px">
+          <ng-template let-product pTemplate="item">
+            <div class="flex flex-wrap p-2 align-items-center gap-3">
+              <div class="flex-1 flex flex-column gap-2">
+                    <span class="font-bold">
+                        {{ product.name }}
+                    </span>
+              </div>
+            </div>
+          </ng-template>
+        </p-pickList>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions fxLayout="row" fxLayoutAlign="end stretch">
+    <button mat-dialog-close mat-raised-button type="button">CANCEL</button>
+    <button color="primary" mat-raised-button type="submit">
+      {{ menuService.form.controls['uuid'].value ? "UPDATE" : "CREATE" }}
+    </button>
+  </mat-dialog-actions>
+</form>
+
+<!--<pre>Selected Menus{{ selectedMenuItems | json }}</pre>-->
+<!--<pre>Target Menus{{ unassignedMenuItems | json }}</pre>-->

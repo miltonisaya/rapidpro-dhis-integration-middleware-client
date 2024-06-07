@@ -19,6 +19,9 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDivider } from '@angular/material/divider';
 
 import { NgFor, NgIf } from '@angular/common';
+import {MatListItem} from "@angular/material/list";
+import {RouterLink} from "@angular/router";
+import {FlexModule} from "@angular/flex-layout";
 
 /**
  * @title Accordion with expand/collapse all toggles
@@ -41,6 +44,9 @@ import { NgFor, NgIf } from '@angular/common';
     MatExpansionPanel,
     NgFor,
     NgIf,
+    MatListItem,
+    RouterLink,
+    FlexModule,
   ],
 })
 export class SidebarComponent implements OnInit {
@@ -66,10 +72,18 @@ export class SidebarComponent implements OnInit {
         children: [
           {
             id: '62f15367-03c8-4601-9d12-c4dea7f1c5d4',
-            name: 'Menus',
-            icon: 'menu',
-            url: 'manage-menus',
+            name: 'Menu Groups',
+            icon: 'menus',
+            url: 'menu-groups',
             sortOrder: 5,
+            children: [],
+          },
+          {
+            id: '62f15367-03c8-4601-9d12-c4dea7k1c5d6',
+            name: 'Menu Items',
+            icon: 'menu_open',
+            url: 'menu-items',
+            sortOrder: 6,
             children: [],
           },
           {
@@ -104,7 +118,13 @@ export class SidebarComponent implements OnInit {
         icon: 'table_chart',
         url: 'organisation-units',
         sortOrder: 2,
-        children: [],
+        children: [{
+          id: 'aa280394-1bd2-4f3f-8380-5d06cf7cee46',
+          name: 'Manage Organisation Units',
+          icon: 'language',
+          url: 'organisation-units',
+          sortOrder: 2
+        }],
       },
       {
         id: '8716bd51-5d38-4c32-a3ad-9647ad30e889',
