@@ -94,7 +94,9 @@
         <div fxFlex="100%">
           <span class="role-title">Permission For Role {{ currentRole.name }}</span>
         </div>
-        <button mat-icon-button color="primary"  class="mat-mdc-raised-button" (click)="savePermissions()"><mat-icon>save</mat-icon></button>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="end end" style="padding-right:15px; padding-bottom: 10px;">
+        <button mat-raised-button color="primary" (click)="savePermissions()">Assign Permissions</button>
       </div>
       <div fxLayout="row wrap" fxLayoutGap="16px">
         <div fxFlex="1 1 calc(25% - 16px)" *ngFor="let resource of roleAuthorities" style="box-sizing: border-box;">
