@@ -7,7 +7,7 @@
   <mat-dialog-content class="mat-typography">
     <div class="dialog-content" fxLayout="column" fxLayoutGap="20px">
       <div fxLayout="row" fxLayoutGap="20px" fxLayout.xs="column">
-        <mat-form-field fxFlex="50" fxFlex.xs="100">
+        <mat-form-field fxFlex="50" fxFlex.xs="100" appearance="outline">
           <mat-label>Name</mat-label>
           <input matInput
                  formControlName="name"
@@ -17,7 +17,7 @@
                  autocomplete="off">
         </mat-form-field>
 
-        <mat-form-field fxFlex="50" fxFlex.xs="100">
+        <mat-form-field fxFlex="50" fxFlex.xs="100" appearance="outline">
           <mat-label>Sort Order</mat-label>
           <input matInput
                  type="number"
@@ -29,7 +29,7 @@
       </div>
 
       <div fxLayout="column" fxLayoutAlign="stretch">
-        <mat-form-field fxFlex.xs="100">
+        <mat-form-field fxFlex.xs="100" appearance="outline">
           <mat-label>Menu Group</mat-label>
           <mat-select formControlName="menuGroupUuid">
             @for (menuGroup of menuGroups; track menuGroup) {
@@ -38,7 +38,7 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field fxFlex.xs="100">
+        <mat-form-field fxFlex.xs="100" appearance="outline">
           <mat-label>Icon</mat-label>
           <input matInput
                  formControlName="icon"
@@ -48,7 +48,7 @@
                  autocomplete="off">
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>URL</mat-label>
           <input matInput
                  formControlName="url"

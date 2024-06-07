@@ -14,14 +14,14 @@
     <mat-dialog-content>
       <div class="dialog-content" fxLayout="column" fxLayoutGap="10px">
         <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between stretch">
-          <mat-form-field fxFlex="45">
+          <mat-form-field fxFlex="45" appearance="outline">
             <input autocomplete="off"
                    formControlName="name"
                    matInput
                    placeholder="Enter name" required>
           </mat-form-field>
 
-          <mat-form-field fxFlex="45">
+          <mat-form-field fxFlex="45" appearance="outline">
             <input autocomplete="off"
                    formControlName="phone"
                    matInput
@@ -31,7 +31,7 @@
         </div>
 
         <div fxLayout="column" fxLayoutAlign="stretch">
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <input autocomplete="off"
                    formControlName="email"
                    matInput
@@ -67,4 +67,4 @@
   </form>
 </section>
 
-<pre>{{ usersService.form.value | json }}</pre>
+<!--<pre>{{ usersService.form.value | json }}</pre>-->
