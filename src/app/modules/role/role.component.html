@@ -44,8 +44,8 @@
       <ng-container matColumnDef="actions">
         <th *matHeaderCellDef mat-header-cell>Action</th>
         <td *matCellDef="let row" mat-cell>
-          <button mat-button matTooltip="Edit" matTooltipPosition="left" (click)="openDialog(row)">
-            <mat-icon (click)="openDialog(row)">edit</mat-icon>
+          <button mat-button matTooltip="Edit" matTooltipPosition="left" (click)="openEditDialog(row)">
+            <mat-icon>edit</mat-icon>
           </button>
           <button mat-button matTooltip="Delete" matTooltipPosition="left" (click)="openDeleteDialog(row.uuid)">
             <mat-icon>delete</mat-icon>
@@ -121,4 +121,63 @@
 
 
   </ng-template>
+</app-dialog>
+
+<app-dialog
+  [fullScreen]="false"
+  [open]="createEditDialogOpen"
+  (onClose)="handleClose($event)"
+  title="{{roleService.form.controls['uuid'].value ? 'Edit Role': 'Create Role'}}"
+>
+  <ng-template>
+    <form #formDirective="ngForm"
+          (ngSubmit)="submitCreateEditRoleForm()"
+          [formGroup]="roleService.form">
+      <mat-dialog-content class="mat-typography">
+        <div class="dialog-content" fxLayout="column" fxLayoutGap="20px">
+          <div fxLayout="row" fxLayoutGap="20px" fxLayout.xs="column">
+            <mat-form-field fxFlex="50" fxFlex.xs="100">
+              <mat-label>Name</mat-label>
+              <input matInput
+                     formControlName="name"
+                     maxlength="255"
+                     placeholder="Enter name"
+                     required
+                     autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="50" fxFlex.xs="100">
+              <mat-label>Code</mat-label>
+              <input matInput
+                     formControlName="code"
+                     maxlength="255"
+                     placeholder="Enter code"
+                     required
+                     autocomplete="off">
+            </mat-form-field>
+          </div>
+
+          <div fxLayout="column" fxLayoutAlign="stretch">
+            <mat-form-field>
+              <mat-label>Description</mat-label>
+              <textarea matInput
+                        formControlName="description"
+                        cdkTextareaAutosize
+                        #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="5"
+                        placeholder="Enter description">
+        </textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-dialog-content>
+
+      <mat-dialog-actions fxLayout="row" fxLayoutAlign="end stretch">
+        <button mat-dialog-close mat-raised-button type="button">CANCEL</button>
+        <button color="primary" mat-raised-button type="submit">
+          {{ roleService.form.controls['uuid'].value ? "UPDATE" : "CREATE" }}
+        </button>
+      </mat-dialog-actions>
+    </form>  </ng-template>
 </app-dialog>
