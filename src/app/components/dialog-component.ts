@@ -121,9 +121,9 @@ export class DialogComponent implements OnChanges {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: #3f51b5;
+        background-color: #c0c0c0;
         color: white;
-        padding: 16px;
+        padding: 10px;
       }
 
       .close-icon {
