@@ -21,7 +21,6 @@ import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {FlexModule} from '@angular/flex-layout';
-import {RoleDialogComponent} from "./modals/role/role-dialog-component";
 import {CommonModule} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {Role} from "./types/Role";
@@ -37,7 +36,8 @@ import {MatCard, MatCardContent, MatCardHeader} from "@angular/material/card";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {RoleAuthority} from "./types/RoleAuthority";
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
-import {BreakpointObserver} from "@angular/cdk/layout";
+import {ReactiveFormsModule} from "@angular/forms";
+import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 
 @Component({
   selector: 'app-roles',
@@ -63,7 +63,6 @@ import {BreakpointObserver} from "@angular/cdk/layout";
     MatRowDef,
     MatRow,
     MatPaginator,
-    RoleDialogComponent,
     CommonModule,
     MatProgressSpinner,
     MatSort,
@@ -78,7 +77,9 @@ import {BreakpointObserver} from "@angular/cdk/layout";
     MatCardHeader,
     MatCheckbox,
     MatGridList,
-    MatGridTile
+    MatGridTile,
+    ReactiveFormsModule,
+    CdkTextareaAutosize
   ],
   providers: [
     RoleService
@@ -90,12 +91,14 @@ export class RoleComponent implements OnInit {
   data: Role[] = [];
   roleUuid: string;
   currentRole: any | null = null;
-  permissionDialogOpen: boolean = false;
 
   //Permissions Config
+  permissionDialogOpen: boolean = false;
   roleAuthorities: RoleAuthority[];
-  selectedAuthorities: number[] = [];
   selectedPermissions: number[] = [111, 113];
+
+  //Create/Update Dialog Config
+  createEditDialogOpen: boolean = false;
 
 
   //Pagination starts here
@@ -112,10 +115,9 @@ export class RoleComponent implements OnInit {
   @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
 
   constructor(
-    private roleService: RoleService,
-    private authorityService: AuthorityService,
-    private notifierService: NotifierService,
-    private breakpointObserver: BreakpointObserver
+    public roleService: RoleService,
+    public authorityService: AuthorityService,
+    public notifierService: NotifierService
   ) {
   }
 
@@ -154,31 +156,18 @@ export class RoleComponent implements OnInit {
     // });
   }
 
-  openDialog(row: any): void {
-    // const dialogConfig = new MatDialogConfig();
-    // dialogConfig.disableClose = true;
-    // dialogConfig.autoFocus = true;
-    if (row) {
+  openEditDialog(row: any): void {
+    this.createEditDialogOpen = true;
       const menuData: MenuGroup = {
         uuid: row.uuid,
+        code: row.code,
+        description: row.description,
         name: row.name,
         url: row.url,
         sortOrder: row.sortOrder,
         icon: row.icon
       };
-      // dialogConfig.data = menuData;
-      // this.roleService.populateForm(menuData);
-      // this.dialogService.open(RoleDialogComponent, dialogConfig)
-      //   .afterClosed().subscribe(() => {
-      //   this.getRoles();
-      // });
-    } else {
-      // dialogConfig.data = {};
-      // this.dialogService.open(RoleDialogComponent, dialogConfig)
-      //   .afterClosed().subscribe(() => {
-      //   this.getRoles();
-      // });
-    }
+      this.roleService.populateForm(menuData);
   }
 
   delete() {
@@ -190,7 +179,6 @@ export class RoleComponent implements OnInit {
         this.notifierService.showNotification(error.error.message, 'OK', 'error');
       }
     });
-    // this.dialogService.closeAll();
   }
 
   openCreateDialog(data?: {
@@ -200,13 +188,8 @@ export class RoleComponent implements OnInit {
     code: string;
     authorities: Authority[]
   }): void {
-    // console.log(data);
-    // const dialogConfig = new MatDialogConfig();
-    // dialogConfig.disableClose = true;
-    // dialogConfig.autoFocus = true;
-    // dialogConfig.minWidth = '400px';
-    // dialogConfig.height = 'auto';
-    // dialogConfig.panelClass = "dialog-config"
+    console.log("Opening create/edit dialog");
+    this.createEditDialogOpen = true;
     if (data) {
       const roleData = {
         id: data.uuid,
@@ -215,16 +198,8 @@ export class RoleComponent implements OnInit {
         code: data.code,
       };
       this.roleService.populateForm(roleData);
-      // this.dialogService.open(RoleDialogComponent, dialogConfig)
-      //   .afterClosed().subscribe(() => {
-      //   this.ngOnInit();
-      // });
     } else {
-      // dialogConfig.minWidth = '400px';
-      // this.dialogService.open(RoleDialogComponent, dialogConfig)
-      //   .afterClosed().subscribe(() => {
-      //   this.ngOnInit();
-      // });
+      this.roleService.initializeFormGroup();
     }
   }
 
@@ -232,7 +207,6 @@ export class RoleComponent implements OnInit {
     const role = await lastValueFrom((this.roleService.findByUuid(uuid)));
     this.currentRole = role.data;
     this.permissionDialogOpen = true;
-
     let res = await lastValueFrom(this.authorityService.findByRole(uuid));
     this.roleAuthorities = res.data;
     this.selectedPermissions = role.data.authorities.map((a: { id: any; }) => a.id);
@@ -269,6 +243,34 @@ export class RoleComponent implements OnInit {
 
     //Close the dialog
     this.permissionDialogOpen = false;
+  }
+
+  submitCreateEditRoleForm() {
+    if (this.roleService.form.valid) {
+      if (this.roleService.form.get('uuid')?.value != '') {
+        this.roleService.update(this.roleService.form.value)
+          .subscribe((response) => {
+            this.notifierService.showNotification(response.message, 'OK', 'success');
+            this.createEditDialogOpen = false;
+            this.getRoles();
+          }, error => {
+            this.notifierService.showNotification(error.message, 'OK', 'error');
+            this.createEditDialogOpen = false;
+            this.getRoles();
+          });
+      } else {
+        this.roleService.create(this.roleService.form.value)
+          .subscribe(response => {
+            this.notifierService.showNotification(response.message, 'OK', 'error');
+            this.createEditDialogOpen = false;
+            this.getRoles();
+          }, error => {
+            this.notifierService.showNotification(error.message, 'OK', 'error');
+            this.createEditDialogOpen = false;
+            this.getRoles();
+          });
+      }
+    }
   }
 }
 
