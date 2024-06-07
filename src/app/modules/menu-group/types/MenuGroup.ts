@@ -4,4 +4,6 @@ export interface MenuGroup {
   sortOrder: number;
   uuid: string;
   icon: string;
+  description: string;
+  code: string;
 }
