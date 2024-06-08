@@ -20,7 +20,7 @@ import { MatDivider } from '@angular/material/divider';
 
 import { NgFor, NgIf } from '@angular/common';
 import {MatListItem} from "@angular/material/list";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {FlexModule} from "@angular/flex-layout";
 
 /**
@@ -52,6 +52,9 @@ import {FlexModule} from "@angular/flex-layout";
 export class SidebarComponent implements OnInit {
   @ViewChild(MatAccordion) accordion: MatAccordion;
   menus: any[];
+
+  constructor(private router: Router) {
+  }
 
   ngOnInit(): void {
     this.menus = [
@@ -176,6 +179,10 @@ export class SidebarComponent implements OnInit {
         ],
       },
     ];
+  }
+
+  navigateToDashboard() {
+    this.router.navigate(['/dashboard']);
   }
 }
 
