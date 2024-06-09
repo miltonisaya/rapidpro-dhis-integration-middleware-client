@@ -11,7 +11,7 @@
 </div>
 
 <div fxLayout="column" fxLayoutAlign="space-between stretch">
-  <mat-form-field appearance="outline">
+  <mat-form-field appearance="fill">
     <mat-label>Select a flow</mat-label>
     <mat-select (selectionChange)="getKeysByFlowUuid($event)" [(value)]="selectedFlowUuid">
       <mat-option *ngFor="let flow of flows" [value]="flow.uuid">
@@ -22,7 +22,7 @@
 </div>
 
 <div fxLayout="column" fxLayoutAlign="space-between stretch">
-  <mat-form-field *ngIf="flowKeys.length !== 0 && true" appearance="outline">
+  <mat-form-field *ngIf="flowKeys.length !== 0 && true" appearance="fill">
     <mat-label>Filter</mat-label>
     <input #input (keyup)="applyFilter($event)" autocomplete="off" matInput>
   </mat-form-field>
