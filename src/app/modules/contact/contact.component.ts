@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort, MatSortHeader} from "@angular/material/sort";
 import {
@@ -11,7 +11,8 @@ import {
   MatHeaderRowDef,
   MatRow,
   MatRowDef,
-  MatTable, MatTableDataSource
+  MatTable,
+  MatTableDataSource
 } from "@angular/material/table";
 import {ContactService} from "./contact.service";
 import {MatIcon} from '@angular/material/icon';
@@ -25,8 +26,6 @@ import {CommonModule} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {Contact} from "./types/Contact";
-import {RoleApiResponse} from "../role/types/RoleApiResponse";
-import {Role} from "../role/types/Role";
 import {ContactApiResponse} from "./types/ContactApiResponse";
 import {NotifierService} from "../notification/notifier.service";
 
@@ -105,7 +104,7 @@ export class ContactComponent implements OnInit {
       "sortBy": "name"
     }
 
-    return this.contactService.get(this.params).subscribe((response: ContactApiResponse) => {
+    return this.contactService.get(this.params).subscribe((response: any) => {
       this.dataSource.data = response.data || [];
       this.totalRecords = response.total ? response.total : 0;
       this.dataSource.paginator = this.paginator;
