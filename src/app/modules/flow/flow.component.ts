@@ -92,7 +92,7 @@ export class FlowComponent implements OnInit {
     return this.flowService.get(params).subscribe((response: any) => {
       this.flows = response.data.content;
     }, error => {
-      this.notifierService.showNotification(error.message, 'OK', 'error');
+      this.notifierService.showNotification(error.error.message, 'OK', 'error');
     });
   }
 
@@ -112,7 +112,7 @@ export class FlowComponent implements OnInit {
       this.dataSource = new MatTableDataSource<any>(this.flowKeys);
       this.dataSource.sort = this.sort;
     }, error => {
-      this.notifierService.showNotification(error.message, 'OK', 'error');
+      this.notifierService.showNotification(error.error.message, 'OK', 'error');
     })
   }
 
@@ -218,10 +218,10 @@ export class FlowComponent implements OnInit {
         this.dataSource = new MatTableDataSource<any>(this.flowKeys);
         this.dataSource.sort = this.sort;
       }, error => {
-        this.notifierService.showNotification(error.message, 'OK', 'error');
+        this.notifierService.showNotification(error.error.message, 'OK', 'error');
       });
     }, error => {
-      this.notifierService.showNotification(error.message, 'OK', 'error');
+      this.notifierService.showNotification(error.error.message, 'OK', 'error');
       console.log(error);
     });
     this.dialog.closeAll();
