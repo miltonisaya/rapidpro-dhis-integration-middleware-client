@@ -124,7 +124,6 @@ export class FlowKeyDialogComponent implements OnInit {
   }
 
   displayFn(dataElement: any): string {
-    console.log("Selected data element =>", dataElement);
     this.selectedDataElement = dataElement.uuid;
     return dataElement && dataElement.name ? dataElement.name : '';
   }
