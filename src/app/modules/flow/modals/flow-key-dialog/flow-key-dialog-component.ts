@@ -111,11 +111,11 @@ export class FlowKeyDialogComponent implements OnInit {
       rapidProFlowKeyUuid: this.data.uuid
     };
 
+
     this.flowKeyService.mapDataElement(data).subscribe((response: any) => {
-      if (response.status == '200') {
-        this.notifierService.showNotification(response.message, 'OK', 'success');
-        this.flowService.findKeysWithCategoriesByFlowUuid(this.data.flowUuid);
-      }
+      this.notifierService.showNotification(response.message, 'OK', 'success');
+      this.flowService.findKeysWithCategoriesByFlowUuid(this.data.flowUuid);
+
     }, (error: { message: string; }) => {
       this.notifierService.showNotification(error.message, 'OK', 'error');
       this.flowService.findKeysWithCategoriesByFlowUuid(this.data.flowUuid);
