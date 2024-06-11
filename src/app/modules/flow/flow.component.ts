@@ -116,16 +116,16 @@ export class FlowComponent implements OnInit {
     })
   }
 
-  openMapDataElementDialog(data: { uuid: any; keyDescription: any; keyName: any; }): void {
+  openMapDataElementDialog(data: { uuid: any; description: any; name: any; }): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     if (data) {
       const categoriesMappingData = {
-        id: data.uuid,
-        keyDescription: data.keyDescription,
-        keyName: data.keyName,
-        flowId: this.selectedFlowUuid,
+        uuid: data.uuid,
+        description: data.description,
+        name: data.name,
+        flowUuid: this.selectedFlowUuid,
       };
 
       this.dialog.open(FlowKeyDialogComponent, {data: categoriesMappingData})
