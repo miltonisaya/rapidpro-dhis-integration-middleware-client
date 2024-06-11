@@ -6,7 +6,6 @@ import {ProgramApiResponse} from "./program.component";
 
 export const BASE_URL: string = environment.baseURL;
 export const RESOURCE_URL: string = 'api/v1/programs';
-// { pageNo: number; pageSize: number; sortBy: string; }
 
 @Injectable()
 export class ProgramService {
@@ -25,7 +24,7 @@ export class ProgramService {
   }
 
   mapDataElements(payload: any): Observable<any> {
-    let requestUrl = `${BASE_URL}/programs/map-data-elements`;
+    let requestUrl = `${this.API_ENDPOINT}/map-data-elements`;
     return this._http.post<ProgramApiResponse>(requestUrl, payload);
   }
 }

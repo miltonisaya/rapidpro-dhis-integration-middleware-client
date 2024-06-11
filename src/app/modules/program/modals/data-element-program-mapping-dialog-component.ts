@@ -61,7 +61,7 @@ export class DataElementProgramMappingDialogComponent implements OnInit {
     let params = {
       pageSize: 1000,
       pageNo: 0,
-      sortBy:'name'
+      sortBy: 'name'
     };
     return this.dataElementService.getDataElements(params).subscribe((response: any) => {
       this.fetchedList = response.data.content;
@@ -79,12 +79,10 @@ export class DataElementProgramMappingDialogComponent implements OnInit {
 
     return this.programService.mapDataElements(payload).subscribe((response: any) => {
       response.data.content;
-      console.log("Response=>", response);
       this.notifierService.showNotification(response.message, 'OK', 'success');
       this.matDialog.closeAll()
     }, error => {
-      this.notifierService.showNotification(error.error.error, 'OK', 'error');
-      console.log("Error =>", error);
+      this.notifierService.showNotification(error.error.message, 'OK', 'error');
       this.matDialog.closeAll()
     })
   }
