@@ -36,6 +36,7 @@ export class FlowService {
   }
 
   resetMapping(uuid: string): Observable<any> {
+    console.log('Reset mapping clicked ...')
     const requestUrl: string = `${environment.baseURL}/api/v1/keys/reset-mapping/${uuid}`;
     return this._http.put<any>(requestUrl, {uuid});
   }

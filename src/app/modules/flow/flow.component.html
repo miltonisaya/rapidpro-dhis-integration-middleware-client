@@ -91,9 +91,9 @@
         <!-- Action Column -->
         <ng-container matColumnDef="actions">
           <th *matHeaderCellDef mat-header-cell>Action</th>
-          <td *matCellDef="let flowKeys" mat-cell>
-            <button mat-icon-button matTooltip="Reset Mapping" matTooltipPosition="left">
-              <mat-icon (click)="openResetDialog(flowKeys)">undo</mat-icon>
+          <td *matCellDef="let row" mat-cell>
+            <button mat-icon-button matTooltip="Reset Mapping" matTooltipPosition="left" (click)="openResetMappingDialog(row)">
+              <mat-icon>undo</mat-icon>
             </button>
           </td>
         </ng-container>

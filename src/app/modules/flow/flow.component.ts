@@ -198,7 +198,8 @@ export class FlowComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  openResetDialog(data: { uuid: any; }): void {
+  openResetMappingDialog(data:any): void {
+    console.log('Open reset mapping dialogue clicked!!')
     this.elementUuid = data.uuid;
     this.dialog.open(this.resetDialog)
       .afterClosed().subscribe(() => {
@@ -207,6 +208,7 @@ export class FlowComponent implements OnInit {
   }
 
   reset(): any {
+    console.log('Element uuid =>',this.elementUuid);
     this.flowService.resetMapping(this.elementUuid).subscribe(response => {
       this.notifierService.showNotification(response.message, 'OK', 'success');
 
