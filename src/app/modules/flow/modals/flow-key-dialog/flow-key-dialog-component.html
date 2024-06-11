@@ -9,8 +9,8 @@
     <h1 class="dialog-header" mat-dialog-title>
       Map DHIS2 Data Element and Key
     </h1>
-    <h3 style="color: #08c37c;">
-      Selected Key: {{ data.keyName }}
+    <h3 style="color: #08c37c; padding-left:20px;">
+      Selected Key: {{ data.name }}
     </h3>
     <mat-divider></mat-divider>
     <mat-dialog-content>
@@ -20,7 +20,7 @@
           <input [formControl]="myControl" [matAutocomplete]="auto" matInput type="text">
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-              {{option.name}}
+              {{ option.name }}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
@@ -35,7 +35,7 @@
           mat-raised-button
           type="submit"
         >
-          {{"MAP"}}
+          {{ "MAP" }}
         </button>
       </div>
     </mat-dialog-actions>
