@@ -73,7 +73,6 @@ export class ProgramComponent implements OnInit {
    */
   getPrograms() {
     return this.programService.getDataElements().subscribe((response: any) => {
-      console.log('Programs =>', response);
       this.programs = response.data;
       this.dataSource = new MatTableDataSource<Program>(this.programs);
       this.dataSource.paginator = this.paginator;
