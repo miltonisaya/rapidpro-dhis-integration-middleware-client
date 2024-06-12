@@ -73,13 +73,13 @@ export class ProgramComponent implements OnInit {
    */
   getPrograms() {
     return this.programService.getDataElements().subscribe((response: any) => {
+      console.log('Programs =>', response);
       this.programs = response.data;
       this.dataSource = new MatTableDataSource<Program>(this.programs);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }, error => {
       this.notifierService.showNotification(error.error.message, 'OK', 'error');
-      console.log(error);
     });
   }
 
@@ -97,30 +97,15 @@ export class ProgramComponent implements OnInit {
     });
   }
 
-  openMappingDialog(uuid: string) {
+  openDataElementProgramMappingDialog(uuid: string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.minWidth = '50%';
-    // if (data) {
-    //   const flowKeysData = {
-    //     id: data.id,
-    //     keyDescription: data.keyDescription,
-    //     keyName: data.keyName,
-    //   };
-
-    // console.log(flowKeysData);
-    // this.FlowService.populateForm(flowKeysData);
-    this.dialog.open(DataElementProgramMappingDialogComponent, {data: uuid})
+    dialogConfig.data = uuid;
+    this.dialog.open(DataElementProgramMappingDialogComponent, dialogConfig)
       .afterClosed().subscribe(() => {
       this.getPrograms();
     });
-    // } else {
-    //   dialogConfig.data = {};
-    //   this.dialog.open(FlowCategoryDialogComponent, dialogConfig)
-    //     .afterClosed().subscribe(() => {
-    //     this.getFlows();
-    //   });
-    // }
   }
 }

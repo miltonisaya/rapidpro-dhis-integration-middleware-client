@@ -73,7 +73,7 @@ export class DataElementProgramMappingDialogComponent implements OnInit {
 
   saveData() {
     let payload = {
-      programId: this.data,
+      programUuid: this.data,
       dataElements: this.selectedDataElementsList
     }
 
