@@ -159,15 +159,15 @@ export class FlowComponent implements OnInit {
     }
   }
 
-  openMapCategoryDialog(data: { uuid: string; dataElementUuid: string; name: string; }): void {
+  openCategoryMappingDialog(data: { uuid: string; dataElementUuid: string; name: string; }): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     if (data) {
       const categoriesMappingData = {
-        id: data.uuid,
+        uuid: data.uuid,
         dataElementUuid: data.dataElementUuid,
-        flowId: this.selectedFlowUuid,
+        flowUuid: this.selectedFlowUuid,
         categoryName: data.name
       };
 
@@ -199,7 +199,6 @@ export class FlowComponent implements OnInit {
   }
 
   openResetMappingDialog(data:any): void {
-    console.log('Open reset mapping dialogue clicked!!')
     this.elementUuid = data.uuid;
     this.dialog.open(this.resetDialog)
       .afterClosed().subscribe(() => {
@@ -208,7 +207,6 @@ export class FlowComponent implements OnInit {
   }
 
   reset(): any {
-    console.log('Element uuid =>',this.elementUuid);
     this.flowService.resetMapping(this.elementUuid).subscribe(response => {
       this.notifierService.showNotification(response.message, 'OK', 'success');
 

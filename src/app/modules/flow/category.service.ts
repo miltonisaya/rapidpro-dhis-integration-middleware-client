@@ -23,18 +23,6 @@ export class CategoryService {
       );
   }
 
-  /**
-   * helper function to extract data since
-   * we are not using a type checker in the request
-   * @returns Observable
-   *
-   * @param res
-   */
-  private extractData(res: Response) {
-    const body = res;
-    return body || {};
-  }
-
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 

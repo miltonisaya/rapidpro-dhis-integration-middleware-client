@@ -58,7 +58,6 @@ export class FlowCategoryDialogComponent implements OnInit {
   dataElement = new FormControl();
 
   constructor(
-    public flowKeyService: FlowKeyService,
     public dialogRef: MatDialogRef<FlowCategoryDialogComponent>,
     public notifierService: NotifierService,
     public dataElementService: DataElementService,
@@ -90,9 +89,9 @@ export class FlowCategoryDialogComponent implements OnInit {
     });
   }
 
-  submitForm(form: FormGroup) {
-    if (this.flowKeyService.form.valid) {
-      this.flowKeyService.updateFlowKey(this.flowKeyService.form.value)
+  submitForm() {
+    if (this.flowService.form.valid) {
+      this.flowService.updateFlowKey(this.flowService.form.value)
         .subscribe((response: { message: string; }) => {
           this.notifierService.showNotification(response.message, 'OK', 'success');
           this.onClose();
@@ -103,18 +102,17 @@ export class FlowCategoryDialogComponent implements OnInit {
   }
 
   onClose() {
-    this.flowKeyService.form.reset();
+    this.flowService.form.reset();
     this.dialogRef.close();
   }
 
   mapCategoryAndDataElement() {
-    console.log("Data element ===>", this.dataElement.value);
     let data: CategoryDataElementMapping = {
       dataElementUuid: this.dataElement.value.uuid,
       categoryUuid: this.data.uuid
     };
 
-    this.flowKeyService.mapDataElementsWithCategory(data).subscribe(response => {
+    this.flowService.mapDataElementsWithCategory(data).subscribe(response => {
       this.notifierService.showNotification(response.message, 'OK', 'success');
       this.flowService.getKeysByFlowUuid(this.data.flowUuid);
     }, (error: { message: string; }) => {

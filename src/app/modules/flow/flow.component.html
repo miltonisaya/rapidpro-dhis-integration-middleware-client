@@ -72,16 +72,26 @@
             <div *ngIf="categories.categories.length > 0" style="align-content: space-around;">
               <ul>
                 <li *ngFor="let category of categories.categories">
-                  <div class="link-data-element" style="justify-content: flex-start"
-                       (click)="openMapCategoryDialog(category)"
-                       matTooltip="Click to map data element">
+<!--                  <pre>{{ categories|json }}</pre>-->
+
+                  <div
+                    class="link-data-element"
+                    style="justify-content: flex-start"
+                    (click)="openCategoryMappingDialog(category)"
+                    matTooltip="Click to map data element">
                     {{ category.name }}
                   </div>
-                  <span *ngIf="category.possibleTrueValues" style="color: teal;"> >> [{{ category.possibleTrueValues }}
-                    ] </span>
-                  <span *ngIf="category.dataElement" (click)="openSetPossibleValuesDialog(category)">
-                <mat-icon style="align-content: center;">add</mat-icon>
-              </span>
+                  <span
+
+                        style="color: teal;">
+                    >> [{{ category.possibleTrueValues }}
+                    ]
+                  </span>
+                  <span
+                    *ngIf="category.dataElement"
+                    (click)="openSetPossibleValuesDialog(category)">
+                    <mat-icon style="align-content: center;">add</mat-icon>
+                  </span>
                 </li>
               </ul>
             </div>

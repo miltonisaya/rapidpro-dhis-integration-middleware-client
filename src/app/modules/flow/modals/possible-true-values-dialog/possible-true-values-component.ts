@@ -9,12 +9,12 @@ import {
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {FlowService} from "../../flow.service";
 import {NotifierService} from "../../../notification/notifier.service";
-import {CategoryService} from "../../category.service";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
 import {DataElementService} from "../../../data-element/data-element.service";
+import {CategoryService} from "../../category.service";
 
 @Component({
   selector: 'app-flow-key-dialog',
