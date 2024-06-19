@@ -1,11 +1,5 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA, Inject, OnInit} from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogTitle
-} from '@angular/material/dialog';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, Inject, NO_ERRORS_SCHEMA, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {FlowService} from "../../flow.service";
 import {NotifierService} from "../../../notification/notifier.service";
@@ -30,8 +24,8 @@ import {CategoryService} from "../../category.service";
     MatButton,
     MatDialogClose
   ],
-  providers:[DataElementService],
-  schemas:[CUSTOM_ELEMENTS_SCHEMA],
+  providers: [DataElementService, CategoryService, FlowService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   styleUrls: ['possible-true-values-dialog.component.sass']
 })
 
@@ -50,7 +44,6 @@ export class PossibleTrueValuesComponent implements OnInit {
 
   ngOnInit() {
     this.initializeFormGroup();
-    console.log("Data received =>", this.data);
   }
 
   initializeFormGroup() {

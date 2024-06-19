@@ -118,7 +118,6 @@ export class FlowCategoryDialogComponent implements OnInit {
     }, (error: { message: string; }) => {
       this.notifierService.showNotification(error.message, 'OK', 'error');
       this.flowService.getKeysByFlowUuid(this.data.flowUuid);
-      console.log("fetched keys by flow with uuid " + this.data.flowUuid);
     });
     this.dialogRef.close();
   }
