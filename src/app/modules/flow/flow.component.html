@@ -51,13 +51,13 @@
           <th *matHeaderCellDef mat-header-cell> Data Element</th>
           <td *matCellDef="let flowKeys" mat-cell>
             <div *ngFor="let category of flowKeys.categories">
-          <span *ngIf="category.dataElement">
-            {{ "(" + category?.dataElement?.code + ") - " + category?.dataElement?.name }}
-          </span>
+              <span *ngIf="category.dataElement">
+                {{ "(" + category?.dataElement?.code + ") - " + category?.dataElement?.name }}
+              </span>
 
-              <!--          <span *ngIf="category.possibleTrueValues" style="color: teal;">-->
-              <!--            >> [{{ category.possibleTrueValues }}]-->
-              <!--          </span>-->
+              <span *ngIf="category.possibleTrueValues" style="color: teal;">
+                >> [{{ category.possibleTrueValues }}]
+              </span>
             </div>
 
             <div *ngIf="flowKeys.dataElement" style="color: teal">
@@ -72,8 +72,6 @@
             <div *ngIf="categories.categories.length > 0" style="align-content: space-around;">
               <ul>
                 <li *ngFor="let category of categories.categories">
-<!--                  <pre>{{ categories|json }}</pre>-->
-
                   <div
                     class="link-data-element"
                     style="justify-content: flex-start"
@@ -82,7 +80,7 @@
                     {{ category.name }}
                   </div>
                   <span
-
+                    *ngIf="category.possibleTrueValue"
                         style="color: teal;">
                     >> [{{ category.possibleTrueValues }}
                     ]
