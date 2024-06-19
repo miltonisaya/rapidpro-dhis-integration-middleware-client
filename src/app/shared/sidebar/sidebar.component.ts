@@ -19,7 +19,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDivider } from '@angular/material/divider';
 
 import { NgFor, NgIf } from '@angular/common';
-import {MatListItem} from "@angular/material/list";
+import {MatListItem, MatNavList} from "@angular/material/list";
 import {Router, RouterLink} from "@angular/router";
 import {FlexModule} from "@angular/flex-layout";
 
@@ -47,6 +47,7 @@ import {FlexModule} from "@angular/flex-layout";
     MatListItem,
     RouterLink,
     FlexModule,
+    MatNavList,
   ],
 })
 export class SidebarComponent implements OnInit {
@@ -107,7 +108,7 @@ export class SidebarComponent implements OnInit {
           },
           {
             id: 'b86e0790-3563-4da0-bd32-3d9f1255d4bf',
-            name: 'Authoritites',
+            name: 'Authorities',
             icon: 'security',
             url: 'authorities',
             sortOrder: 3,
@@ -133,7 +134,7 @@ export class SidebarComponent implements OnInit {
         id: '8716bd51-5d38-4c32-a3ad-9647ad30e889',
         name: 'Reports',
         icon: 'description',
-        url: 'manage-reports',
+        url: 'reports',
         sortOrder: 2,
         children: [],
       },
