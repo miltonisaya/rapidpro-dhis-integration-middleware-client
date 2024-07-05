@@ -19,7 +19,7 @@ import {MatFormField} from "@angular/material/form-field";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
-import {JsonPipe, NgForOf} from "@angular/common";
+import {JsonPipe, NgForOf, UpperCasePipe} from "@angular/common";
 import {User} from "./types/User";
 
 @Component({
@@ -44,14 +44,15 @@ import {User} from "./types/User";
     MatInput,
     NgForOf,
     MatTableModule,
-    JsonPipe
+    JsonPipe,
+    UpperCasePipe
   ],
   providers: [UserService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  displayedColumns: string[] = ["sno", 'name', 'email', 'roles', 'actions'];
+  displayedColumns: string[] = ["sno", 'name', 'email', 'roles','organisationUnit', 'actions'];
   users: any = [];
   userId: string;
   dataSource: MatTableDataSource<User>;

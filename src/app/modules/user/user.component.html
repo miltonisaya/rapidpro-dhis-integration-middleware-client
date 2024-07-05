@@ -51,6 +51,12 @@
       </td>
     </ng-container>
 
+    <!-- Organisation Unit Column -->
+    <ng-container matColumnDef="organisationUnit">
+      <th *matHeaderCellDef mat-header-cell>Organisation Unit</th>
+      <td *matCellDef="let users" mat-cell> {{ users.organisationUnit?.name | uppercase }}</td>
+    </ng-container>
+
     <!-- Action Column -->
     <ng-container matColumnDef="actions">
       <th *matHeaderCellDef mat-header-cell>Action</th>
