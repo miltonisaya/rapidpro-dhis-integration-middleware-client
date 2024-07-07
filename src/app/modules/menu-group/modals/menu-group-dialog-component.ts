@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
@@ -20,7 +20,6 @@ import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {CdkDrag, CdkDropList, DragDropModule} from "@angular/cdk/drag-drop";
 import {MatList, MatListItem} from "@angular/material/list";
 import {MatIcon} from "@angular/material/icon";
-import {PickListModule} from "primeng/picklist";
 import {MenuItemService} from "../../menu-item/menu-item.service";
 import {MenuItem} from "../../menu-item/types/MenuItem";
 
@@ -49,7 +48,6 @@ import {MenuItem} from "../../menu-item/types/MenuItem";
     MatListItem,
     DragDropModule,
     MatIcon,
-    PickListModule
   ],
   styleUrls: ['menu-group-dialog.component.css']
 })

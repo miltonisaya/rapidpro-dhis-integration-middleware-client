@@ -45,30 +45,6 @@
                  formControlName="url"
                  placeholder="Enter URL">
         </mat-form-field>
-
-        <p-pickList
-          [source]="assignedMenuItems"
-          [target]="selectedMenuItems"
-          sourceHeader="Available"
-          targetHeader="Selected"
-          [dragdrop]="true"
-          [responsive]="true"
-          [sourceStyle]="{ height: '10rem' }"
-          [targetStyle]="{ height: '10rem' }"
-          filterBy="name"
-          sourceFilterPlaceholder="Search by name"
-          targetFilterPlaceholder="Search by name"
-          breakpoint="762px">
-          <ng-template let-product pTemplate="item">
-            <div class="flex flex-wrap p-2 align-items-center gap-3">
-              <div class="flex-1 flex flex-column gap-2">
-                    <span class="font-bold">
-                        {{ product.name }}
-                    </span>
-              </div>
-            </div>
-          </ng-template>
-        </p-pickList>
       </div>
     </div>
   </mat-dialog-content>
