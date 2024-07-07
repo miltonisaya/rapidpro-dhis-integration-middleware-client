@@ -75,7 +75,7 @@ export class MenuGroupDialogComponent implements OnInit {
     const uuid = await this.data.uuid;
     this.menuItemService.getByMenuUuid(uuid)
       .subscribe((response:any) => {
-        console.log('MenuGroup items =>',response);
+        console.log('Menu Groups =>',response);
         this.selectedMenuItems = response.data.assignedMenuItems;
         this.assignedMenuItems = response.data.unassignedMenuItems;
       }, (error: { message: string; }) => {
