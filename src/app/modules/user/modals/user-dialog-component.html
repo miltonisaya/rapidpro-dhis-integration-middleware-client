@@ -39,11 +39,33 @@
                    required>
           </mat-form-field>
         </div>
+
+<!--        <div fxLayout="column" fxLayoutAlign="stretch">-->
+<!--          <mat-form-field appearance="outline">-->
+<!--            <input [formControl]="myControl" [matAutocomplete]="auto" matInput type="text" placeholder="Organisation Unit" autocomplete="off">-->
+<!--            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">-->
+<!--              <mat-option *ngFor="let organisationUnit of filteredOrganisationUnits | async" [value]="organisationUnit">-->
+<!--                {{ organisationUnit.name }}-->
+<!--              </mat-option>-->
+<!--            </mat-autocomplete>-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
+        <div fxLayout="column" fxLayoutAlign="stretch">
+          <mat-form-field appearance="outline">
+            <input [formControl]="myControl" [matAutocomplete]="auto" matInput type="text" placeholder="Organisation Unit" autocomplete="off">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+              <mat-option *ngFor="let organisationUnit of filteredOrganisationUnits | async" [value]="organisationUnit">
+                {{ organisationUnit.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
       </div>
 
       <div fxLayout="column" fxLayoutAlign="stretch">
         <mat-form-field appearance="outline">
-          <mat-label>Roles</mat-label>
+          <mat-label>Role</mat-label>
           <mat-select [compareWith]="usersService.compareObjects"
                       formControlName="roles"
                       multiple

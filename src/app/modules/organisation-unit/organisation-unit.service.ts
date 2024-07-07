@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {OrganisationUnit} from "./types/OrganisationUnit";
+import {catchError, map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -34,5 +36,16 @@ export class OrganisationUnitService {
   // Delete
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/items/${id}`);
+  }
+
+  search(query: { page: number; size: number; sort: string; name: string; }): Observable<OrganisationUnit[]> {
+    return this.http.get<any>(`${this.baseUrl}/organisation-units`, {params: query}).pipe(
+      map(response => {
+        return response.data || []; // Handle cases where `data` might be undefined
+      }),
+      catchError(err => {
+        return [];
+      })
+    );
   }
 }

@@ -10,15 +10,20 @@ import {UserService} from '../user.service';
 import {NotifierService} from "../../notification/notifier.service";
 import {RoleService} from "../../role/role.service";
 import {FlexLayoutModule} from "@angular/flex-layout";
-import {FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MatDivider} from "@angular/material/divider";
-import {MatFormField} from "@angular/material/form-field";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {MatButton} from "@angular/material/button";
 import {MatTableModule} from "@angular/material/table";
-import {JsonPipe, NgForOf} from "@angular/common";
+import {AsyncPipe, JsonPipe, NgForOf} from "@angular/common";
 import {RoleApiResponse} from "../../role/types/RoleApiResponse";
+import {MatAutocomplete, MatAutocompleteTrigger} from "@angular/material/autocomplete";
+import {startWith, switchMap} from "rxjs/operators";
+import {Observable} from "rxjs";
+import {OrganisationUnitService} from "../../organisation-unit/organisation-unit.service";
+import {OrganisationUnit} from "../../organisation-unit/types/OrganisationUnit";
 
 @Component({
   selector: 'app-user-dialog',
@@ -40,7 +45,11 @@ import {RoleApiResponse} from "../../role/types/RoleApiResponse";
     MatDialogActions,
     MatDialogClose,
     MatButton,
-    JsonPipe
+    JsonPipe,
+    AsyncPipe,
+    MatAutocomplete,
+    MatAutocompleteTrigger,
+    MatLabel
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   providers: [UserService, RoleService]
@@ -51,17 +60,26 @@ export class UserDialogComponent implements OnInit {
   params: { pageNo: number; pageSize: number; sortBy: string };
   pageSize = 10;
   pageNo: number = 0;
+  filteredOrganisationUnits: any;
+  selectedOrganisationUnit: any;
+  myControl = new FormControl();
 
   constructor(
     public usersService: UserService,
     public dialogRef: MatDialogRef<UserDialogComponent>,
     public notifierService: NotifierService,
-    public roleService: RoleService
+    public roleService: RoleService,
+    public organisationUnitService: OrganisationUnitService
   ) {
   }
 
   ngOnInit() {
     this.getRoles();
+
+    this.filteredOrganisationUnits = this.myControl.valueChanges.pipe(
+      startWith(''),
+      switchMap(value => this._filter(value || ''))
+    );
   }
 
   submitForm(form: FormGroup) {
@@ -101,5 +119,20 @@ export class UserDialogComponent implements OnInit {
     }, error => {
       this.notifierService.showNotification(error.message, 'OK', 'error');
     });
+  }
+
+  displayFn(organisationUnit: OrganisationUnit): string {
+    this.selectedOrganisationUnit = organisationUnit;
+    return organisationUnit && organisationUnit.name ? organisationUnit.name : '';
+  }
+
+  private _filter(searchTerm: string): Observable<any[]> {
+    let params = {
+      page: 0,
+      size: 100,
+      sort: 'name',
+      name: searchTerm
+    };
+    return this.organisationUnitService.search(params);
   }
 }

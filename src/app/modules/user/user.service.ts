@@ -17,6 +17,7 @@ export class UserService {
     email: new FormControl('', [Validators.required, Validators.email]),
     phone: new FormControl('', [Validators.required]),
     roles: new FormControl([]),
+    organisationUnit: new FormControl('', [Validators.required]),
   });
   private API_ENDPOINT = `${BASE_URL}/${RESOURCE_URL}`;
 
@@ -62,7 +63,8 @@ export class UserService {
       email: '',
       name: '',
       phone: '',
-      roles: []
+      roles: [],
+      organisationUnit:''
     });
   }
 
