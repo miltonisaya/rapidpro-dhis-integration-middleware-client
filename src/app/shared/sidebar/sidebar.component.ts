@@ -43,6 +43,8 @@ import {FlexModule} from "@angular/flex-layout";
 export class SidebarComponent implements OnInit {
   @ViewChild(MatAccordion) accordion: MatAccordion;
   menus: any[];
+  loggedInAs: string;
+  organisationUnit: string;
 
   constructor(private router: Router) {
   }
@@ -58,7 +60,7 @@ export class SidebarComponent implements OnInit {
       children: [],
     };
     this.menus.unshift(dashboardMenu);
-
+    this.getUserInfo();
     // this.menus = [
     //   {
     //     id: 'a4fb400d-e0ef-45bc-b525-a27bef15fe74',
@@ -188,6 +190,15 @@ export class SidebarComponent implements OnInit {
     if (currentUser !== null && currentUser !== undefined) {
       const user = JSON.parse(currentUser);
       this.menus = user.menus;
+    }
+  }
+
+  getUserInfo(){
+    const currentUser = localStorage.getItem('ZAN_AFYA_MAONI_USER');
+    if(currentUser !== null && currentUser !== undefined){
+      const user = JSON.parse(currentUser);
+      this.loggedInAs = user.name;
+      this.organisationUnit = user.organisationUnit.name;
     }
   }
 
