@@ -26,7 +26,6 @@ import {CommonModule} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {Contact} from "./types/Contact";
-import {ContactApiResponse} from "./types/ContactApiResponse";
 import {NotifierService} from "../notification/notifier.service";
 
 @Component({
@@ -67,7 +66,7 @@ import {NotifierService} from "../notification/notifier.service";
 
 export class ContactComponent implements OnInit {
   title: string = "Contacts";
-  displayedColumns: string[] = ['number', 'name', 'urn', 'facilityCode', 'sex', 'createdOn', 'registrationDate', 'age', 'fields', 'actions'];
+  displayedColumns: string[] = ['number', 'name', 'urn', 'facilityCode','facilityName', 'sex', 'createdOn', 'registrationDate', 'age', 'actions'];
   pageSizeOptions: number[] = [10, 20, 50, 100, 250, 500, 1000];
   data: Contact[] = [];
   resultsLength: number = 0;
