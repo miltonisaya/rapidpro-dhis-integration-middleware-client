@@ -31,7 +31,7 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
           Facility Code
         </th>
-        <td mat-cell *matCellDef="let row">{{ row.facilityCode }}</td>
+        <td mat-cell *matCellDef="let row">{{ row.facilityCode | uppercase}}</td>
       </ng-container>
 
       <!-- Facility Name Column -->
@@ -39,14 +39,14 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
           Facility Name
         </th>
-        <td mat-cell *matCellDef="let row">{{ row?.organisationUnit.name }}</td>
+        <td mat-cell *matCellDef="let row">{{ row?.organisationUnit.name | uppercase}}</td>
       </ng-container>
 
       <ng-container matColumnDef="sex">
         <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
           Sex
         </th>
-        <td mat-cell *matCellDef="let row">{{ row.sex }}</td>
+        <td mat-cell *matCellDef="let row">{{ row.sex | uppercase}}</td>
       </ng-container>
 
       <ng-container matColumnDef="createdOn">
