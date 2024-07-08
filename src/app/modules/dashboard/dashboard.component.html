@@ -10,19 +10,19 @@
 >
   <mat-card fxFlex="25" class="card card-one">
     <mat-card-title>Total # of registered clients</mat-card-title>
-    <mat-card-content> {{ totalRegisteredClients }} </mat-card-content>
+    <mat-card-content> {{ totalRegisteredClients }}</mat-card-content>
   </mat-card>
   <mat-card fxFlex="25" class="card card-two">
     <mat-card-title>Total # of registered clients this year</mat-card-title>
-    <mat-card-content> {{ totalRegisteredClientsThisYear }} </mat-card-content>
+    <mat-card-content> {{ totalRegisteredClientsThisYear }}</mat-card-content>
   </mat-card>
   <mat-card fxFlex="25" class="card card-three">
     <mat-card-title>Total # of registered clients this month</mat-card-title>
-    <mat-card-content> {{ totalRegisteredClientsThisMonth }} </mat-card-content>
+    <mat-card-content> {{ totalRegisteredClientsThisMonth }}</mat-card-content>
   </mat-card>
   <mat-card fxFlex="25" class="card card-four">
     <mat-card-title>Total # of registered clients today</mat-card-title>
-    <mat-card-content> {{ totalRegisteredClientsToday }} </mat-card-content>
+    <mat-card-content> {{ totalRegisteredClientsToday }}</mat-card-content>
   </mat-card>
 </div>
 
@@ -36,6 +36,34 @@
   <div fxFlex="100" style="margin: 10px">
     <mat-card>
       <app-barchart></app-barchart>
+    </mat-card>
+  </div>
+
+  <h2 class="dashboard-title">Transaction Logs</h2>
+  <div fxFlex="100" style="margin: 10px">
+    <mat-card class="mat-elevation-z8">
+      <ul>
+        <li *ngFor="let trx of transactions">
+          <div class="transaction-logs">
+            <b>Date Processed:</b> {{ trx.dateProcessed }}
+            <br>
+            <b>Payload:</b>
+            <div style="width: 100%; overflow:scroll;">
+              <pre>{{ trx.payload }}</pre>
+              <br>
+              <b>DHIS2 Response:</b> {{ trx.dhisResponse }}
+            </div>
+
+            <div *ngIf="trx.isSent" style="border-radius:2px; background-color:lightgreen;">
+              Sent
+            </div>
+            <div *ngIf="trx.isSent == false" style="border-radius:2px; background-color:lightcoral;">
+              Not Sent
+            </div>
+            <mat-divider></mat-divider>
+          </div>
+        </li>
+      </ul>
     </mat-card>
   </div>
 </div>

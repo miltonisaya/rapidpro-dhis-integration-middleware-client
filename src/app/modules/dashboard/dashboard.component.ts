@@ -3,14 +3,17 @@ import {BarchartComponent} from '../../widgets/barchart/barchart.component';
 import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
 import {FlexModule} from '@angular/flex-layout';
 import {ContactService} from "../contact/contact.service";
+import {MatDivider} from "@angular/material/divider";
+import {CommonModule} from "@angular/common";
+import {TransactionsService} from "../transactions/transactions.service";
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
   standalone: true,
-  imports: [FlexModule, MatCard, MatCardTitle, MatCardContent, BarchartComponent],
-  providers: [ContactService]
+  imports: [FlexModule, MatCard, MatCardTitle, MatCardContent, BarchartComponent, MatDivider, CommonModule],
+  providers: [ContactService, TransactionsService]
 })
 export class DashboardComponent implements OnInit {
   title: string = "Dashboard";
@@ -18,9 +21,11 @@ export class DashboardComponent implements OnInit {
   totalRegisteredClientsThisYear: number;
   totalRegisteredClientsThisMonth: number;
   totalRegisteredClientsToday: number;
+  transactions: any;
 
   constructor(
-    private contactService: ContactService
+    private contactService: ContactService,
+    private dashboardService: TransactionsService
   ) {
   }
 
@@ -29,6 +34,7 @@ export class DashboardComponent implements OnInit {
     this.getTotalRegisteredClientsToday();
     this.getTotalRegisteredClients();
     this.getTotalRegisteredClientsThisYear();
+    this.getTransactionLogs();
   }
 
   getTotalRegisteredClients() {
@@ -53,5 +59,11 @@ export class DashboardComponent implements OnInit {
     this.contactService.getTotalRegisteredClientsThisToday().subscribe(response => {
       this.totalRegisteredClientsToday = response.data;
     });
+  }
+
+  getTransactionLogs() {
+    this.dashboardService.get().subscribe(response => {
+      this.transactions = response.data;
+    })
   }
 }
