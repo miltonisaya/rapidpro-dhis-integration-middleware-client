@@ -3,7 +3,7 @@
   <span class="breadcrumb">Home / Contacts</span>
 </div>
 
-<div class="example-container mat-elevation-z8">
+<div class="mat-elevation-z8">
   <div class="table-container">
     <table mat-table [dataSource]="dataSource" class="app-table"
            matSort matSortActive="registrationDate" matSortDisableClear matSortDirection="desc"
@@ -14,13 +14,13 @@
         <td mat-cell *matCellDef="let row; let i = index">{{ i + 1 }}</td>
       </ng-container>
 
-      <!-- Title Column -->
+      <!-- Name Column -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
         <td mat-cell *matCellDef="let row">{{ row.name }}</td>
       </ng-container>
 
-      <!-- State Column -->
+      <!-- URN Column -->
       <ng-container matColumnDef="urn">
         <th mat-header-cell *matHeaderCellDef>URN</th>
         <td mat-cell *matCellDef="let row">{{ row.urn }}</td>
@@ -74,7 +74,6 @@
         <th *matHeaderCellDef mat-header-cell>Action</th>
         <td *matCellDef="let row" mat-cell>
           <button mat-button matTooltip="Edit" matTooltipPosition="left" (click)="openDialog(row)">
-            <!--            <pre>{{row | json}}</pre>-->
             <mat-icon (click)="openDialog(row)">edit</mat-icon>
           </button>
         </td>
