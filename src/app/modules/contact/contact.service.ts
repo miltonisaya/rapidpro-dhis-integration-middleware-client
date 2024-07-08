@@ -63,4 +63,24 @@ export class ContactService {
       return of(result as T);
     };
   }
+
+  getTotalRegisteredClients(): Observable<any> {
+    const requestUrl: string = `${this.API_ENDPOINT}/registrations-by-user-organisation-unit`;
+    return this._http.get<ContactApiResponse>(requestUrl);
+  }
+
+  getTotalRegisteredClientsThisYear(): Observable<any> {
+    const requestUrl: string = `${this.API_ENDPOINT}/registrations-user-organisation-unit-this-year`;
+    return this._http.get<ContactApiResponse>(requestUrl);
+  }
+
+  getTotalRegisteredClientsThisMonth(): Observable<any> {
+    const requestUrl: string = `${this.API_ENDPOINT}/registrations-user-organisation-unit-this-month`;
+    return this._http.get<ContactApiResponse>(requestUrl);
+  }
+
+  getTotalRegisteredClientsThisToday(): Observable<any> {
+    const requestUrl: string = `${this.API_ENDPOINT}/registrations-user-organisation-unit-today`;
+    return this._http.get<ContactApiResponse>(requestUrl);
+  }
 }
