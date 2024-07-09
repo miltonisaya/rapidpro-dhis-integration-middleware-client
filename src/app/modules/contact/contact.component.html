@@ -39,7 +39,7 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
           Facility Name
         </th>
-        <td mat-cell *matCellDef="let row">{{ row?.organisationUnit.name | uppercase}}</td>
+        <td mat-cell *matCellDef="let row">{{ row?.organisationUnit?.name | uppercase}}</td>
       </ng-container>
 
       <ng-container matColumnDef="sex">
