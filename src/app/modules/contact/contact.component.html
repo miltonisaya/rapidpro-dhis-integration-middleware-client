@@ -17,13 +17,13 @@
       <!-- Name Column -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+        <td mat-cell *matCellDef="let row">{{ row?.name }}</td>
       </ng-container>
 
       <!-- URN Column -->
       <ng-container matColumnDef="urn">
         <th mat-header-cell *matHeaderCellDef>URN</th>
-        <td mat-cell *matCellDef="let row">{{ row.urn }}</td>
+        <td mat-cell *matCellDef="let row">{{ row?.urn }}</td>
       </ng-container>
 
       <!-- Facility Code Column -->
@@ -31,7 +31,7 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
           Facility Code
         </th>
-        <td mat-cell *matCellDef="let row">{{ row.facilityCode | uppercase}}</td>
+        <td mat-cell *matCellDef="let row">{{ row?.facilityCode | uppercase}}</td>
       </ng-container>
 
       <!-- Facility Name Column -->
@@ -46,28 +46,28 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
           Sex
         </th>
-        <td mat-cell *matCellDef="let row">{{ row.sex | uppercase}}</td>
+        <td mat-cell *matCellDef="let row">{{ row?.sex | uppercase}}</td>
       </ng-container>
 
       <ng-container matColumnDef="createdOn">
         <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
           Created On (RapidPro)
         </th>
-        <td mat-cell *matCellDef="let row">{{ row.createdOn | date: 'dd/MM/yyyy' }}</td>
+        <td mat-cell *matCellDef="let row">{{ row?.createdOn | date: 'dd/MM/yyyy' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="registrationDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
           Date of registration
         </th>
-        <td mat-cell *matCellDef="let row">{{ row.registrationDate | date }}</td>
+        <td mat-cell *matCellDef="let row">{{ row?.registrationDate | date }}</td>
       </ng-container>
 
       <ng-container matColumnDef="age">
         <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
           Age
         </th>
-        <td mat-cell *matCellDef="let row">{{ row.age }}</td>
+        <td mat-cell *matCellDef="let row">{{ row?.age }}</td>
       </ng-container>
 
       <!-- Action Column -->
