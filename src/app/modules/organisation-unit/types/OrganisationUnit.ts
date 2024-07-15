@@ -4,4 +4,5 @@ export interface OrganisationUnit {
   description?: string;
   uuid?: string;
   children?:OrganisationUnit[]
+  parent?:OrganisationUnit
 }

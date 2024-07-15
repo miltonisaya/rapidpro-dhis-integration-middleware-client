@@ -75,7 +75,12 @@ export class OrganisationUnitComponent implements OnInit {
   loadData() {
     this.organisationUnitService.get().subscribe(response => {
       this.apiResponse = response;
-      this.dataSource.data = this.apiResponse.data;
+      console.log('Api Response =>', this.apiResponse);
+      let treeData: any[] = [];
+      treeData.push(this.apiResponse.data);
+      this.dataSource.data = treeData;
+
+      // this.dataSource.data = this.apiResponse.data;
     });
   }
 
@@ -116,8 +121,33 @@ export class OrganisationUnitComponent implements OnInit {
   getChildrenByParentUuid(parentUuid: string) {
     this.organisationUnitService.findChildrenByParentUuid(parentUuid).subscribe((response) => {
       if (response.data.length > 0) {
-        this.dataSource.data = [...response.data];
+        this.dataSource.data = this.mergeArrays(this.dataSource.data, response.data);
       }
     })
+  }
+
+  private mergeArrays(existingArray: OrganisationUnit[], fetchedArray: OrganisationUnit[]) {
+    let organisationUnits: OrganisationUnit[] = [];
+    existingArray.map((e => {
+      let currentOu: OrganisationUnit = {
+        uuid:e.uuid,
+        name:e.name,
+        code:e.code,
+        description:e.description,
+        children:[]
+      }
+
+      e.children?.map((f => {
+        // console.log("Existing ->",e);
+        // console.log("Fetched ->",f);
+        if(f.parent !== undefined && f.parent !== null) {
+          if(f.parent.uuid === e.uuid) {
+            currentOu.children?.push(f);
+          }
+        }
+      }))
+    }))
+    console.log("Existing array =>",existingArray);
+    return existingArray;
   }
 }
