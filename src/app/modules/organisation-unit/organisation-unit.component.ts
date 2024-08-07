@@ -141,7 +141,7 @@ export class OrganisationUnitComponent implements OnInit {
         // console.log("Existing ->",e);
         // console.log("Fetched ->",f);
         if(f.parent !== undefined && f.parent !== null) {
-          if(f.parent.uuid === e.uuid) {
+          if(f.parent.uuid === this.selectedNodeUuid) {
             currentOu.children?.push(f);
           }
         }
