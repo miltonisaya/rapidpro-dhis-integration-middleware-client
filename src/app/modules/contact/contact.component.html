@@ -85,6 +85,10 @@
     </table>
   </div>
 
-  <mat-paginator [length]="resultsLength" [pageSizeOptions]="pageSizeOptions"
-                 aria-label="Select page of GitHub search results"></mat-paginator>
+  <mat-paginator
+    (page)="pageChanged($event)"
+    [length]="totalRecords"
+    [pageSizeOptions]="pageSizeOptions"
+    aria-label="Select page of search results">
+  </mat-paginator>
 </div>
