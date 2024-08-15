@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {BarchartComponent} from '../../widgets/barchart/barchart.component';
 import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
 import {FlexModule} from '@angular/flex-layout';
-import {ContactService} from "../contact/contact.service";
 import {MatDivider} from "@angular/material/divider";
 import {CommonModule} from "@angular/common";
 import {TransactionsService} from "../transactions/transactions.service";
+import {ContactService} from "../contact/contact.service";
 
 @Component({
   selector: 'app-dashboard',

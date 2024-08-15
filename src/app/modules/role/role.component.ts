@@ -172,7 +172,7 @@ export class RoleComponent implements OnInit {
 
   // delete() {
   //   this.roleService.delete(this.roleUuid).subscribe({
-  //     next: (response: RoleApiResponse) => {
+  //     next: (response: ContactApiResponse) => {
   //       this.notifierService.showNotification(response.message, 'OK', 'error');
   //     },
   //     error: (error) => {

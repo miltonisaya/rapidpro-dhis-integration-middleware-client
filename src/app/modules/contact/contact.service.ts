@@ -5,6 +5,7 @@ import {catchError, tap} from 'rxjs/operators';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {environment} from "../../../environments/environment";
 import {ContactApiResponse} from "./types/ContactApiResponse";
+import {RoleApiResponse} from "../role/types/RoleApiResponse";
 
 export const BASE_URL: string = environment.baseURL;
 export const RESOURCE_URL: string = 'api/v1/contacts';
@@ -82,5 +83,19 @@ export class ContactService {
   getTotalRegisteredClientsThisToday(): Observable<any> {
     const requestUrl: string = `${this.API_ENDPOINT}/registrations-user-organisation-unit-today`;
     return this._http.get<ContactApiResponse>(requestUrl);
+  }
+
+  create(payload: any): Observable<any> {
+    return this._http.post(`${this.API_ENDPOINT}`, payload);
+  }
+
+  update(data: any): Observable<any> {
+    console.log('Payload Update =>', data);
+    return this._http.put(`${this.API_ENDPOINT}/${data.uuid}`, data);
+  }
+
+  delete(uuid: string): Observable<RoleApiResponse> {
+    const requestUrl = `${this.API_ENDPOINT}/${uuid}`;
+    return this._http.delete<RoleApiResponse>(requestUrl);
   }
 }

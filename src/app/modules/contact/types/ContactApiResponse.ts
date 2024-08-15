@@ -6,4 +6,5 @@ export interface ContactApiResponse {
   size: number;
   status: number;
   total: number;
+  message: string;
 }

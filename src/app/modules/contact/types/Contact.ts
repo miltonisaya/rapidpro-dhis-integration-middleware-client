@@ -1,11 +1,14 @@
-export type Contact = {
-  uuid: string;
-  age: number;
-  sex: string;
+import {Authority} from "../../authority/types/Authority";
+import {OrganisationUnit} from "../../organisation-unit/types/OrganisationUnit";
+
+export interface Contact {
   name: string;
-  urn: string;
   facilityCode: string;
+  organisationUnit: OrganisationUnit;
   registrationDate: string;
-  createdOn: string;
+  sex: string;
+  urn: string;
   fields: string;
+  createdOn: string;
+  uuid: string;
 }
