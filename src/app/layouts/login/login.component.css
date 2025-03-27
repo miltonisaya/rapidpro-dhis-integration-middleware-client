@@ -1,0 +1,21 @@
+.img {
+
+}
+
+.validation-error {
+  font-size: x-small;
+  color: red;
+}
+
+.login-page-container{
+  background: grey;
+  height: 100vh;
+}
+
+.login-page-content {
+  background: white;
+  min-height: 40vh;
+  min-width: 25vw;
+  padding: 20px;
+  border-radius: 20px;
+}

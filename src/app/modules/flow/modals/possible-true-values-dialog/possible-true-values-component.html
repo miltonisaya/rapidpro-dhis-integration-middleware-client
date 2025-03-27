@@ -1,0 +1,19 @@
+<section class="possible-true-values" fxLayout="column" fxLayoutAlign="center center">
+  <mat-dialog-content class="mat-typography">
+    <h1 class="dialog-header" mat-dialog-title>
+      Possible True Values
+    </h1>
+    <div class="dialog-content" fxLayout="column" fxLayoutGap="10px">
+      <form [formGroup]="possibleValuesForm" (ngSubmit)="savePossibleTrueValues()">
+        <mat-form-field appearance="outline">
+          <mat-label>Possible True/Yes values should be specified here to determine whether the values sent are true of false</mat-label>
+          <input matInput type="text" id="possibleTrueValues" formControlName="possibleTrueValues">
+        </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px">
+          <button mat-raised-button color="primary" type="submit">SAVE</button>
+          <button mat-dialog-close mat-raised-button type="button">CANCEL</button>
+        </div>
+      </form>
+    </div>
+  </mat-dialog-content>
+</section>

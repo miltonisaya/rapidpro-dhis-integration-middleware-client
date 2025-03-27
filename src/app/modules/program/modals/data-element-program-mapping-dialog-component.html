@@ -1,0 +1,55 @@
+<section fxFlexFill
+         fxLayout="column"
+         fxLayout.xs="column"
+         fxLayoutAlign="end none">
+  <h1 class="dialog-header" fxLayout="row" fxLayoutAlign="center center" mat-dialog-title>
+    {{ "Map DHIS2 Data Element" }}
+  </h1>
+  <br>
+  <mat-divider></mat-divider>
+  <mat-dialog-content *ngIf="unSelectedDataElementList !== undefined && selectedDataElementsList != undefined">
+    <p-pickList
+      [source]="unSelectedDataElementList"
+      [target]="selectedDataElementsList"
+      sourceHeader="Available"
+      targetHeader="Selected"
+      [dragdrop]="true"
+      [responsive]="true"
+      [sourceStyle]="{ height: '10rem' }"
+      [targetStyle]="{ height: '10rem' }"
+      filterBy="name"
+      sourceFilterPlaceholder="Search by name"
+      targetFilterPlaceholder="Search by name"
+      breakpoint="762px">
+      <ng-template let-dataElement pTemplate="item">
+        <div class="flex flex-wrap p-2 align-items-center gap-3">
+          <div class="flex-1 flex flex-column gap-2">
+                    <span class="font-bold">
+                        {{ dataElement.name }}
+                    </span>
+          </div>
+        </div>
+      </ng-template>
+    </p-pickList>
+  </mat-dialog-content>
+
+  <mat-dialog-actions fxLayout="row" fxLayoutAlign="end none">
+    <div class="button">
+      <button mat-dialog-close mat-raised-button type="button">CANCEL</button>
+      <button
+        (click)="saveData()"
+        color="primary"
+        mat-raised-button
+        type="submit"
+      >
+        {{ "SAVE" }}
+      </button>
+    </div>
+  </mat-dialog-actions>
+</section>
+
+<!--<div style="overflow: scroll";>-->
+<!--  List1 <pre>{{unSelectedDataElementList | json}}</pre>-->
+<!--  myList <pre>{{selectedDataElementsList | json}}</pre>-->
+<!--</div>-->
+

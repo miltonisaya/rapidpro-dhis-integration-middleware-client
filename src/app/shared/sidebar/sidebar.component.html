@@ -1,0 +1,72 @@
+<div class="navbar">
+  <div class="user">
+    <img src="./assets/smz_logo.png" alt="" />
+    <div class="logo-title" (click)="navigateToDashboard()">Zan-AfyaMaoni Interoperability Middleware</div>
+    <mat-divider></mat-divider>
+    <h4 class="name">Logged in as: {{ loggedInAs }}</h4>
+    <h4 class="role">Location: {{ organisationUnit }}</h4>
+  </div>
+
+  <div class="menu">
+    <mat-nav-list>
+        <span *ngFor="let item of menus">
+          <span *ngIf="item.children && item.children.length > 0">
+            <mat-accordion>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <!-- Cabeceras del submenu -->
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                      <mat-icon>{{item.icon}}</mat-icon>
+                      {{item.name}}
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <span *ngFor="let child of item.children">
+                  <mat-list-item routerLink="{{'/'+child.url}}">
+                    <!-- Entradas de cada submenú  -->
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                      <mat-icon>{{child.icon}}</mat-icon>
+                      {{child.name}}
+                    </div>
+                  </mat-list-item>
+                </span>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </span>
+          <span *ngIf="!item.children || item.children.length === 0">
+            <mat-list-item routerLink="{{'/'+item.url}}">
+              <!-- Entradas principales -->
+              <div fxLayout="row" fxLayoutAlign="space-between center">
+                <mat-icon>{{item.icon}}</mat-icon>
+                {{item.name}}
+              </div>
+            </mat-list-item>
+          </span>
+        </span>
+    </mat-nav-list>
+
+<!--    <mat-accordion>-->
+<!--      <mat-expansion-panel *ngFor="let menu of menus">-->
+<!--        <mat-expansion-panel-header>-->
+<!--          <mat-panel-title>-->
+<!--            <mat-icon>{{ menu.icon }}</mat-icon>-->
+<!--            {{ menu.name }}-->
+<!--          </mat-panel-title>-->
+<!--        </mat-expansion-panel-header>-->
+
+<!--        <span *ngIf="menu.children.length > 0">-->
+<!--          <span *ngFor="let subMenu of menu.children">-->
+<!--            <mat-list-item routerLink="{{ '/' + subMenu.url }}">-->
+<!--              &lt;!&ndash; Entradas de cada submenú  &ndash;&gt;-->
+<!--              <div fxLayout="row" fxLayoutAlign="space-between center">-->
+<!--                <mat-icon>{{ subMenu.icon }}</mat-icon>-->
+<!--                {{ subMenu.name }}-->
+<!--              </div>-->
+<!--            </mat-list-item>-->
+<!--          </span>-->
+<!--        </span>-->
+<!--      </mat-expansion-panel>-->
+<!--    </mat-accordion>-->
+  </div>
+</div>

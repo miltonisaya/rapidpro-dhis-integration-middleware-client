@@ -1,0 +1,9 @@
+<div>
+  {{data.type | uppercase}}
+</div>
+<div class="content-style">
+  {{data.message}}
+</div>
+<div style="text-align: right">
+  <button (click)="snackBarRef.dismiss()" mat-flat-button>{{data.buttonText}}</button>
+</div>

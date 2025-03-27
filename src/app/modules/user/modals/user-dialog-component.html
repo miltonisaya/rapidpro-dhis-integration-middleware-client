@@ -1,0 +1,82 @@
+<section class="login-form-container"
+         fxFlexFill
+         fxLayout="row"
+         fxLayoutAlign="center center">
+  <form #formDirective="ngForm"
+        (ngSubmit)="submitForm(userService.form)"
+        [formGroup]="userService.form"
+        class="form">
+    <h1 class="dialog-header" mat-dialog-title>
+      {{ userService.form.controls['uuid'].value ? "Edit User" : "Create User" }}
+    </h1>
+    <mat-divider></mat-divider>
+
+    <mat-dialog-content>
+      <div class="dialog-content" fxLayout="column" fxLayoutGap="10px">
+        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between stretch">
+          <mat-form-field fxFlex="45" appearance="outline">
+            <input autocomplete="off"
+                   formControlName="name"
+                   matInput
+                   placeholder="Enter name" required>
+          </mat-form-field>
+
+          <mat-form-field fxFlex="45" appearance="outline">
+            <input autocomplete="off"
+                   formControlName="phone"
+                   matInput
+                   placeholder="Enter Phone"
+                   required>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="stretch">
+          <mat-form-field appearance="outline">
+            <input autocomplete="off"
+                   formControlName="email"
+                   matInput
+                   placeholder="Enter Email"
+                   required>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="stretch">
+          <mat-form-field appearance="outline">
+            <input formControlName="organisationUnit" [matAutocomplete]="auto" matInput type="text"
+                   placeholder="Organisation Unit" autocomplete="off">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+              <mat-option *ngFor="let organisationUnit of filteredOrganisationUnits | async" [value]="organisationUnit">
+                {{ organisationUnit.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div fxLayout="column" fxLayoutAlign="stretch">
+        <mat-form-field appearance="outline">
+          <mat-label>Role</mat-label>
+          <mat-select [compareWith]="userService.compareObjects"
+                      formControlName="roles"
+                      multiple
+                      required>
+            <mat-option *ngFor="let role of roles" [value]="role">
+              {{ role.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
+      <div fxLayout="row" fxLayoutGap="10px">
+        <button mat-dialog-close mat-raised-button type="button">CANCEL</button>
+        <button color="primary" mat-raised-button type="submit">
+          {{ userService.form.controls['uuid'].value ? "UPDATE" : "CREATE" }}
+        </button>
+      </div>
+    </mat-dialog-actions>
+  </form>
+</section>
+
+<!--<pre>{{ userService.form.value | json }}</pre>-->

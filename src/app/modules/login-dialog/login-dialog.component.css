@@ -1,0 +1,7 @@
+h2 {
+  align-items: center;
+}
+
+.login-dialog-container {
+  display: flex;
+}
