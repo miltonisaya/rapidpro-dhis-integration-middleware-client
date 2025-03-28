@@ -19,7 +19,7 @@ import {MatButton} from "@angular/material/button";
 })
 export class LoginDialogComponent {
   formGroup: FormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required])
   });
 

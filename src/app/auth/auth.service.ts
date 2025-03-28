@@ -23,6 +23,7 @@ export class AuthService {
   }
 
   login(data: any) {
+    console.log("Login Data =>", data);
     return this.http.post<any>(this.url, data).pipe(
       tap(response => {
         const token = response.data.token;
