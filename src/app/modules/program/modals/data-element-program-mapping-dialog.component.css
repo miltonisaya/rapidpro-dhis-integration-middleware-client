@@ -7,7 +7,6 @@
   margin-bottom: 0;
 }
 
-
 .dialog-content {
   margin-top: 10px;
 }
@@ -16,6 +15,20 @@
   margin: 5px;
 }
 
-h1{
+h1 {
   white-space: pre;
+}
+
+mat-dialog-content {
+  font-size: small;
+  padding: 2px;
+}
+
+.p-picklist .p-picklist-buttons {
+  padding: 2px;
+}
+
+.p-picklist .p-picklist-list .p-picklist-item {
+  font-size: small;
+  padding: 2px 2px 2px 2px !important;
 }
