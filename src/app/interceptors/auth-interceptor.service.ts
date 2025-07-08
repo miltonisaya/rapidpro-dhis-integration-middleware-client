@@ -42,6 +42,11 @@ export class AuthInterceptor implements HttpInterceptor {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.width = '400px';
+    dialogConfig.maxWidth = '90vw';
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
     this.dialog.open(LoginDialogComponent, dialogConfig)
       .afterClosed().subscribe(() => {
       console.log("Dialog closed ...")

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
@@ -9,13 +9,15 @@ import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { FlexModule } from '@angular/flex-layout';
 import {MatButton} from "@angular/material/button";
+import {CommonModule} from "@angular/common";
 
 @Component({
     selector: 'app-login-dialog',
     templateUrl: './login-dialog.component.html',
     styleUrls: ['./login-dialog.component.css'],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     standalone: true,
-  imports: [ReactiveFormsModule, FlexModule, MatFormField, MatLabel, MatIcon, MatInput, MatButton]
+    imports: [ReactiveFormsModule, FlexModule, MatFormField, MatLabel, MatIcon, MatInput, MatButton, CommonModule]
 })
 export class LoginDialogComponent {
   formGroup: FormGroup = new FormGroup({

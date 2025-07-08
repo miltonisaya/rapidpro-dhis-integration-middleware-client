@@ -1,7 +1,56 @@
-h2 {
-  align-items: center;
-}
-
 .login-dialog-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  min-width: 300px;
+  max-width: 400px;
+  background-color: #ffffff;
+  border-radius: 8px;
+}
+
+.dialog-title {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  text-align: center;
+  color: #333333;
+}
+
+.login-form {
+  width: 100%;
+}
+
+.form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.form-field mat-icon {
+  color: #666666;
+  margin-right: 8px;
+}
+
+.button-container {
+  margin-top: 16px;
+}
+
+button {
+  padding: 8px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+mat-error {
+  font-size: 12px;
+  color: #d32f2f;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+  .login-dialog-container {
+    min-width: 250px;
+    padding: 16px;
+  }
 }
