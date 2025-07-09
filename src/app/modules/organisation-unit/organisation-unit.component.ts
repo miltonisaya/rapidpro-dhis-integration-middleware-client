@@ -1,163 +1,228 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, OnInit} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+  OnInit,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
+import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {OrganisationUnitService} from './organisation-unit.service';
+import {OrganisationUnitDialogComponent} from './modals/organisation-unit-dialog-component';
+import {NestedTreeControl} from '@angular/cdk/tree';
 import {
   MatNestedTreeNode,
   MatTree,
-  MatTreeFlatDataSource,
-  MatTreeFlattener,
-  MatTreeModule,
+  MatTreeNestedDataSource,
   MatTreeNode,
-  MatTreeNodeOutlet,
-  MatTreeNodePadding,
-  MatTreeNodeToggle
-} from "@angular/material/tree";
-import {CommonModule} from "@angular/common";
-import {MatIcon} from "@angular/material/icon";
+  MatTreeNodeDef,
+  MatTreeNodeOutlet
+} from '@angular/material/tree';
 import {MatButton, MatIconButton} from "@angular/material/button";
-import {MatDialogActions, MatDialogClose, MatDialogContent} from "@angular/material/dialog";
 import {MatFormField} from "@angular/material/form-field";
-import {FlexLayoutModule} from "@angular/flex-layout";
+import {MatIcon} from "@angular/material/icon";
+import {NgIf} from "@angular/common";
+import {NotifierService} from "../notification/notifier.service";
 import {MatInput} from "@angular/material/input";
-import {OrganisationUnitService} from "./organisation-unit.service";
-import {OrganisationUnitApiResponse} from "./types/OrganisationUnitApiResponse";
-import {OrganisationUnit} from "./types/OrganisationUnit";
-import {FlatTreeControl} from "@angular/cdk/tree";
 
-/** Flat node with expandable and level information */
-interface OrganisationUnitFlatNode {
-  expandable: boolean;
+interface OuNode {
+  id: string;
   name: string;
-  level: number;
+  code: string;
+  otherNames: string | null;
+  parentId: string | null;
+  children?: OuNode[];
+  hasChildren: boolean;
 }
 
 @Component({
-  selector: 'app-organisation-unit',
+  selector: 'app-organisation-units',
   templateUrl: './organisation-unit.component.html',
-  styleUrl: './organisation-unit.component.css',
+  styleUrls: ['./organisation-unit.component.scss'],
   imports: [
-    CommonModule,
-    MatIcon,
-    MatTreeNode,
-    MatTree,
-    MatTreeNodePadding,
-    MatIconButton,
-    MatTreeNodeToggle,
     MatButton,
-    MatDialogActions,
-    MatDialogContent,
-    MatTreeNodeOutlet,
-    MatDialogClose,
-    MatNestedTreeNode,
     MatFormField,
-    FlexLayoutModule,
-    MatInput,
-    MatTreeModule
+    MatTree,
+    MatTreeNode,
+    MatNestedTreeNode,
+    MatIconButton,
+    MatIcon,
+    MatTreeNodeOutlet,
+    MatDialogContent,
+    MatDialogActions,
+    NgIf,
+    MatTreeNodeDef,
+    MatDialogClose,
+    MatInput
   ],
-  providers: [OrganisationUnitService],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-  standalone: true
+  standalone: true,
+  schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
 })
-
 export class OrganisationUnitComponent implements OnInit {
-  title: string = "Organisation Units";
-  apiResponse: OrganisationUnitApiResponse;
-  selectedNode: MatTreeNode<OrganisationUnitFlatNode>;
-  selectedNodeUuid: string;
+  treeControl = new NestedTreeControl<OuNode>(node => node.children);
+  dataSource = new MatTreeNestedDataSource<OuNode>();
+  selectedNode: OuNode | null = null;
+
+  @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
+  organisationUnitId: string;
+  isSuperAdministrator: boolean = false;
 
   constructor(
-    private organisationUnitService: OrganisationUnitService
+    private organisationUnitService: OrganisationUnitService,
+    private dialog: MatDialog,
+    private notifierService: NotifierService,
+    private cdr: ChangeDetectorRef
   ) {
   }
 
   ngOnInit(): void {
-    this.loadData();
+    this.getRootOrganisationUnits();
+    this.checkIsAdmin();
   }
 
-  loadData() {
-    this.organisationUnitService.get().subscribe(response => {
-      this.apiResponse = response;
-      this.dataSource.data = response.data;
-    });
+  checkIsAdmin() {
+    const mnmUser = JSON.parse(localStorage.getItem('MNM_USER') || '{}');
+    this.isSuperAdministrator = !!mnmUser.isSuperAdministrator;
   }
 
-  private _transformer = (node: OrganisationUnit, level: number) => {
-    return {
-      expandable: !!node.children && node.children.length > 0,
-      name: node.name,
-      level: level,
-      uuid: node.uuid
-    };
+  getRootOrganisationUnits() {
+    this.organisationUnitService.getRootOrganisationUnits().subscribe(
+      (response: OuNode[]) => {
+        console.log('Root nodes loaded:', response);
+        this.dataSource.data = response;
+        this.treeControl.dataNodes = response; // Sync tree control
+        this.cdr.detectChanges();
+      },
+      error => {
+        this.notifierService.showNotification(error.error.error, 'OK', 'error');
+        console.error('Error fetching root nodes:', error);
+      }
+    );
+  }
+
+  // loadChildren(node: OrganisationUnit) {
+  //   if (!node.children && node.hasChildren) {
+  //     console.log('Fetching children for:', node.id, node.name);
+  //     this.organisationUnitService.getChildren(node.id).subscribe(
+  //       (response: OrganisationUnit[]) => {
+  //         console.log('Children loaded for', node.name, ':', response);
+  //         node.children = response;
+  //         this.dataSource.data = [...this.dataSource.data];
+  //       },
+  //       error => {
+  //         this.notifierService.showNotification(error.error.error, 'OK', 'error');
+  //       }
+  //     );
+  //   }
+  // }
+
+  loadChildren(node: OuNode) {
+    if (!node.children && node.hasChildren) {
+      console.log('Fetching children for:', node.id, node.name);
+      this.organisationUnitService.getChildren(node.id).subscribe(
+        (response: OuNode[]) => {
+          console.log('Children loaded for', node.name, ':', response);
+          node.children = response; // Assign children to the node
+
+          // Manual refresh: Reset and reassign dataSource.data to force re-render
+          const currentData = this.dataSource.data;
+          this.dataSource.data = []; // Clear the data source
+          this.dataSource.data = currentData; // Reassign the updated data
+          this.treeControl.dataNodes = this.dataSource.data; // Sync tree control
+          this.treeControl.expand(node); // Ensure node stays expanded
+          this.cdr.detectChanges(); // Force change detection
+
+          console.log('Updated dataSource.data after refresh:', this.dataSource.data);
+        },
+        error => {
+          this.notifierService.showNotification(error.error.error, 'OK', 'error');
+          console.error('Error fetching children:', error);
+        }
+      );
+    } else {
+      console.log('No fetch needed for', node.name, '- already loaded or no children');
+    }
+  }
+
+  onNodeExpand(node: OuNode) {
+    if (!this.treeControl.isExpanded(node)) {
+      console.log('Expanding node:', node.name);
+      this.treeControl.expand(node);
+      this.loadChildren(node);
+    } else {
+      console.log('Collapsing node:', node.name);
+      this.treeControl.collapse(node);
+      this.cdr.detectChanges();
+    }
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    console.log('Filter applied:', filterValue);
+  }
+
+  openDialog(data?: OuNode): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    if (data) {
+      const ouData = {id: data.id, name: data.name, code: data.code, parentId: data.parentId};
+      this.organisationUnitService.populateForm(ouData);
+      this.dialog
+        .open(OrganisationUnitDialogComponent, dialogConfig)
+        .afterClosed()
+        .subscribe(() => {
+          this.getRootOrganisationUnits();
+        });
+    } else {
+      dialogConfig.data = {};
+      this.dialog
+        .open(OrganisationUnitDialogComponent, dialogConfig)
+        .afterClosed()
+        .subscribe(() => {
+          this.getRootOrganisationUnits();
+        });
+    }
+  }
+
+  openDeleteDialog(id: string) {
+    this.organisationUnitId = id;
+    this.dialog
+      .open(this.deleteDialog)
+      .afterClosed()
+      .subscribe(() => {
+        this.getRootOrganisationUnits();
+      });
+  }
+
+  delete() {
+    this.organisationUnitService.delete(this.organisationUnitId).subscribe(
+      response => {
+        this.notifierService.showNotification(response.message, 'OK', 'success');
+        this.getRootOrganisationUnits();
+      },
+      error => {
+        this.notifierService.showNotification(error.error.error, 'OK', 'error');
+      }
+    );
+    this.dialog.closeAll();
+  }
+
+  hasNestedChild = (_: number, node: OuNode) => {
+    const result = node.hasChildren;
+    console.log('Checking if', node.name, 'has children:', result);
+    return result;
   };
 
-  treeControl = new FlatTreeControl<OrganisationUnitFlatNode>(
-    node => node.level,
-    node => node.expandable,
-  );
-
-  treeFlattener = new MatTreeFlattener<OrganisationUnit, OrganisationUnitFlatNode>(
-    this._transformer,
-    node => node.level,
-    node => node.expandable,
-    node => node.children,
-  );
-
-  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-
-  hasChild = (_: number, node: OrganisationUnitFlatNode) => node.expandable;
-
-  openCreateDialog() {
-  }
-
-  onNodeClick(node: any) {
+  onNodeClick(node: OuNode) {
     this.selectedNode = node;
-    console.log('Selected Node =>', this.selectedNode);
-  }
-
-  // filter string from mat input filter
-  applyFilter(filterText: KeyboardEvent) {
-    console.log('Filter Text =>',filterText);
-    // this.filterTree(filterText.target[]);
-    // show / hide based on state of filter string
-    if (filterText) {
-      this.treeControl.expandAll();
-    } else {
-      this.treeControl.collapseAll();
-    }
-  }
-
-  // pass mat input string to recursive function and return data
-  filterTree(filterText: string) {
-    // use filter input text, return filtered TREE_DATA, use the 'name' object value
-    this.dataSource.data = this.filterRecursive(filterText, this.apiResponse.data, 'name');
-  }
-
-
-  // filter recursively on a text string using property object value
-  filterRecursive(filterText: string, array: any[], property: string) {
-    let filteredData;
-
-    //make a copy of the data so we don't mutate the original
-    function copy(o: any) {
-      return Object.assign({}, o);
-    }
-
-    // has string
-    if (filterText) {
-      // need the string to match the property value
-      filterText = filterText.toLowerCase();
-      // copy obj so we don't mutate it and filter
-      filteredData = array.map(copy).filter(function x(y) {
-        if (y[property].toLowerCase().includes(filterText)) {
-          return true;
-        }
-        // if children match
-        if (y.children) {
-          return (y.children = y.children.map(copy).filter(x)).length;
-        }
-      });
-      // no string, return whole array
-    } else {
-      filteredData = array;
-    }
-    return filteredData;
+    console.log('Node clicked:', node.name);
   }
 }

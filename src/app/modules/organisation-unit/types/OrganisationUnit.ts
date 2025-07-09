@@ -1,8 +1,9 @@
 export interface OrganisationUnit {
+  id: string | number;
+  code: string;
   name: string;
-  code?: string;
-  description?: string;
-  uuid?: string;
-  children?:OrganisationUnit[]
-  parent?:OrganisationUnit
+  otherNames?: string | null;
+  parent?: OrganisationUnit | null;
+  hasChildren?: boolean;
+  children?: OrganisationUnit[];
 }

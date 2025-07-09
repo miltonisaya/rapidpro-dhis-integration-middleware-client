@@ -1,4 +1,46 @@
+/*.organisation-unit-container {*/
+/*  padding: 20px;*/
+/*}*/
+
+/*mat-tree {*/
+/*  background: #fff;*/
+/*  padding: 10px;*/
+/*  border-radius: 4px;*/
+/*  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+/*mat-tree-node {*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*}*/
+
+/*mat-tree-node button {*/
+/*  margin-right: 10px;*/
+/*}*/
+
+
+/*.organisation-unit-container {*/
+/*  padding: 20px;*/
+/*}*/
+
+/*mat-tree {*/
+/*  background: #fff;*/
+/*  padding: 10px;*/
+/*  border-radius: 4px;*/
+/*  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+/*mat-tree-node {*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*}*/
+
+/*mat-tree-node button {*/
+/*  margin-right: 10px;*/
+/*}*/
+
 .mat-tree {
+  padding-left: 40px;
   align-content: center;
 }
 
@@ -42,17 +84,10 @@
   padding-left: 40px;
 }
 
-mat-tree-node {
-  padding-left: 100px;
+.ou-tree-invisible {
+/ / display: none;
 }
 
-mat-tree-node.selected {
-  border-radius: 3px;
-  color: green;
-  font-weight: bold;
-}
-
-.main-content-container {
-  /*min-height: 85vh;*/
-  background-color: white;
+.ou-tree {
+  width: 100%;
 }
