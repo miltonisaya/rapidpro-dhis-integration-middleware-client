@@ -27,6 +27,8 @@ import {MatIcon} from "@angular/material/icon";
 import {NgIf} from "@angular/common";
 import {NotifierService} from "../notification/notifier.service";
 import {MatInput} from "@angular/material/input";
+import {OrganisationUnit} from "./types/OrganisationUnit";
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 interface OuNode {
   id: string;
@@ -56,7 +58,8 @@ interface OuNode {
     NgIf,
     MatTreeNodeDef,
     MatDialogClose,
-    MatInput
+    MatInput,
+    FlexLayoutModule
   ],
   standalone: true,
   schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
@@ -65,6 +68,7 @@ export class OrganisationUnitComponent implements OnInit {
   treeControl = new NestedTreeControl<OuNode>(node => node.children);
   dataSource = new MatTreeNestedDataSource<OuNode>();
   selectedNode: OuNode | null = null;
+  originalData: OrganisationUnit[] = [];
 
   @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -106,22 +110,6 @@ export class OrganisationUnitComponent implements OnInit {
     );
   }
 
-  // loadChildren(node: OrganisationUnit) {
-  //   if (!node.children && node.hasChildren) {
-  //     console.log('Fetching children for:', node.id, node.name);
-  //     this.organisationUnitService.getChildren(node.id).subscribe(
-  //       (response: OrganisationUnit[]) => {
-  //         console.log('Children loaded for', node.name, ':', response);
-  //         node.children = response;
-  //         this.dataSource.data = [...this.dataSource.data];
-  //       },
-  //       error => {
-  //         this.notifierService.showNotification(error.error.error, 'OK', 'error');
-  //       }
-  //     );
-  //   }
-  // }
-
   loadChildren(node: OuNode) {
     if (!node.children && node.hasChildren) {
       console.log('Fetching children for:', node.id, node.name);
@@ -162,9 +150,15 @@ export class OrganisationUnitComponent implements OnInit {
     }
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    console.log('Filter applied:', filterValue);
+  applyFilter(event: KeyboardEvent) {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    console.log('Filter Value =>', filterValue);
+    // if (!filterValue) {
+    //   this.dataSource.data = JSON.parse(JSON.stringify(this.originalData)); // Restore original data
+    //   this.treeControl.collapseAll();
+    //   this.cdr.detectChanges();
+    //   return;
+    // }
   }
 
   openDialog(data?: OuNode): void {
