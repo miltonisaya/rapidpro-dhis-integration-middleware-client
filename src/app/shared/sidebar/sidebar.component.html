@@ -1,72 +1,72 @@
-<div class="navbar">
-  <div class="user">
-    <img src="./assets/smz_logo.png" alt="" />
-    <div class="logo-title" (click)="navigateToDashboard()">Zan-AfyaMaoni Interoperability Middleware</div>
-    <mat-divider></mat-divider>
-    <h4 class="name">Logged in as: {{ loggedInAs }}</h4>
-    <h4 class="role">Location: {{ organisationUnit }}</h4>
+<div class="sidebar">
+  <!-- Logo Section -->
+  <div class="sidebar-header">
+    <div class="logo-container" (click)="navigateToDashboard()">
+      <img src="./assets/smz_logo.png" alt="Logo" class="logo-img" />
+      <span class="logo-text">Zan-AfyaMaoni</span>
+    </div>
   </div>
 
-  <div class="menu">
+  <!-- User Info Section -->
+  <div class="user-info">
+    <div class="user-avatar">
+      <mat-icon>account_circle</mat-icon>
+    </div>
+    <div class="user-details">
+      <span class="user-name">{{ loggedInAs }}</span>
+      <span class="user-location">
+        <mat-icon>location_on</mat-icon>
+        {{ organisationUnit }}
+      </span>
+    </div>
+  </div>
+
+  <mat-divider class="section-divider"></mat-divider>
+
+  <!-- Navigation Menu -->
+  <nav class="nav-menu">
     <mat-nav-list>
-        <span *ngFor="let item of menus">
-          <span *ngIf="item.children && item.children.length > 0">
-            <mat-accordion>
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    <!-- Cabeceras del submenu -->
-                    <div fxLayout="row" fxLayoutAlign="space-between center">
-                      <mat-icon>{{item.icon}}</mat-icon>
-                      {{item.name}}
-                    </div>
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-                <span *ngFor="let child of item.children">
-                  <mat-list-item routerLink="{{'/'+child.url}}">
-                    <!-- Entradas de cada submenú  -->
-                    <div fxLayout="row" fxLayoutAlign="space-between center">
-                      <mat-icon>{{child.icon}}</mat-icon>
-                      {{child.name}}
-                    </div>
-                  </mat-list-item>
-                </span>
-              </mat-expansion-panel>
-            </mat-accordion>
-          </span>
-          <span *ngIf="!item.children || item.children.length === 0">
-            <mat-list-item routerLink="{{'/'+item.url}}">
-              <!-- Entradas principales -->
-              <div fxLayout="row" fxLayoutAlign="space-between center">
-                <mat-icon>{{item.icon}}</mat-icon>
-                {{item.name}}
+      <ng-container *ngFor="let item of menus">
+        <!-- Menu items with children (expandable) -->
+        <ng-container *ngIf="item.children && item.children.length > 0">
+          <mat-accordion class="menu-accordion">
+            <mat-expansion-panel class="menu-panel">
+              <mat-expansion-panel-header class="menu-header">
+                <mat-panel-title class="menu-title">
+                  <mat-icon class="menu-icon">{{ item.icon }}</mat-icon>
+                  <span class="menu-text">{{ item.name }}</span>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <div class="submenu">
+                <a *ngFor="let child of item.children"
+                   class="submenu-item"
+                   routerLink="{{ '/' + child.url }}"
+                   routerLinkActive="active">
+                  <mat-icon class="submenu-icon">{{ child.icon }}</mat-icon>
+                  <span class="submenu-text">{{ child.name }}</span>
+                </a>
               </div>
-            </mat-list-item>
-          </span>
-        </span>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </ng-container>
+
+        <!-- Menu items without children (direct links) -->
+        <ng-container *ngIf="!item.children || item.children.length === 0">
+          <a class="menu-item"
+             routerLink="{{ '/' + item.url }}"
+             routerLinkActive="active">
+            <mat-icon class="menu-icon">{{ item.icon }}</mat-icon>
+            <span class="menu-text">{{ item.name }}</span>
+          </a>
+        </ng-container>
+      </ng-container>
     </mat-nav-list>
+  </nav>
 
-<!--    <mat-accordion>-->
-<!--      <mat-expansion-panel *ngFor="let menu of menus">-->
-<!--        <mat-expansion-panel-header>-->
-<!--          <mat-panel-title>-->
-<!--            <mat-icon>{{ menu.icon }}</mat-icon>-->
-<!--            {{ menu.name }}-->
-<!--          </mat-panel-title>-->
-<!--        </mat-expansion-panel-header>-->
-
-<!--        <span *ngIf="menu.children.length > 0">-->
-<!--          <span *ngFor="let subMenu of menu.children">-->
-<!--            <mat-list-item routerLink="{{ '/' + subMenu.url }}">-->
-<!--              &lt;!&ndash; Entradas de cada submenú  &ndash;&gt;-->
-<!--              <div fxLayout="row" fxLayoutAlign="space-between center">-->
-<!--                <mat-icon>{{ subMenu.icon }}</mat-icon>-->
-<!--                {{ subMenu.name }}-->
-<!--              </div>-->
-<!--            </mat-list-item>-->
-<!--          </span>-->
-<!--        </span>-->
-<!--      </mat-expansion-panel>-->
-<!--    </mat-accordion>-->
+  <!-- Footer -->
+  <div class="sidebar-footer">
+    <mat-divider class="section-divider"></mat-divider>
+    <span class="version-text">v1.0.0</span>
   </div>
 </div>

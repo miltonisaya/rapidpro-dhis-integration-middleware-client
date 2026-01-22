@@ -10,7 +10,7 @@ import {MatDivider} from '@angular/material/divider';
 
 import {NgFor, NgIf} from '@angular/common';
 import {MatListItem, MatNavList} from "@angular/material/list";
-import {Router, RouterLink} from "@angular/router";
+import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 import {FlexModule} from "@angular/flex-layout";
 import {CurrentUser, MenuItem} from "../../auth/types/auth.types";
 
@@ -37,6 +37,7 @@ import {CurrentUser, MenuItem} from "../../auth/types/auth.types";
     NgIf,
     MatListItem,
     RouterLink,
+    RouterLinkActive,
     FlexModule,
     MatNavList,
   ],

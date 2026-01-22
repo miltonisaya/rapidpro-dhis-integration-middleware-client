@@ -47,3 +47,47 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-color: rgba(255, 255, 255, 0.3) !important;
 }
 
+/* Sidebar Expansion Panel Styles */
+app-sidebar .mat-expansion-panel {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+app-sidebar .mat-expansion-panel-header {
+  padding: 0 8px !important;
+  height: 48px !important;
+  background: transparent !important;
+}
+
+app-sidebar .mat-expansion-panel-header:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+app-sidebar .mat-expansion-panel-header.mat-expanded {
+  height: 48px !important;
+}
+
+app-sidebar .mat-expansion-panel-body {
+  padding: 0 !important;
+}
+
+app-sidebar .mat-expansion-indicator::after {
+  color: rgba(255, 255, 255, 0.5) !important;
+  border-width: 0 2px 2px 0 !important;
+  padding: 3px !important;
+}
+
+app-sidebar .mat-content {
+  overflow: visible !important;
+}
+
+/* Sidebar Nav List Styles */
+app-sidebar .mat-mdc-nav-list {
+  padding: 0 !important;
+}
+
+app-sidebar .mat-mdc-list-item {
+  height: auto !important;
+  padding: 0 !important;
+}
+
