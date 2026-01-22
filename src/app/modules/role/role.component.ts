@@ -1,4 +1,4 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort, MatSortHeader} from "@angular/material/sort";
 import {
@@ -28,7 +28,8 @@ import {Authority} from "../authority/types/Authority";
 import {NotifierService} from "../notification/notifier.service";
 import {RoleApiResponse} from "./types/RoleApiResponse";
 import {MenuGroup} from "../menu-group/types/MenuGroup";
-import {lastValueFrom} from "rxjs";
+import {lastValueFrom, Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 import {AuthorityService} from "../authority/authority.service";
 import {DialogComponent} from "../../components/dialog-component";
 import {MatDialogActions, MatDialogClose, MatDialogContent} from "@angular/material/dialog";
@@ -88,21 +89,18 @@ import {ConfirmDialogComponent} from "../../components/confirm/confirm.dialog";
   ], schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 
-export class RoleComponent implements OnInit {
+export class RoleComponent implements OnInit, OnDestroy {
   title: string = 'Roles';
   data: Role[] = [];
-  roleUuid: string;
-  currentRole: any | null = null;
+  roleUuid: string = '';
+  currentRole: Role | null = null;
 
-  //Permissions Config
   permissionDialogOpen: boolean = false;
-  roleAuthorities: RoleAuthority[];
+  roleAuthorities: RoleAuthority[] = [];
   selectedPermissions: number[] = [111, 113];
 
-  //Create/Update Dialog Config
   createEditDialogOpen: boolean = false;
 
-  //Pagination starts here
   @ViewChild('paginator', {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   dataSource = new MatTableDataSource<Role>([]);
@@ -113,8 +111,9 @@ export class RoleComponent implements OnInit {
   pageNo: number = 0;
   totalRecords = 0;
   pageSizeOptions: number[] = [10, 25, 100, 1000];
-  @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
+  @ViewChild('deleteDialog') deleteDialog: TemplateRef<Role>;
   isConfirmDeleteDialogOpen = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
     public roleService: RoleService,
@@ -123,31 +122,41 @@ export class RoleComponent implements OnInit {
   ) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getRoles();
   }
 
-  pageChanged(e: any) {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  pageChanged(e: { pageSize: number; pageIndex: number }): void {
     this.pageSize = e.pageSize;
     this.pageNo = e.pageIndex;
     this.getRoles();
   }
 
-  getRoles() {
+  getRoles(): void {
     this.params = {
       "pageNo": this.pageNo,
       "pageSize": this.pageSize,
       "sortBy": "name"
-    }
+    };
 
-    return this.roleService.get(this.params).subscribe((response: RoleApiResponse) => {
-      this.dataSource.data = response.data || [];
-      this.totalRecords = response.total ? response.total : 0;
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    }, error => {
-      this.notifierService.showNotification(error.error.message, 'OK', 'error');
-    });
+    this.roleService.get(this.params)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: RoleApiResponse) => {
+          this.dataSource.data = response.data || [];
+          this.totalRecords = response.total ? response.total : 0;
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        },
+        error: (error) => {
+          this.notifierService.showNotification(error.error.message, 'OK', 'error');
+        }
+      });
   }
 
   openDeleteDialog(uuid: string) {
@@ -156,18 +165,15 @@ export class RoleComponent implements OnInit {
     this.getRoles();
   }
 
-  openEditDialog(row: any): void {
+  openEditDialog(row: Role): void {
     this.createEditDialogOpen = true;
-      const menuData: MenuGroup = {
-        uuid: row.uuid,
-        code: row.code,
-        description: row.description,
-        name: row.name,
-        url: row.url,
-        sortOrder: row.sortOrder,
-        icon: row.icon
-      };
-      this.roleService.populateForm(menuData);
+    const roleData = {
+      uuid: row.uuid,
+      code: row.code,
+      description: row.description,
+      name: row.name
+    };
+    this.roleService.populateForm(roleData);
   }
 
   // delete() {
@@ -188,7 +194,6 @@ export class RoleComponent implements OnInit {
     code: string;
     authorities: Authority[]
   }): void {
-    console.log("Opening create/edit dialog");
     this.createEditDialogOpen = true;
     if (data) {
       const roleData = {
@@ -209,7 +214,7 @@ export class RoleComponent implements OnInit {
     this.permissionDialogOpen = true;
     let res = await lastValueFrom(this.authorityService.findByRole(uuid));
     this.roleAuthorities = res.data;
-    this.selectedPermissions = role.data.authorities.map((a: { id: any; }) => a.id);
+    this.selectedPermissions = role.data.authorities.map((a: Authority) => a.id);
   }
 
   togglePermission(permissionId: number): void {
@@ -229,66 +234,69 @@ export class RoleComponent implements OnInit {
     this.permissionDialogOpen = false;
   }
 
-  savePermissions() {
+  savePermissions(): void {
+    if (!this.currentRole) return;
+
     const payload = {
       authorityIds: this.selectedPermissions,
       roleUuid: this.currentRole.uuid
-    }
+    };
 
-    this.authorityService.saveRoleAuthorities(payload).subscribe(response => {
-      this.notifierService.showNotification(response.message, 'OK', 'success')
-    }, error => {
-      this.notifierService.showNotification(error.error.message, 'OK', 'error')
-    })
+    this.authorityService.saveRoleAuthorities(payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          this.notifierService.showNotification(response.message, 'OK', 'success');
+        },
+        error: (error) => {
+          this.notifierService.showNotification(error.error.message, 'OK', 'error');
+        }
+      });
 
-    //Close the dialog
     this.permissionDialogOpen = false;
   }
 
-  submitCreateEditRoleForm() {
+  submitCreateEditRoleForm(): void {
     if (this.roleService.form.valid) {
-      if (this.roleService.form.get('uuid')?.value != '') {
-        this.roleService.update(this.roleService.form.value)
-          .subscribe((response) => {
+      const isUpdate = this.roleService.form.get('uuid')?.value !== '';
+      const request$ = isUpdate
+        ? this.roleService.update(this.roleService.form.value)
+        : this.roleService.create(this.roleService.form.value);
+
+      request$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (response) => {
             this.notifierService.showNotification(response.message, 'OK', 'success');
             this.createEditDialogOpen = false;
             this.getRoles();
-          }, error => {
+          },
+          error: (error) => {
             this.notifierService.showNotification(error.message, 'OK', 'error');
             this.createEditDialogOpen = false;
             this.getRoles();
-          });
-      } else {
-        this.roleService.create(this.roleService.form.value)
-          .subscribe(response => {
-            this.notifierService.showNotification(response.message, 'OK', 'error');
-            this.createEditDialogOpen = false;
-            this.getRoles();
-          }, error => {
-            this.notifierService.showNotification(error.message, 'OK', 'error');
-            this.createEditDialogOpen = false;
-            this.getRoles();
-          });
-      }
+          }
+        });
     }
   }
 
-  closeConfirmDialog(event: any) {
+  closeConfirmDialog(event: boolean): void {
     this.isConfirmDeleteDialogOpen = false;
   }
 
-  async handleConfirmDelete() {
-    console.log("Handling confirm delete")
-    this.roleService.delete(this.roleUuid).subscribe({
-      next: (response: RoleApiResponse) => {
-        this.notifierService.showNotification(response.message, 'OK', 'error');
-        this.getRoles();
-      },
-      error: (error) => {
-        this.notifierService.showNotification(error.error.message, 'OK', 'error');
-        this.getRoles();
-      }
-    });
+  handleConfirmDelete(): void {
+    this.roleService.delete(this.roleUuid)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: RoleApiResponse) => {
+          this.notifierService.showNotification(response.message, 'OK', 'success');
+          this.getRoles();
+        },
+        error: (error) => {
+          this.notifierService.showNotification(error.error.message, 'OK', 'error');
+          this.getRoles();
+        }
+      });
   }
 }
 

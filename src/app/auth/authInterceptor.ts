@@ -6,7 +6,6 @@ import {AuthService} from "./auth.service";
 export function AuthInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
   const authService:AuthService = inject(AuthService);
   const token = authService.getToken();
-  console.log("Intercepting request with token ...");
   if (token) {
     const cloned = req.clone({
       setHeaders: {

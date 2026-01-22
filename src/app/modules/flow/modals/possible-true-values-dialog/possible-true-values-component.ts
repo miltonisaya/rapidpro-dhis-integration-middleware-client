@@ -66,7 +66,6 @@ export class PossibleTrueValuesComponent implements OnInit {
     }, (error: { message: string; }) => {
       this.notifierService.showNotification(error.message, 'OK', 'error');
       this.flowService.findKeysWithCategoriesByFlowUuid(this.data.flowUuid);
-      console.log("fetched keys by flow with id " + this.data.flowUuid);
     });
     this.matDialog.closeAll();
   }

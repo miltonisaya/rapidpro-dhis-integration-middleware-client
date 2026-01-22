@@ -80,7 +80,7 @@
   </table>
   <mat-paginator
     (page)="pageChanged($event)"
-    [length]="users?.totalElements"
+    [length]="totalUsers"
     [pageSizeOptions]="pageSizeOptions"
     [pageSize]="pageSize"
     class="mat-elevation-z8"

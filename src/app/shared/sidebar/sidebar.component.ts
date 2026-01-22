@@ -12,6 +12,7 @@ import {NgFor, NgIf} from '@angular/common';
 import {MatListItem, MatNavList} from "@angular/material/list";
 import {Router, RouterLink} from "@angular/router";
 import {FlexModule} from "@angular/flex-layout";
+import {CurrentUser, MenuItem} from "../../auth/types/auth.types";
 
 /**
  * @title Accordion with expand/collapse all toggles
@@ -42,9 +43,9 @@ import {FlexModule} from "@angular/flex-layout";
 })
 export class SidebarComponent implements OnInit {
   @ViewChild(MatAccordion) accordion: MatAccordion;
-  menus: any[];
-  loggedInAs: string;
-  organisationUnit: string;
+  menus: MenuItem[] = [];
+  loggedInAs: string = '';
+  organisationUnit: string = '';
 
   constructor(private router: Router) {
   }
@@ -185,20 +186,20 @@ export class SidebarComponent implements OnInit {
     // ];
   }
 
-  getMenus() {
-    const currentUser = localStorage.getItem('ZAN_AFYA_MAONI_USER');
-    if (currentUser !== null && currentUser !== undefined) {
-      const user = JSON.parse(currentUser);
+  getMenus(): void {
+    const currentUserJson = localStorage.getItem('ZAN_AFYA_MAONI_USER');
+    if (currentUserJson) {
+      const user: CurrentUser = JSON.parse(currentUserJson);
       this.menus = user.menus;
     }
   }
 
-  getUserInfo(){
-    const currentUser = localStorage.getItem('ZAN_AFYA_MAONI_USER');
-    if(currentUser !== null && currentUser !== undefined){
-      const user = JSON.parse(currentUser);
+  getUserInfo(): void {
+    const currentUserJson = localStorage.getItem('ZAN_AFYA_MAONI_USER');
+    if (currentUserJson) {
+      const user: CurrentUser = JSON.parse(currentUserJson);
       this.loggedInAs = user.name;
-      this.organisationUnit = user.organisationUnit.name;
+      this.organisationUnit = user.organisationUnit?.name || '';
     }
   }
 

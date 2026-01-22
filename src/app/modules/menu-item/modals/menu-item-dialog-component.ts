@@ -65,7 +65,6 @@ export class MenuItemDialogComponent implements OnInit {
     this.getMenuGroups();
     this.getAuthorities();
     this.menuService.populateForm(this.data);
-    console.log("Form values =>",this.menuService.form.value);
   }
 
   getMenuGroups() {

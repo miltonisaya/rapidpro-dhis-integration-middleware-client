@@ -3,6 +3,7 @@ import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
+  OnDestroy,
   OnInit,
   TemplateRef,
   ViewChild
@@ -29,6 +30,8 @@ import {NotifierService} from "../notification/notifier.service";
 import {MatInput} from "@angular/material/input";
 import {OrganisationUnit} from "./types/OrganisationUnit";
 import {FlexLayoutModule} from "@angular/flex-layout";
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 interface OuNode {
   id: string;
@@ -64,18 +67,19 @@ interface OuNode {
   standalone: true,
   schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
 })
-export class OrganisationUnitComponent implements OnInit {
+export class OrganisationUnitComponent implements OnInit, OnDestroy {
   treeControl = new NestedTreeControl<OuNode>(node => node.children);
   dataSource = new MatTreeNestedDataSource<OuNode>();
   selectedNode: OuNode | null = null;
   originalData: OrganisationUnit[] = [];
 
-  @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
+  @ViewChild('deleteDialog') deleteDialog: TemplateRef<OuNode>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  organisationUnitId: string;
+  organisationUnitId: string = '';
   isSuperAdministrator: boolean = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private organisationUnitService: OrganisationUnitService,
@@ -90,61 +94,58 @@ export class OrganisationUnitComponent implements OnInit {
     this.checkIsAdmin();
   }
 
-  checkIsAdmin() {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  checkIsAdmin(): void {
     const mnmUser = JSON.parse(localStorage.getItem('MNM_USER') || '{}');
     this.isSuperAdministrator = !!mnmUser.isSuperAdministrator;
   }
 
-  getRootOrganisationUnits() {
-    this.organisationUnitService.getRootOrganisationUnits().subscribe(
-      (response: OuNode[]) => {
-        console.log('Root nodes loaded:', response);
-        this.dataSource.data = response;
-        this.treeControl.dataNodes = response; // Sync tree control
-        this.cdr.detectChanges();
-      },
-      error => {
-        this.notifierService.showNotification(error.error.error, 'OK', 'error');
-        console.error('Error fetching root nodes:', error);
-      }
-    );
+  getRootOrganisationUnits(): void {
+    this.organisationUnitService.getRootOrganisationUnits()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: OuNode[]) => {
+          this.dataSource.data = response;
+          this.treeControl.dataNodes = response;
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          this.notifierService.showNotification(error.error.error, 'OK', 'error');
+        }
+      });
   }
 
-  loadChildren(node: OuNode) {
+  loadChildren(node: OuNode): void {
     if (!node.children && node.hasChildren) {
-      console.log('Fetching children for:', node.id, node.name);
-      this.organisationUnitService.getChildren(node.id).subscribe(
-        (response: OuNode[]) => {
-          console.log('Children loaded for', node.name, ':', response);
-          node.children = response; // Assign children to the node
+      this.organisationUnitService.getChildren(node.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (response: OuNode[]) => {
+            node.children = response;
 
-          // Manual refresh: Reset and reassign dataSource.data to force re-render
-          const currentData = this.dataSource.data;
-          this.dataSource.data = []; // Clear the data source
-          this.dataSource.data = currentData; // Reassign the updated data
-          this.treeControl.dataNodes = this.dataSource.data; // Sync tree control
-          this.treeControl.expand(node); // Ensure node stays expanded
-          this.cdr.detectChanges(); // Force change detection
-
-          console.log('Updated dataSource.data after refresh:', this.dataSource.data);
-        },
-        error => {
-          this.notifierService.showNotification(error.error.error, 'OK', 'error');
-          console.error('Error fetching children:', error);
-        }
-      );
-    } else {
-      console.log('No fetch needed for', node.name, '- already loaded or no children');
+            const currentData = this.dataSource.data;
+            this.dataSource.data = [];
+            this.dataSource.data = currentData;
+            this.treeControl.dataNodes = this.dataSource.data;
+            this.treeControl.expand(node);
+            this.cdr.detectChanges();
+          },
+          error: (error) => {
+            this.notifierService.showNotification(error.error.error, 'OK', 'error');
+          }
+        });
     }
   }
 
   onNodeExpand(node: OuNode) {
     if (!this.treeControl.isExpanded(node)) {
-      console.log('Expanding node:', node.name);
       this.treeControl.expand(node);
       this.loadChildren(node);
     } else {
-      console.log('Collapsing node:', node.name);
       this.treeControl.collapse(node);
       this.cdr.detectChanges();
     }
@@ -152,13 +153,6 @@ export class OrganisationUnitComponent implements OnInit {
 
   applyFilter(event: KeyboardEvent) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    console.log('Filter Value =>', filterValue);
-    // if (!filterValue) {
-    //   this.dataSource.data = JSON.parse(JSON.stringify(this.originalData)); // Restore original data
-    //   this.treeControl.collapseAll();
-    //   this.cdr.detectChanges();
-    //   return;
-    // }
   }
 
   openDialog(data?: OuNode): void {
@@ -169,54 +163,49 @@ export class OrganisationUnitComponent implements OnInit {
     if (data) {
       const ouData = {id: data.id, name: data.name, code: data.code, parentId: data.parentId};
       this.organisationUnitService.populateForm(ouData);
-      this.dialog
-        .open(OrganisationUnitDialogComponent, dialogConfig)
-        .afterClosed()
-        .subscribe(() => {
-          this.getRootOrganisationUnits();
-        });
     } else {
       dialogConfig.data = {};
-      this.dialog
-        .open(OrganisationUnitDialogComponent, dialogConfig)
-        .afterClosed()
-        .subscribe(() => {
-          this.getRootOrganisationUnits();
-        });
     }
-  }
-
-  openDeleteDialog(id: string) {
-    this.organisationUnitId = id;
     this.dialog
-      .open(this.deleteDialog)
+      .open(OrganisationUnitDialogComponent, dialogConfig)
       .afterClosed()
+      .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.getRootOrganisationUnits();
       });
   }
 
-  delete() {
-    this.organisationUnitService.delete(this.organisationUnitId).subscribe(
-      response => {
-        this.notifierService.showNotification(response.message, 'OK', 'success');
+  openDeleteDialog(id: string): void {
+    this.organisationUnitId = id;
+    this.dialog
+      .open(this.deleteDialog)
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
         this.getRootOrganisationUnits();
-      },
-      error => {
-        this.notifierService.showNotification(error.error.error, 'OK', 'error');
-      }
-    );
+      });
+  }
+
+  delete(): void {
+    this.organisationUnitService.delete(this.organisationUnitId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          this.notifierService.showNotification(response.message, 'OK', 'success');
+          this.getRootOrganisationUnits();
+        },
+        error: (error) => {
+          this.notifierService.showNotification(error.error.error, 'OK', 'error');
+        }
+      });
     this.dialog.closeAll();
   }
 
   hasNestedChild = (_: number, node: OuNode) => {
-    const result = node.hasChildren;
-    console.log('Checking if', node.name, 'has children:', result);
-    return result;
+    return node.hasChildren;
   };
 
   onNodeClick(node: OuNode) {
     this.selectedNode = node;
-    console.log('Node clicked:', node.name);
   }
 }

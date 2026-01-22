@@ -2,8 +2,10 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {Observable, of} from 'rxjs';
-import {catchError, map, tap} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {User} from './types/User';
+import {UserApiResponse} from './types/UserApiResponse';
 
 export const BASE_URL: string = environment.baseURL;
 export const RESOURCE_URL: string = 'api/v1/users';
@@ -28,29 +30,24 @@ export class UserService {
    * Get all users
    * @param param
    */
-  getUsers(param?: { pageNo: number; pageSize: number; }): Observable<any> {
-    return this.http.get<any>(this.API_ENDPOINT, {params: param}).pipe(
-      map(this.extractData));
+  getUsers(param?: { pageNo: number; pageSize: number; }): Observable<UserApiResponse> {
+    const params = param ? { pageNo: String(param.pageNo), pageSize: String(param.pageSize) } : undefined;
+    return this.http.get<UserApiResponse>(this.API_ENDPOINT, { params });
   }
 
   /**
    * Delete user by id
    * @param id
    */
-  delete(id: string): Observable<any> {
-    console.log("Deleting user with id ", id);
-    return this.http.delete<any>(this.API_ENDPOINT + "/" + id).pipe(
-      map(this.extractData));
+  delete(id: string): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(this.API_ENDPOINT + "/" + id);
   }
 
   /**
    * @param data
    */
-  populateForm(data: any) {
+  populateForm(data: Partial<User>): void {
     this.form.patchValue(data);
-
-    // console.log('The data to populate =>',data)
-    console.log('The current form value is =>', this.form.value);
   }
 
   initializeFormGroup() {
@@ -64,48 +61,26 @@ export class UserService {
     });
   }
 
-  create(payload: any): Observable<any> {
-    return this.http.post(`${this.API_ENDPOINT}`, payload);
+  create(payload: Partial<User>): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.API_ENDPOINT}`, payload);
   }
 
-  updateUser(user: { uuid: string; }): Observable<any> {
-    return this.http.put(this.API_ENDPOINT + "/" + user.uuid, user)
-      .pipe(tap(_ => console.log(`updated user with id=${user.uuid}`)),
-        catchError(this.handleError<any>('update user'))
-      );
+  updateUser(user: Partial<User> & { uuid: string }): Observable<{ message: string }> {
+    return this.http.put<{ message: string }>(this.API_ENDPOINT + "/" + user.uuid, user)
+      .pipe(catchError(this.handleError<{ message: string }>('update user')));
   }
 
-  compareObjects(o1: { id: any; }, o2: { id: any; }) {
+  compareObjects(o1: { id: string }, o2: { id: string }): boolean {
     return o1 && o2 && o1.id === o2.id;
   }
 
-  resetPassword(data: { value: { id: any; }; }): Observable<any> {
-    return this.http.put(this.API_ENDPOINT + "/change-password", data.value)
-      .pipe(tap(_ => console.log(`changed password for user with id=${data.value.id}`)),
-        catchError(this.handleError<any>('change user password'))
-      );
-  }
-
-  /**
-   * helper function to extract data since
-   * we are not using a type checker in the request
-   * @returns Observable
-   *
-   * @param res
-   */
-  private extractData(res: Response) {
-    const body = res;
-    return body || {};
+  resetPassword(data: { value: { id: string } }): Observable<{ message: string }> {
+    return this.http.put<{ message: string }>(this.API_ENDPOINT + "/change-password", data.value)
+      .pipe(catchError(this.handleError<{ message: string }>('change user password')));
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      console.log(`${operation} failed: ${error.message}`);
+    return (error: Error): Observable<T> => {
       return of(result as T);
     };
   }

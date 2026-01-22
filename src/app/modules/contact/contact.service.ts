@@ -36,14 +36,11 @@ export class ContactService {
    */
   populateForm(data: { [key: string]: any; }) {
     this.form.patchValue(data);
-    console.log("The received form data =>", this.form.value);
   }
 
   updateContact(contact: any) {
     return this._http.put(this.API_ENDPOINT + "/" + contact.uuid, contact)
-      .pipe(tap(_ => console.log(`updated contact with uuid=${contact.uuid}`)),
-        catchError(this.handleError<any>('update contact'))
-      );
+      .pipe(catchError(this.handleError<any>('update contact')));
   }
 
   initializeFormGroup() {
@@ -55,12 +52,6 @@ export class ContactService {
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      console.log(`${operation} failed: ${error.message}`);
       return of(result as T);
     };
   }
@@ -90,7 +81,6 @@ export class ContactService {
   }
 
   update(data: any): Observable<any> {
-    console.log('Payload Update =>', data);
     return this._http.put(`${this.API_ENDPOINT}/${data.uuid}`, data);
   }
 

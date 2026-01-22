@@ -8,3 +8,42 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+/* Snackbar notification styles */
+.mat-mdc-snack-bar-container.success .mdc-snackbar__surface {
+  background-color: #4caf50 !important;
+}
+
+.mat-mdc-snack-bar-container.success .mdc-snackbar__label {
+  color: #ffffff !important;
+}
+
+.mat-mdc-snack-bar-container.success .mat-mdc-button,
+.mat-mdc-snack-bar-container.success .mat-mdc-snack-bar-action {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.mat-mdc-snack-bar-container.success .mat-mdc-button:hover,
+.mat-mdc-snack-bar-container.success .mat-mdc-snack-bar-action:hover {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.mat-mdc-snack-bar-container.error .mdc-snackbar__surface {
+  background-color: #f44336 !important;
+}
+
+.mat-mdc-snack-bar-container.error .mdc-snackbar__label {
+  color: #ffffff !important;
+}
+
+.mat-mdc-snack-bar-container.error .mat-mdc-button,
+.mat-mdc-snack-bar-container.error .mat-mdc-snack-bar-action {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.mat-mdc-snack-bar-container.error .mat-mdc-button:hover,
+.mat-mdc-snack-bar-container.error .mat-mdc-snack-bar-action:hover {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+}
+

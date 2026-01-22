@@ -1,7 +1,7 @@
-export type Flow = {
+export interface FlowKeyDetail {
   uuid: string;
-  name: number;
-  description: number;
+  name: string;
+  description?: string;
   flowUuid: string;
-  dataElementUuid: string;
+  dataElementUuid?: string;
 }

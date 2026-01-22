@@ -18,19 +18,11 @@ export class CategoryService {
 
   savePossibleValues(payload: { categoryUuid: any; }): Observable<any> {
     return this.http.post(this.CATEGORIES_ENDPOINT + "/possible-values", payload)
-      .pipe(tap(_ => console.log(`Saved possible values for category with the uuid ${payload.categoryUuid}`)),
-        catchError(this.handleError<any>('Save possible values'))
-      );
+      .pipe(catchError(this.handleError<any>('Save possible values')));
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      console.log(`${operation} failed: ${error.message}`);
       return of(result as T);
     };
   }

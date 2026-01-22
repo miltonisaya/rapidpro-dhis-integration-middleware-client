@@ -16,9 +16,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialog.open(LoginDialogComponent, dialogConfig).afterClosed().subscribe(() => {
-      console.log('Login dialog closed');
-    });
+    dialog.open(LoginDialogComponent, dialogConfig);
   };
 
   return next(req).pipe(

@@ -44,7 +44,6 @@ export class RoleService {
   }
 
   update(data: any): Observable<any> {
-    console.log('Payload Update =>', data);
     return this._http.put(`${this.API_ENDPOINT}/${data.uuid}`, data);
   }
 

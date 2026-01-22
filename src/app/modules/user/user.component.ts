@@ -1,4 +1,4 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {
   MatCell,
   MatColumnDef,
@@ -21,6 +21,8 @@ import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
 import {JsonPipe, NgForOf, UpperCasePipe} from "@angular/common";
 import {User} from "./types/User";
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-users',
@@ -51,18 +53,20 @@ import {User} from "./types/User";
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   styleUrls: ['./user.component.css']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ["sno", 'name', 'email', 'roles','organisationUnit', 'actions'];
-  users: any = [];
-  userId: string;
+  users: User[] = [];
+  totalUsers: number = 0;
+  userId: string = '';
   dataSource: MatTableDataSource<User>;
-  @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
+  @ViewChild('deleteDialog') deleteDialog: TemplateRef<User>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   pageSize: number = 10;
   pageNo: number = 0;
   pageSizeOptions: number[] = [10, 25, 100, 1000];
   private params: { pageNo: number; pageSize: number };
+  private destroy$ = new Subject<void>();
 
   constructor(
     private userService: UserService,
@@ -75,22 +79,29 @@ export class UserComponent implements OnInit {
     this.getUsers();
   }
 
-  /**
-   * This method returns users
-   */
-  getUsers() {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  getUsers(): void {
     this.params = {
       "pageNo": this.pageNo,
       "pageSize": this.pageSize
-    }
+    };
 
-    return this.userService.getUsers(this.params).subscribe((response: any) => {
-      this.users = response.data;
-      this.dataSource = new MatTableDataSource<User>(this.users);
-    }, error => {
-      this.notifierService.showNotification(error.error.message, 'OK', 'error');
-      console.log(error);
-    });
+    this.userService.getUsers(this.params)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          this.users = response.data;
+          this.totalUsers = response.total || this.users.length;
+          this.dataSource = new MatTableDataSource<User>(this.users);
+        },
+        error: (error) => {
+          this.notifierService.showNotification(error.error.message, 'OK', 'error');
+        }
+      });
   }
 
   applyFilter(event: Event) {
@@ -99,7 +110,6 @@ export class UserComponent implements OnInit {
   }
 
   openEditDialog(data?: User): void {
-    console.log("Edit user data =>",data);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -112,38 +122,42 @@ export class UserComponent implements OnInit {
         roles: data.roles,
         organisationUnit: data?.organisationUnit
       };
-      this.matDialog.open(UserDialogComponent, dialogConfig)
-        .afterClosed().subscribe(() => {
-        this.getUsers();
-      });
     } else {
       dialogConfig.data = {};
-      this.matDialog.open(UserDialogComponent, dialogConfig)
-        .afterClosed().subscribe(() => {
+    }
+    this.matDialog.open(UserDialogComponent, dialogConfig)
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
         this.getUsers();
       });
-    }
   }
 
-  openDeleteDialog(uuid: string) {
+  openDeleteDialog(uuid: string): void {
     this.userId = uuid;
     this.matDialog.open(this.deleteDialog)
-      .afterClosed().subscribe(() => {
-      this.getUsers();
-    });
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.getUsers();
+      });
   }
 
-  delete() {
+  delete(): void {
     this.userService.delete(this.userId)
-      .subscribe(response => {
-        this.notifierService.showNotification(response.message, 'OK', 'success');
-      }, error => {
-        this.notifierService.showNotification(error.error.message, 'OK', 'error');
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          this.notifierService.showNotification(response.message, 'OK', 'success');
+        },
+        error: (error) => {
+          this.notifierService.showNotification(error.error.message, 'OK', 'error');
+        }
       });
     this.matDialog.closeAll();
   }
 
-  pageChanged(e: any) {
+  pageChanged(e: { pageSize: number; pageIndex: number }): void {
     this.pageSize = e.pageSize;
     this.pageNo = e.pageIndex;
     this.getUsers();

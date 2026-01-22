@@ -80,7 +80,6 @@ export class OrganisationUnitDialogComponent implements OnInit {
       },
       error: (error) => {
         this.notifierService.showNotification(error.error.error, 'OK', 'error');
-        console.error('Error fetching councils:', error);
       }
     });
   }

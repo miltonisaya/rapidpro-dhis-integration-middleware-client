@@ -2,15 +2,17 @@ import {Injectable} from '@angular/core';
 import {HttpBackend, HttpClient} from '@angular/common/http';
 import {tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {Observable} from 'rxjs';
 import {environment} from "../../environments/environment";
 import {NotifierService} from "../modules/notification/notifier.service";
+import {CurrentUser, LoginCredentials, LoginResponse} from "./types/auth.types";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   url = environment.baseURL + "/api/v1/users/auth/authenticate";
-  currentUserValue: any;
+  currentUserValue: CurrentUser | null = null;
 
   constructor(
     private http: HttpClient,
@@ -19,33 +21,44 @@ export class AuthService {
     handler: HttpBackend
   ) {
     this.http = new HttpClient(handler);
-
   }
 
-  login(data: any) {
-    console.log("Login Data =>", data);
-    return this.http.post<any>(this.url, data).pipe(
+  login(data: LoginCredentials): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(this.url, data).pipe(
       tap(response => {
         const token = response.data.token;
-        const currentUser = response.data.user;
+        const currentUser: CurrentUser = {
+          ...response.data.user,
+          token: token,
+          menus: response.data.menus,
+          isSuperAdministrator: response.data.isSuperAdmin
+        };
         this.currentUserValue = currentUser;
-        currentUser.token = token;
-        currentUser.menus = response.data.menus;
-        currentUser.isSuperAdministrator = response.data.isSuperAdmin;
-        console.log("Current User =>", currentUser);
         localStorage.setItem("ZAN_AFYA_MAONI_USER", JSON.stringify(currentUser));
       }),
     );
   }
 
-  getToken() {
-    // @ts-ignore
-    let user = JSON.parse(localStorage.getItem("ZAN_AFYA_MAONI_USER"))
+  getToken(): string | null {
+    const userJson = localStorage.getItem("ZAN_AFYA_MAONI_USER");
+    if (!userJson) {
+      return null;
+    }
+    const user: CurrentUser = JSON.parse(userJson);
     return user.token;
   }
 
-  signOut() {
+  getCurrentUser(): CurrentUser | null {
+    const userJson = localStorage.getItem("ZAN_AFYA_MAONI_USER");
+    if (!userJson) {
+      return null;
+    }
+    return JSON.parse(userJson);
+  }
+
+  signOut(): void {
     localStorage.removeItem('ZAN_AFYA_MAONI_USER');
+    this.currentUserValue = null;
     this.notifierService.showNotification('Logged out successfully', 'OK', 'success');
     this.router.navigate(["/login"]);
   }
