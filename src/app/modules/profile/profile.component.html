@@ -1,0 +1,61 @@
+<app-breadcrumb [items]="breadcrumbItems" [pageTitle]="title"></app-breadcrumb>
+
+<div class="profile-container">
+  <mat-card class="profile-card">
+    <mat-card-content>
+      <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+        <div fxLayout="row wrap" fxLayoutGap="16px grid">
+          <div fxFlex="50" fxFlex.xs="100">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Full Name</mat-label>
+              <input matInput formControlName="name" placeholder="Enter your full name">
+              <mat-error *ngIf="profileForm.get('name')?.hasError('required')">
+                Name is required
+              </mat-error>
+              <mat-error *ngIf="profileForm.get('name')?.hasError('minlength')">
+                Name must be at least 2 characters
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="50" fxFlex.xs="100">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email Address</mat-label>
+              <input matInput formControlName="email" placeholder="Enter your email" type="email">
+              <mat-error *ngIf="profileForm.get('email')?.hasError('required')">
+                Email is required
+              </mat-error>
+              <mat-error *ngIf="profileForm.get('email')?.hasError('email')">
+                Please enter a valid email address
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="50" fxFlex.xs="100">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Phone Number</mat-label>
+              <input matInput formControlName="phone" placeholder="Enter your phone number">
+              <mat-error *ngIf="profileForm.get('phone')?.hasError('required')">
+                Phone number is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="50" fxFlex.xs="100">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Organisation Unit</mat-label>
+              <input matInput [value]="currentUser?.organisationUnit?.name || ''" readonly disabled>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit"
+                  [disabled]="profileForm.invalid || isLoading">
+            {{ isLoading ? 'Saving...' : 'Save Changes' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

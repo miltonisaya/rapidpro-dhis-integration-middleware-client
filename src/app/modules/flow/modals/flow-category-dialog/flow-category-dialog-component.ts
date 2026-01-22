@@ -7,14 +7,14 @@ import {
   MatDialogRef,
   MatDialogTitle
 } from '@angular/material/dialog';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {map, startWith} from 'rxjs/operators';
 import {NotifierService} from "../../../notification/notifier.service";
 import {FlowKeyService} from "../../flowkey.service";
 import {DataElementService} from "../../../data-element/data-element.service";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatDivider} from "@angular/material/divider";
-import {MatFormField} from "@angular/material/form-field";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from "@angular/material/autocomplete";
 import {MatInput} from "@angular/material/input";
 import {AsyncPipe, CommonModule} from "@angular/common";
@@ -44,7 +44,8 @@ export interface CategoryDataElementMapping {
     AsyncPipe,
     MatDialogActions,
     MatDialogClose,
-    MatButton
+    MatButton,
+    MatLabel
   ],
   providers: [DataElementService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -58,22 +59,22 @@ export class FlowCategoryDialogComponent implements OnInit {
   dataElement = new FormControl();
 
   constructor(
-    public dialogRef: MatDialogRef<FlowCategoryDialogComponent>,
-    public notifierService: NotifierService,
-    public dataElementService: DataElementService,
-    public flowService: FlowKeyService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+      public dialogRef: MatDialogRef<FlowCategoryDialogComponent>,
+      public notifierService: NotifierService,
+      public dataElementService: DataElementService,
+      public flowService: FlowKeyService,
+      @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
 
   ngOnInit() {
     this.getDataElements();
     this.filteredOptions = this.dataElement.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => typeof value === 'string' ? value : value.name),
-        map(name => name ? this._filter(name) : this.dataElements)
-      );
+        .pipe(
+            startWith(''),
+            map(value => typeof value === 'string' ? value : value.name),
+            map(name => name ? this._filter(name) : this.dataElements)
+        );
   }
 
   getDataElements() {
@@ -92,12 +93,12 @@ export class FlowCategoryDialogComponent implements OnInit {
   submitForm() {
     if (this.flowService.form.valid) {
       this.flowService.updateFlowKey(this.flowService.form.value)
-        .subscribe((response: { message: string; }) => {
-          this.notifierService.showNotification(response.message, 'OK', 'success');
-          this.onClose();
-        }, (error: { message: string; }) => {
-          this.notifierService.showNotification(error.message, 'OK', 'error');
-        });
+          .subscribe((response: { message: string; }) => {
+            this.notifierService.showNotification(response.message, 'OK', 'success');
+            this.onClose();
+          }, (error: { message: string; }) => {
+            this.notifierService.showNotification(error.message, 'OK', 'error');
+          });
     }
   }
 
@@ -129,7 +130,9 @@ export class FlowCategoryDialogComponent implements OnInit {
 
   private _filter(name: string): any {
     const filterValue = name.toLowerCase();
-    return this.dataElements.filter((option: { name: string; }) => option.name.toLowerCase().includes(filterValue));
+    return this.dataElements.filter((option: {
+      name: string;
+    }) => option.name.toLowerCase().includes(filterValue));
   }
 }
 

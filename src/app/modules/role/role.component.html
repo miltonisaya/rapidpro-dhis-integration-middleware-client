@@ -68,8 +68,8 @@
 
 <app-confirm-dialog
   [open]="isConfirmDeleteDialogOpen"
-  [title]="'Delete Contact'"
-  [message]="'Are you sure you want to delete this role????'"
+  [title]="'Delete Role'"
+  [message]="'Are you sure you want to delete this role?'"
   (onClose)="closeConfirmDialog($event)"
   (onConfirm)="handleConfirmDelete()"
 />
@@ -77,8 +77,8 @@
 <app-dialog
   [fullScreen]="true"
   [open]="permissionDialogOpen"
-  (onClose)="handleClose($event)"
-  title="Contact Permissions"
+  (onClose)="handlePermissionsDialogClose($event)"
+  title="Role Permissions"
 >
   <ng-template>
     <div fxLayout="column" style="height: 100vh; overflow-y: auto; overflow-x: hidden; padding: 16px;">
@@ -116,8 +116,8 @@
 <app-dialog
   [fullScreen]="false"
   [open]="createEditDialogOpen"
-  (onClose)="handleClose($event)"
-  title="{{roleService.form.controls['uuid'].value ? 'Edit Contact': 'Create Contact'}}"
+  (onClose)="handleCreateEditDialogClose($event)"
+  title="{{roleService.form.controls['uuid'].value ? 'Edit Role': 'Create Role'}}"
 >
   <ng-template>
     <form #formDirective="ngForm"
@@ -171,12 +171,4 @@
       </mat-dialog-actions>
     </form>
   </ng-template>
-
-  <app-confirm-dialog
-    [open]="isConfirmDeleteDialogOpen"
-    [title]="'Delete Contact'"
-    [message]="'Are you sure you want to delete this role?'"
-    (onClose)="closeConfirmDialog($event)"
-    (onConfirm)="handleConfirmDelete()"
-  />
 </app-dialog>

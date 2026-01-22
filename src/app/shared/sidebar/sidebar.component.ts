@@ -62,6 +62,7 @@ export class SidebarComponent implements OnInit {
       children: [],
     };
     this.menus.unshift(dashboardMenu);
+    this.ensureSecurityMenuItems();
     this.getUserInfo();
     // this.menus = [
     //   {
@@ -206,6 +207,43 @@ export class SidebarComponent implements OnInit {
 
   navigateToDashboard() {
     this.router.navigate(['/dashboard']);
+  }
+
+  ensureSecurityMenuItems(): void {
+    const securityMenu = this.menus.find(menu =>
+      menu.name.toLowerCase() === 'security'
+    );
+
+    if (securityMenu && securityMenu.children) {
+      const hasUsersMenu = securityMenu.children.some(child =>
+        child.url === 'users' || child.name.toLowerCase() === 'users'
+      );
+
+      const hasRolesMenu = securityMenu.children.some(child =>
+        child.url === 'roles' || child.name.toLowerCase() === 'roles'
+      );
+
+      if (hasUsersMenu && !hasRolesMenu) {
+        const rolesMenuItem: MenuItem = {
+          id: '056cc8b2-44b0-4e17-a7d2-dbaff8aba176',
+          name: 'Roles',
+          icon: 'groups',
+          url: 'roles',
+          sortOrder: 4,
+          children: []
+        };
+
+        const usersIndex = securityMenu.children.findIndex(child =>
+          child.url === 'users' || child.name.toLowerCase() === 'users'
+        );
+
+        if (usersIndex !== -1) {
+          securityMenu.children.splice(usersIndex + 1, 0, rolesMenuItem);
+        } else {
+          securityMenu.children.push(rolesMenuItem);
+        }
+      }
+    }
   }
 }
 

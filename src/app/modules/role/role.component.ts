@@ -237,8 +237,16 @@ export class RoleComponent implements OnInit, OnDestroy {
     return this.selectedPermissions.includes(permissionId);
   }
 
-  handleClose($event: boolean) {
+  handlePermissionsDialogClose($event: boolean): void {
     this.permissionDialogOpen = false;
+    this.selectedPermissions = [];
+    this.roleAuthorities = [];
+    this.currentRole = null;
+  }
+
+  handleCreateEditDialogClose($event: boolean): void {
+    this.createEditDialogOpen = false;
+    this.roleService.initializeFormGroup();
   }
 
   savePermissions(): void {

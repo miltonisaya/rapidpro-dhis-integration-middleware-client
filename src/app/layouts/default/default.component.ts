@@ -11,6 +11,7 @@ import {MatIconButton} from "@angular/material/button";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatDivider} from "@angular/material/divider";
 import {CurrentUser} from "../../auth/types/auth.types";
+import {ChangePasswordComponent} from "../../components/change-password/change-password.component";
 
 @Component({
   selector: 'app-default',
@@ -34,13 +35,15 @@ import {CurrentUser} from "../../auth/types/auth.types";
     NgIf,
     MatIconButton,
     MatTooltip,
-    MatDivider
+    MatDivider,
+    ChangePasswordComponent
   ]
 })
 export class DefaultComponent implements OnInit {
   title: string = "ZanAfyaMaoni Interoperability Middleware";
   userName: string = '';
   userEmail: string = '';
+  changePasswordDialogOpen: boolean = false;
 
   constructor(
     private router: Router
@@ -69,8 +72,12 @@ export class DefaultComponent implements OnInit {
     this.router.navigate(['/profile']);
   }
 
-  openSettings(): void {
-    this.router.navigate(['/settings']);
+  openChangePassword(): void {
+    this.changePasswordDialogOpen = true;
+  }
+
+  handlePasswordDialogClose(event: boolean): void {
+    this.changePasswordDialogOpen = false;
   }
 
   signOut(): void {

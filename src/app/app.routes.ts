@@ -12,6 +12,7 @@ import {OrganisationUnitComponent} from "./modules/organisation-unit/organisatio
 import {AuthGuard} from "./auth/auth.guard";
 import {MenuGroupComponent} from "./modules/menu-group/menu-group.component";
 import {MenuItemComponent} from "./modules/menu-item/menu-item.component";
+import {ProfileComponent} from "./modules/profile/profile.component";
 
 export const APP_ROUTES: Routes = [
   {
@@ -66,6 +67,11 @@ export const APP_ROUTES: Routes = [
       {
         path: "menu-items",
         component: MenuItemComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: "profile",
+        component: ProfileComponent,
         canActivate: [AuthGuard]
       },
       {path: '', redirectTo: 'dashboard', pathMatch: 'full'}
