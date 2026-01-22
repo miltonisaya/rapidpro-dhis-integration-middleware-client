@@ -1,9 +1,11 @@
-<div>
-  {{data.type | uppercase}}
-</div>
-<div class="content-style">
-  {{data.message}}
-</div>
-<div style="text-align: right">
-  <button (click)="snackBarRef.dismiss()" mat-flat-button>{{data.buttonText}}</button>
+<div class="notifier-container">
+  <div class="notifier-header">
+    <span class="notifier-type">{{data.type | uppercase}}</span>
+  </div>
+  <div class="notifier-message">
+    {{data.message}}
+  </div>
+  <div class="notifier-actions">
+    <button class="notifier-btn" (click)="snackBarRef.dismiss()">{{data.buttonText}}</button>
+  </div>
 </div>
