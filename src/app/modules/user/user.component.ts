@@ -23,6 +23,7 @@ import {JsonPipe, NgForOf, UpperCasePipe} from "@angular/common";
 import {User} from "./types/User";
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {BreadcrumbComponent, BreadcrumbItem} from "../../shared/breadcrumb/breadcrumb.component";
 
 @Component({
   selector: 'app-users',
@@ -47,13 +48,20 @@ import {takeUntil} from 'rxjs/operators';
     NgForOf,
     MatTableModule,
     JsonPipe,
-    UpperCasePipe
+    UpperCasePipe,
+    BreadcrumbComponent
   ],
   providers: [UserService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit, OnDestroy {
+  title: string = 'Users';
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Home', url: '/dashboard', icon: 'home' },
+    { label: 'Security', url: '/users' },
+    { label: 'Users' }
+  ];
   displayedColumns: string[] = ["sno", 'name', 'email', 'roles','organisationUnit', 'actions'];
   users: User[] = [];
   totalUsers: number = 0;

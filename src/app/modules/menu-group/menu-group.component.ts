@@ -28,6 +28,7 @@ import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogC
 import {MenuGroup} from "./types/MenuGroup";
 import {NotifierService} from "../notification/notifier.service";
 import {MenuGroupApiResponse} from "./types/MenuGroupApiResponse";
+import {BreadcrumbComponent, BreadcrumbItem} from "../../shared/breadcrumb/breadcrumb.component";
 
 @Component({
   selector: 'app-menus',
@@ -61,7 +62,8 @@ import {MenuGroupApiResponse} from "./types/MenuGroupApiResponse";
     MatButton,
     MatDialogContent,
     MatDialogActions,
-    MatDialogClose
+    MatDialogClose,
+    BreadcrumbComponent
   ],
   providers: [
     MenuGroupService
@@ -70,6 +72,11 @@ import {MenuGroupApiResponse} from "./types/MenuGroupApiResponse";
 
 export class MenuGroupComponent implements OnInit {
   title: string = 'Menu Groups';
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Home', url: '/dashboard', icon: 'home' },
+    { label: 'System Settings', url: '/menu-groups' },
+    { label: 'Menu Groups' }
+  ];
   data: MenuGroup[] = [];
   roleUuid: string;
 

@@ -26,6 +26,7 @@ import {FlowKeyDialogComponent} from "./modals/flow-key-dialog/flow-key-dialog-c
 import {CommonModule} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
 import {Flow, FlowCategory, FlowKey} from "./types/Flow";
+import {BreadcrumbComponent, BreadcrumbItem} from "../../shared/breadcrumb/breadcrumb.component";
 
 @Component({
   selector: 'app-flows',
@@ -52,13 +53,19 @@ import {Flow, FlowCategory, FlowKey} from "./types/Flow";
     MatInput,
     MatIcon,
     MatDialogClose,
-    MatLabel
+    MatLabel,
+    BreadcrumbComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   standalone: true
 })
 export class FlowComponent implements OnInit {
   title: string = "Flows";
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Home', url: '/dashboard', icon: 'home' },
+    { label: 'Flow Management', url: '/flows' },
+    { label: 'Flows' }
+  ];
   flows: Flow[] = [];
   elementUuid: string = '';
   selectedFlowUuid: string | null = null;

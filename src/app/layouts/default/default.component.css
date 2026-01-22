@@ -33,7 +33,7 @@ mat-sidenav-content {
 .toolbar mat-toolbar {
   background: #ffffff;
   color: #1a1a2e;
-  padding: 0 24px;
+  padding: 0 16px;
   height: 64px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   display: flex;
@@ -41,33 +41,58 @@ mat-sidenav-content {
   align-items: center;
 }
 
-.toolbar mat-toolbar mat-icon {
-  color: #1a1a2e;
-  cursor: pointer;
-  transition: color 0.2s ease, transform 0.2s ease;
-  margin-left: 0;
+.toolbar-left {
+  display: flex;
+  align-items: center;
 }
 
-.toolbar mat-toolbar mat-icon:hover {
-  color: #667eea;
-  transform: scale(1.1);
-}
-
-.toolbar .box {
+.toolbar-right {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 0;
 }
 
-.toolbar .box mat-icon {
-  padding: 8px;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
+.menu-toggle {
+  color: #1a1a2e;
+  transition: all 0.2s ease;
 }
 
-.toolbar .box mat-icon:hover {
+.menu-toggle:hover {
+  color: #667eea;
   background-color: rgba(102, 126, 234, 0.1);
+}
+
+.toolbar-btn {
+  color: #6b7280;
+  transition: all 0.2s ease;
+}
+
+.toolbar-btn:hover {
+  color: #667eea;
+  background-color: rgba(102, 126, 234, 0.1);
+}
+
+.toolbar-btn mat-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.user-avatar-small {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+}
+
+.user-avatar-small mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #ffffff;
 }
 
 /* Main Content */
@@ -77,26 +102,93 @@ mat-sidenav-content {
   overflow-y: auto;
 }
 
-/* Menu dropdown styling */
-::ng-deep .mat-mdc-menu-panel {
+/* User Menu Styles */
+::ng-deep .mat-mdc-menu-panel.user-menu {
+  min-width: 280px !important;
   border-radius: 12px !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
-  margin-top: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+  overflow: hidden;
 }
 
-::ng-deep .mat-mdc-menu-item {
-  border-radius: 8px;
-  margin: 4px 8px;
-  width: calc(100% - 16px);
+::ng-deep .user-menu .menu-header {
+  padding: 16px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
-::ng-deep .mat-mdc-menu-item:hover {
-  background-color: rgba(102, 126, 234, 0.1);
+::ng-deep .user-menu .menu-user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-::ng-deep .mat-mdc-menu-item mat-icon {
-  color: #667eea;
+::ng-deep .user-menu .menu-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+}
+
+::ng-deep .user-menu .menu-avatar mat-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+  color: #ffffff;
+}
+
+::ng-deep .user-menu .menu-user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+::ng-deep .user-menu .menu-user-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+::ng-deep .user-menu .menu-user-email {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+::ng-deep .user-menu .mat-mdc-menu-item {
+  height: 48px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+::ng-deep .user-menu .mat-mdc-menu-item mat-icon {
+  color: #6b7280;
   margin-right: 12px;
+}
+
+::ng-deep .user-menu .mat-mdc-menu-item:hover {
+  background-color: rgba(102, 126, 234, 0.08);
+}
+
+::ng-deep .user-menu .mat-mdc-menu-item:hover mat-icon {
+  color: #667eea;
+}
+
+::ng-deep .user-menu .logout-item {
+  color: #dc2626;
+}
+
+::ng-deep .user-menu .logout-item mat-icon {
+  color: #dc2626;
+}
+
+::ng-deep .user-menu .logout-item:hover {
+  background-color: rgba(220, 38, 38, 0.08);
+}
+
+::ng-deep .user-menu mat-divider {
+  margin: 8px 0;
 }
 
 /* Responsive */
@@ -110,7 +202,11 @@ mat-sidenav-content {
   }
 
   .toolbar mat-toolbar {
-    padding: 0 16px;
+    padding: 0 12px;
+  }
+
+  ::ng-deep .mat-mdc-menu-panel.user-menu {
+    min-width: 260px !important;
   }
 }
 
@@ -121,5 +217,9 @@ mat-sidenav-content {
 
   .main {
     padding: 12px;
+  }
+
+  .toolbar-right {
+    gap: 4px;
   }
 }

@@ -1,35 +1,99 @@
-<div class="login-page-container" fxLayout="column" fxLayoutAlign="center center">
-  <div class="login-page-content">
-    <div fxLayout="column" fxLayoutAlign="center center">
-      <img src="assets/smz_logo.png" alt="" height="120" width="160">
-      <h2 fxLayout="column" fxLayoutAlign="center center" style="font-size: 1em;">ZanAfyaMaoni Interoperability
-        Middleware</h2>
+<div class="login-container">
+  <!-- Left Side - Branding -->
+  <div class="login-branding">
+    <div class="branding-content">
+      <div class="branding-logo">
+        <img src="assets/smz_logo.png" alt="Logo" />
+      </div>
+      <h1 class="branding-title">ZanAfyaMaoni</h1>
+      <p class="branding-subtitle">Interoperability Middleware</p>
+      <div class="branding-description">
+        <p>Seamlessly connect and integrate your health data systems with our powerful middleware solution.</p>
+      </div>
+      <div class="branding-features">
+        <div class="feature-item">
+          <mat-icon>sync</mat-icon>
+          <span>Real-time Data Sync</span>
+        </div>
+        <div class="feature-item">
+          <mat-icon>security</mat-icon>
+          <span>Secure Integration</span>
+        </div>
+        <div class="feature-item">
+          <mat-icon>analytics</mat-icon>
+          <span>Advanced Analytics</span>
+        </div>
+      </div>
     </div>
-    <form (ngSubmit)="loginProcess()" [formGroup]="loginFormGroup" fxLayout="column">
-      <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <mat-icon matSuffix>perm_identity</mat-icon>
-        <input autocomplete="off" formControlName="email" matInput placeholder="Email">
-        <div class="validation-error"
-             *ngIf="loginFormGroup.controls['email'].invalid && (loginFormGroup.controls['email'].dirty || loginFormGroup.controls['email'].touched)">
-          <div *ngIf="loginFormGroup.controls['email'].errors">
-            Email is required
-          </div>
-        </div>
-      </mat-form-field>
+  </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Password</mat-label>
-        <mat-icon matSuffix>vpn_key</mat-icon>
-        <input autocomplete="off" formControlName="password" matInput placeholder="Password" type="password">
-        <div class="validation-error"
-             *ngIf="loginFormGroup.controls['password'].invalid && (loginFormGroup.controls['password'].dirty || loginFormGroup.controls['password'].touched)">
-          <div *ngIf="loginFormGroup.controls['password'].errors">
-            Password is required
+  <!-- Right Side - Login Form -->
+  <div class="login-form-container">
+    <div class="login-form-wrapper">
+      <div class="login-header">
+        <h2>Welcome Back</h2>
+        <p>Please sign in to your account</p>
+      </div>
+
+      <form (ngSubmit)="loginProcess()" [formGroup]="loginFormGroup" class="login-form">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <div class="input-wrapper">
+            <mat-icon class="input-icon">email</mat-icon>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="Enter your email"
+              autocomplete="off"
+            />
+          </div>
+          <div class="validation-error"
+               *ngIf="loginFormGroup.controls['email'].invalid && (loginFormGroup.controls['email'].dirty || loginFormGroup.controls['email'].touched)">
+            <mat-icon>error_outline</mat-icon>
+            <span>Please enter a valid email address</span>
           </div>
         </div>
-      </mat-form-field>
-      <button color="primary" mat-raised-button type="submit">Login</button>
-    </form>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <mat-icon class="input-icon">lock</mat-icon>
+            <input
+              id="password"
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="password"
+              placeholder="Enter your password"
+              autocomplete="off"
+            />
+            <mat-icon class="toggle-password" (click)="hidePassword = !hidePassword">
+              {{ hidePassword ? 'visibility_off' : 'visibility' }}
+            </mat-icon>
+          </div>
+          <div class="validation-error"
+               *ngIf="loginFormGroup.controls['password'].invalid && (loginFormGroup.controls['password'].dirty || loginFormGroup.controls['password'].touched)">
+            <mat-icon>error_outline</mat-icon>
+            <span>Password is required</span>
+          </div>
+        </div>
+
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox" />
+            <span>Remember me</span>
+          </label>
+          <a href="#" class="forgot-password">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="login-button" [disabled]="loginFormGroup.invalid">
+          <span>Sign In</span>
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </form>
+
+      <div class="login-footer">
+        <p>&copy; 2024 ZanAfyaMaoni. All rights reserved.</p>
+      </div>
+    </div>
   </div>
 </div>

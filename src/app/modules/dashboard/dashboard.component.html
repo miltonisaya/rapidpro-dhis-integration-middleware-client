@@ -1,97 +1,87 @@
-<div class="page-title">
-  <h1>Dashboard</h1>
-  <span class="breadcrumb">Home / Dashboard</span>
-</div>
+<div class="dashboard-container">
+  <!-- Breadcrumb -->
+  <app-breadcrumb [items]="breadcrumbItems" [pageTitle]="title"></app-breadcrumb>
 
-<div class="stats-cards-container">
-  <mat-card class="stat-card card-one">
-    <div class="stat-card-content">
-      <div class="stat-icon">
-        <mat-icon>people</mat-icon>
+  <!-- Stats Cards -->
+  <div class="stats-cards-container">
+    <div class="stat-card card-blue">
+      <div class="card-icon">
+        <mat-icon>show_chart</mat-icon>
       </div>
-      <div class="stat-info">
-        <span class="stat-label">Total Registered Clients</span>
-        <span class="stat-value">{{ totalRegisteredClients | number }}</span>
-      </div>
+      <div class="card-title">Total Registered Clients</div>
+      <div class="card-divider"></div>
+      <div class="card-value">{{ totalRegisteredClients | number }}</div>
     </div>
-  </mat-card>
 
-  <mat-card class="stat-card card-two">
-    <div class="stat-card-content">
-      <div class="stat-icon">
-        <mat-icon>calendar_today</mat-icon>
+    <div class="stat-card card-green">
+      <div class="card-icon">
+        <mat-icon>groups</mat-icon>
       </div>
-      <div class="stat-info">
-        <span class="stat-label">Registered This Year</span>
-        <span class="stat-value">{{ totalRegisteredClientsThisYear | number }}</span>
-      </div>
+      <div class="card-title">Total Registered Clients This Year</div>
+      <div class="card-divider"></div>
+      <div class="card-value">{{ totalRegisteredClientsThisYear | number }}</div>
     </div>
-  </mat-card>
 
-  <mat-card class="stat-card card-three">
-    <div class="stat-card-content">
-      <div class="stat-icon">
+    <div class="stat-card card-orange">
+      <div class="card-icon">
         <mat-icon>date_range</mat-icon>
       </div>
-      <div class="stat-info">
-        <span class="stat-label">Registered This Month</span>
-        <span class="stat-value">{{ totalRegisteredClientsThisMonth | number }}</span>
-      </div>
+      <div class="card-title">Total Registered Clients This Month</div>
+      <div class="card-divider"></div>
+      <div class="card-value">{{ totalRegisteredClientsThisMonth | number }}</div>
     </div>
-  </mat-card>
 
-  <mat-card class="stat-card card-four">
-    <div class="stat-card-content">
-      <div class="stat-icon">
-        <mat-icon>today</mat-icon>
+    <div class="stat-card card-red">
+      <div class="card-icon">
+        <mat-icon>event</mat-icon>
       </div>
-      <div class="stat-info">
-        <span class="stat-label">Registered Today</span>
-        <span class="stat-value">{{ totalRegisteredClientsToday | number }}</span>
-      </div>
+      <div class="card-title">Total Registered Clients Today</div>
+      <div class="card-divider"></div>
+      <div class="card-value">{{ totalRegisteredClientsToday | number }}</div>
     </div>
-  </mat-card>
-</div>
+  </div>
 
-<div class="transactions-section">
-  <h2 class="section-title">
-    <mat-icon>receipt_long</mat-icon>
-    Transaction Logs
-  </h2>
+  <!-- Transaction Logs Section -->
+  <div class="transactions-section">
+    <h2 class="section-title">
+      <mat-icon>receipt_long</mat-icon>
+      Transaction Logs
+    </h2>
 
-  <mat-card class="transactions-card">
-    <div class="transactions-list" *ngIf="transactions.length > 0; else noTransactions">
-      <div class="transaction-item" *ngFor="let trx of transactions">
-        <div class="transaction-header">
-          <div class="transaction-date">
-            <mat-icon>schedule</mat-icon>
-            <span>{{ trx.dateProcessed }}</span>
-          </div>
-          <div class="transaction-status" [ngClass]="trx.isSent ? 'status-sent' : 'status-pending'">
-            <mat-icon>{{ trx.isSent ? 'check_circle' : 'pending' }}</mat-icon>
-            <span>{{ trx.isSent ? 'Sent' : 'Not Sent' }}</span>
-          </div>
-        </div>
-
-        <div class="transaction-body">
-          <div class="transaction-detail">
-            <span class="detail-label">Payload:</span>
-            <pre class="detail-content">{{ trx.payload }}</pre>
+    <mat-card class="transactions-card">
+      <div class="transactions-list" *ngIf="transactions.length > 0; else noTransactions">
+        <div class="transaction-item" *ngFor="let trx of transactions">
+          <div class="transaction-header">
+            <div class="transaction-date">
+              <mat-icon>schedule</mat-icon>
+              <span>{{ trx.dateProcessed }}</span>
+            </div>
+            <div class="transaction-status" [ngClass]="trx.isSent ? 'status-sent' : 'status-pending'">
+              <mat-icon>{{ trx.isSent ? 'check_circle' : 'pending' }}</mat-icon>
+              <span>{{ trx.isSent ? 'Sent' : 'Not Sent' }}</span>
+            </div>
           </div>
 
-          <div class="transaction-detail" *ngIf="trx.dhisResponse">
-            <span class="detail-label">DHIS2 Response:</span>
-            <pre class="detail-content">{{ trx.dhisResponse }}</pre>
+          <div class="transaction-body">
+            <div class="transaction-detail">
+              <span class="detail-label">Payload:</span>
+              <pre class="detail-content">{{ trx.payload }}</pre>
+            </div>
+
+            <div class="transaction-detail" *ngIf="trx.dhisResponse">
+              <span class="detail-label">DHIS2 Response:</span>
+              <pre class="detail-content">{{ trx.dhisResponse }}</pre>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <ng-template #noTransactions>
-      <div class="no-data">
-        <mat-icon>inbox</mat-icon>
-        <span>No transactions found</span>
-      </div>
-    </ng-template>
-  </mat-card>
+      <ng-template #noTransactions>
+        <div class="no-data">
+          <mat-icon>inbox</mat-icon>
+          <span>No transactions found</span>
+        </div>
+      </ng-template>
+    </mat-card>
+  </div>
 </div>

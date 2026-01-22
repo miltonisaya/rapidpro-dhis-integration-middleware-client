@@ -10,7 +10,7 @@ import {
   MatTableDataSource,
   MatTableModule
 } from "@angular/material/table";
-import {MatFormField} from "@angular/material/form-field";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
 import {FlexLayoutModule} from "@angular/flex-layout";
@@ -19,6 +19,8 @@ import {NotifierService} from "../notification/notifier.service";
 import {DataElementService} from "./data-element.service";
 import {DataElement} from "./types/dataElement";
 import {UpperCasePipe} from "@angular/common";
+import {BreadcrumbComponent, BreadcrumbItem} from "../../shared/breadcrumb/breadcrumb.component";
+import {MatIcon} from "@angular/material/icon";
 
 export interface DataElementApiResponse {
   data: DataElement[];
@@ -41,18 +43,27 @@ export interface DataElementApiResponse {
     MatHeaderRow,
     MatRow,
     MatFormField,
+    MatLabel,
     MatInput,
     MatTable,
     MatButton,
     FlexLayoutModule,
     MatTableModule,
-    UpperCasePipe
+    UpperCasePipe,
+    BreadcrumbComponent,
+    MatIcon
   ],
   providers: [DataElementService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   standalone: true
 })
 export class DataElementComponent implements OnInit {
+  title: string = 'Data Elements';
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Home', url: '/dashboard', icon: 'home' },
+    { label: 'DHIS2 Metadata', url: '/data-elements' },
+    { label: 'Data Elements' }
+  ];
   displayedColumns: string[] = ["sno", 'name', 'code', 'dataType', 'dhis2uid'];
   dataElements: any = [];
   dataSource: MatTableDataSource<DataElement>;

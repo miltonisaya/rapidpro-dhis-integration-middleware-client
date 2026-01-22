@@ -25,6 +25,7 @@ import {MenuItemDialogComponent} from "./modals/menu-item-dialog-component";
 import {MenuItemService} from "./menu-item.service";
 import {MenuItem} from "./types/MenuItem";
 import {MenuItemApiResponse} from "./types/MenuItemApiResponse";
+import {BreadcrumbComponent, BreadcrumbItem} from "../../shared/breadcrumb/breadcrumb.component";
 
 @Component({
   selector: 'app-menu-items',
@@ -51,7 +52,8 @@ import {MenuItemApiResponse} from "./types/MenuItemApiResponse";
     MatButton,
     MatDialogContent,
     MatDialogActions,
-    MatDialogClose
+    MatDialogClose,
+    BreadcrumbComponent
   ],
   providers: [
     MenuItemService
@@ -60,6 +62,11 @@ import {MenuItemApiResponse} from "./types/MenuItemApiResponse";
 
 export class MenuItemComponent implements OnInit {
   title: string = 'Menu Items';
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Home', url: '/dashboard', icon: 'home' },
+    { label: 'System Settings', url: '/menu-items' },
+    { label: 'Menu Items' }
+  ];
   data: MenuItem[] = [];
   roleUuid: string;
 

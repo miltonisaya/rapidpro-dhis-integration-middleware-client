@@ -15,6 +15,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {UpperCasePipe} from "@angular/common";
 import {MatTooltip} from "@angular/material/tooltip";
+import {BreadcrumbComponent, BreadcrumbItem} from "../../shared/breadcrumb/breadcrumb.component";
 
 export interface ProgramApiResponse {
   data: Program[];
@@ -44,12 +45,18 @@ export interface ProgramApiResponse {
     MatPaginator,
     UpperCasePipe,
     MatIconButton,
-    MatTooltip
+    MatTooltip,
+    BreadcrumbComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class ProgramComponent implements OnInit {
   title: string = "Programs";
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Home', url: '/dashboard', icon: 'home' },
+    { label: 'DHIS2 Metadata', url: '/programs' },
+    { label: 'Programs' }
+  ];
   displayedColumns: string[] = ["sno", 'name', 'code', 'dhis2uid', 'actions'];
   programs: any = [];
   dataSource: MatTableDataSource<Program>;

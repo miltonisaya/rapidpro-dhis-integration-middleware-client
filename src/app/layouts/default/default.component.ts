@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, OnInit} from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
 import {MatIcon} from '@angular/material/icon';
 import {MatToolbar} from '@angular/material/toolbar';
@@ -7,7 +7,10 @@ import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/mater
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {AsyncPipe, NgIf} from "@angular/common";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {LoaderService} from "../../modules/loader/loader.service";
+import {MatIconButton} from "@angular/material/button";
+import {MatTooltip} from "@angular/material/tooltip";
+import {MatDivider} from "@angular/material/divider";
+import {CurrentUser} from "../../auth/types/auth.types";
 
 @Component({
   selector: 'app-default',
@@ -15,18 +18,63 @@ import {LoaderService} from "../../modules/loader/loader.service";
   styleUrl: './default.component.css',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [MatSidenavContainer, MatSidenav, SidebarComponent, MatSidenavContent, MatToolbar, MatIcon, RouterOutlet, MatMenuTrigger, MatMenu, MatMenuItem, AsyncPipe, MatProgressSpinner, NgIf]
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    SidebarComponent,
+    MatSidenavContent,
+    MatToolbar,
+    MatIcon,
+    RouterOutlet,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    AsyncPipe,
+    MatProgressSpinner,
+    NgIf,
+    MatIconButton,
+    MatTooltip,
+    MatDivider
+  ]
 })
-export class DefaultComponent {
+export class DefaultComponent implements OnInit {
   title: string = "ZanAfyaMaoni Interoperability Middleware";
+  userName: string = '';
+  userEmail: string = '';
 
   constructor(
     private router: Router
   ) {
   }
 
+  ngOnInit(): void {
+    this.loadUserInfo();
+  }
+
+  loadUserInfo(): void {
+    const currentUserJson = localStorage.getItem('ZAN_AFYA_MAONI_USER');
+    if (currentUserJson) {
+      const user: CurrentUser = JSON.parse(currentUserJson);
+      this.userName = user.name || 'User';
+      this.userEmail = user.email || '';
+    }
+  }
+
+  openHelp(): void {
+    // Open help dialog or navigate to help page
+    window.open('https://docs.zanafyamaoni.go.tz/help', '_blank');
+  }
+
+  openProfile(): void {
+    this.router.navigate(['/profile']);
+  }
+
+  openSettings(): void {
+    this.router.navigate(['/settings']);
+  }
+
   signOut(): void {
-    localStorage.setItem("ZAN_AFYA_MAONI_USER", "");
+    localStorage.removeItem("ZAN_AFYA_MAONI_USER");
     this.router.navigate(["login"]);
   }
 }

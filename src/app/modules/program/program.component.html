@@ -1,18 +1,14 @@
-<div fxLayout="row" fxLayoutAlign="space-between center">
-  <div class="page-title">
-    <h1>{{ title }}</h1>
-    <span class="breadcrumb">Home / Programs</span>
-  </div>
-  <div fxLayout="row" fxLayoutGap="5px">
-    <button (click)="syncPrograms()" class="mat-primary" mat-raised-button>
-      <mat-icon>add</mat-icon>
-      SYNC
-    </button>
-  </div>
+<app-breadcrumb [items]="breadcrumbItems" [pageTitle]="title"></app-breadcrumb>
+
+<div fxFlexLayoutAlign="row" fxLayoutAlign="end center" style="margin-bottom: 16px;">
+  <button (click)="syncPrograms()" class="mat-primary" mat-raised-button>
+    <mat-icon>sync</mat-icon>
+    SYNC
+  </button>
 </div>
 
 <div fxLayout="column" fxLayoutAlign="space-between stretch">
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="outline">
     <mat-label>Filter</mat-label>
     <input #input (keyup)="applyFilter($event)" autocomplete="off" matInput>
   </mat-form-field>

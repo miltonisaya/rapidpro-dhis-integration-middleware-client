@@ -1,14 +1,10 @@
-<div fxFlexLayoutAlign="row" fxLayoutAlign="space-between center">
-  <div class="page-title">
-    <h1>{{ title }}</h1>
-    <span class="breadcrumb">Home / Menu Groups</span>
-  </div>
-  <div fxLayoutGap="5px">
-    <button (click)="openCreateDialog()" class="mat-primary" mat-raised-button>
-      <mat-icon>add</mat-icon>
-      CREATE
-    </button>
-  </div>
+<app-breadcrumb [items]="breadcrumbItems" [pageTitle]="title"></app-breadcrumb>
+
+<div fxFlexLayoutAlign="row" fxLayoutAlign="end center" style="margin-bottom: 16px;">
+  <button (click)="openCreateDialog()" class="mat-primary" mat-raised-button>
+    <mat-icon>add</mat-icon>
+    CREATE
+  </button>
 </div>
 
 <div class="table-content-wrapper-container mat-elevation-z8">

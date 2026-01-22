@@ -23,7 +23,7 @@ import {
   MatTreeNodeOutlet
 } from '@angular/material/tree';
 import {MatButton, MatIconButton} from "@angular/material/button";
-import {MatFormField} from "@angular/material/form-field";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {NgIf} from "@angular/common";
 import {NotifierService} from "../notification/notifier.service";
@@ -32,6 +32,7 @@ import {OrganisationUnit} from "./types/OrganisationUnit";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {BreadcrumbComponent, BreadcrumbItem} from "../../shared/breadcrumb/breadcrumb.component";
 
 interface OuNode {
   id: string;
@@ -50,6 +51,7 @@ interface OuNode {
   imports: [
     MatButton,
     MatFormField,
+    MatLabel,
     MatTree,
     MatTreeNode,
     MatNestedTreeNode,
@@ -62,12 +64,19 @@ interface OuNode {
     MatTreeNodeDef,
     MatDialogClose,
     MatInput,
-    FlexLayoutModule
+    FlexLayoutModule,
+    BreadcrumbComponent
   ],
   standalone: true,
   schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
 })
 export class OrganisationUnitComponent implements OnInit, OnDestroy {
+  title: string = 'Organisation Units';
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Home', url: '/dashboard', icon: 'home' },
+    { label: 'DHIS2 Metadata', url: '/organisation-units' },
+    { label: 'Organisation Units' }
+  ];
   treeControl = new NestedTreeControl<OuNode>(node => node.children);
   dataSource = new MatTreeNestedDataSource<OuNode>();
   selectedNode: OuNode | null = null;

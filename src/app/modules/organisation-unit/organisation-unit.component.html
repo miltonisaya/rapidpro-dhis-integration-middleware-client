@@ -1,7 +1,6 @@
-<div fxFlexLayoutAlign="row" fxLayoutAlign="space-between center">
-  <div>
-    <h3>Manage Organisation Units</h3>
-  </div>
+<app-breadcrumb [items]="breadcrumbItems" [pageTitle]="title"></app-breadcrumb>
+
+<div fxFlexLayoutAlign="row" fxLayoutAlign="end center" style="margin-bottom: 16px;">
   <div fxLayoutGap="5px">
     <button
       (click)="openDialog()"
@@ -9,6 +8,7 @@
       class="mat-primary"
       mat-raised-button
     >
+      <mat-icon>add</mat-icon>
       ADD
     </button>
     <button
@@ -17,20 +17,22 @@
       class="mat-primary"
       mat-raised-button
     >
+      <mat-icon>edit</mat-icon>
       EDIT
     </button>
     <button
       (click)="openDeleteDialog(selectedNode.id)"
       *ngIf="selectedNode && isSuperAdministrator"
-      class="mat-warn"
+      color="warn"
       mat-raised-button
     >
+      <mat-icon>delete</mat-icon>
       DELETE
     </button>
   </div>
 </div>
 
-<mat-form-field style="width: 100%;">
+<mat-form-field appearance="outline" style="width: 100%;">
   <mat-label>Filter</mat-label>
   <input #input (keyup)="applyFilter($event)" autocomplete="off" matInput/>
 </mat-form-field>

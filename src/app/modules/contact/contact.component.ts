@@ -1,4 +1,5 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {BreadcrumbComponent, BreadcrumbItem} from "../../shared/breadcrumb/breadcrumb.component";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort, MatSortHeader} from "@angular/material/sort";
 import {
@@ -76,7 +77,8 @@ import {ConfirmDialogComponent} from "../../components/confirm/confirm.dialog";
         MatGridTile,
         ReactiveFormsModule,
         CdkTextareaAutosize,
-        ConfirmDialogComponent
+        ConfirmDialogComponent,
+        BreadcrumbComponent
     ],
     providers: [
         ContactService
@@ -85,6 +87,11 @@ import {ConfirmDialogComponent} from "../../components/confirm/confirm.dialog";
 
 export class ContactComponent implements OnInit {
     title: string = 'Contacts';
+    breadcrumbItems: BreadcrumbItem[] = [
+        { label: 'Home', url: '/dashboard', icon: 'home' },
+        { label: 'Flow Management', url: '/contacts' },
+        { label: 'Contacts' }
+    ];
     data: Contact[] = [];
 
     //Create/Update Dialog Config

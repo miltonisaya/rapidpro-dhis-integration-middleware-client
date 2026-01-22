@@ -1,25 +1,10 @@
 :host {
-  display: flex;
-  flex-direction: column;
+  display: block;
   height: 100%;
-  padding: 0 16px;
 }
 
-/* Page Title */
-.page-title {
-  margin-bottom: 24px;
-}
-
-.page-title h1 {
-  margin: 0 0 4px 0;
-  font-size: 28px;
-  font-weight: 500;
-  color: #1a1a2e;
-}
-
-.page-title .breadcrumb {
-  font-size: 14px;
-  color: #666;
+.dashboard-container {
+  padding: 0 8px;
 }
 
 /* Stats Cards Container */
@@ -30,92 +15,73 @@
   margin-bottom: 32px;
 }
 
-/* Individual Stat Card */
+/* Individual Stat Card - Matching the design */
 .stat-card {
-  padding: 24px;
-  border-radius: 16px;
-  border: none;
+  padding: 20px 24px;
+  border-radius: 12px;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: default;
 }
 
 .stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
-.stat-card-content {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+.card-icon {
+  margin-bottom: 8px;
 }
 
-.stat-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.25);
-  flex-shrink: 0;
-}
-
-.stat-icon mat-icon {
+.card-icon mat-icon {
   font-size: 28px;
   width: 28px;
   height: 28px;
-  color: #fff;
-}
-
-.stat-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-}
-
-.stat-label {
-  font-size: 14px;
-  font-weight: 500;
   color: rgba(255, 255, 255, 0.9);
+}
+
+.card-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #ffffff;
+  margin-bottom: 8px;
   line-height: 1.3;
 }
 
-.stat-value {
-  font-size: 32px;
+.card-divider {
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.card-value {
+  font-size: 36px;
   font-weight: 700;
-  color: #fff;
-  line-height: 1.2;
+  color: #ffffff;
+  line-height: 1;
 }
 
-/* Card Color Variants */
-.card-one {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+/* Card Color Variants - Matching the screenshot */
+.card-blue {
+  background-color: #5B9BD5;
 }
 
-.card-two {
-  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-  box-shadow: 0 8px 16px rgba(17, 153, 142, 0.3);
+.card-green {
+  background-color: #70AD47;
 }
 
-.card-three {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  box-shadow: 0 8px 16px rgba(245, 87, 108, 0.3);
+.card-orange {
+  background-color: #ED7D31;
 }
 
-.card-four {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  box-shadow: 0 8px 16px rgba(79, 172, 254, 0.3);
+.card-red {
+  background-color: #E84C3D;
 }
 
 /* Transactions Section */
 .transactions-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
+  margin-top: 16px;
 }
 
 .section-title {
@@ -124,7 +90,7 @@
   gap: 8px;
   margin: 0 0 16px 0;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 600;
   color: #1a1a2e;
 }
 
@@ -133,14 +99,13 @@
 }
 
 .transactions-card {
-  flex: 1;
-  padding: 0;
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .transactions-list {
-  max-height: 500px;
+  max-height: 450px;
   overflow-y: auto;
 }
 
@@ -272,21 +237,18 @@
 }
 
 /* Responsive Breakpoints */
-
-/* Tablets and smaller desktops */
 @media (max-width: 1200px) {
   .stats-cards-container {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* Tablets */
 @media (max-width: 768px) {
-  :host {
-    padding: 0 12px;
+  .dashboard-container {
+    padding: 0 8px;
   }
 
-  .page-title h1 {
+  .page-title {
     font-size: 24px;
   }
 
@@ -296,26 +258,15 @@
   }
 
   .stat-card {
-    padding: 16px;
+    padding: 16px 20px;
   }
 
-  .stat-icon {
-    width: 48px;
-    height: 48px;
+  .card-value {
+    font-size: 28px;
   }
 
-  .stat-icon mat-icon {
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
-  }
-
-  .stat-value {
-    font-size: 24px;
-  }
-
-  .stat-label {
-    font-size: 12px;
+  .card-title {
+    font-size: 13px;
   }
 
   .transaction-item {
@@ -323,7 +274,6 @@
   }
 }
 
-/* Mobile phones */
 @media (max-width: 480px) {
   .stats-cards-container {
     grid-template-columns: 1fr;
@@ -334,16 +284,8 @@
     padding: 20px;
   }
 
-  .stat-card-content {
-    gap: 12px;
-  }
-
-  .stat-value {
-    font-size: 28px;
-  }
-
-  .stat-label {
-    font-size: 13px;
+  .card-value {
+    font-size: 32px;
   }
 
   .transaction-header {
@@ -358,5 +300,9 @@
   .detail-content {
     font-size: 12px;
     padding: 10px 12px;
+  }
+
+  .breadcrumb {
+    font-size: 13px;
   }
 }

@@ -1,4 +1,5 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {BreadcrumbComponent, BreadcrumbItem} from "../../shared/breadcrumb/breadcrumb.component";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort, MatSortHeader} from "@angular/material/sort";
 import {
@@ -82,7 +83,8 @@ import {ConfirmDialogComponent} from "../../components/confirm/confirm.dialog";
     MatGridTile,
     ReactiveFormsModule,
     CdkTextareaAutosize,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    BreadcrumbComponent
   ],
   providers: [
     RoleService
@@ -91,6 +93,11 @@ import {ConfirmDialogComponent} from "../../components/confirm/confirm.dialog";
 
 export class RoleComponent implements OnInit, OnDestroy {
   title: string = 'Roles';
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Home', url: '/dashboard', icon: 'home' },
+    { label: 'Security', url: '/roles' },
+    { label: 'Roles' }
+  ];
   data: Role[] = [];
   roleUuid: string = '';
   currentRole: Role | null = null;

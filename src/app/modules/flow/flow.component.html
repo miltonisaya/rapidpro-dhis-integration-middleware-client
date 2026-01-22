@@ -1,17 +1,14 @@
-<div fxFlexLayoutAlign="row" fxLayoutAlign="space-between center">
-  <div class="page-title">
-    <h1>{{ title }}</h1>
-    <span class="breadcrumb">Home / Flows</span>
-  </div>
-  <div fxLayoutGap="5px">
-    <button (click)="syncFlows()" class="mat-primary" mat-raised-button>
-      SYNC FLOWS
-    </button>
-  </div>
+<app-breadcrumb [items]="breadcrumbItems" [pageTitle]="title"></app-breadcrumb>
+
+<div fxFlexLayoutAlign="row" fxLayoutAlign="end center" style="margin-bottom: 16px;">
+  <button (click)="syncFlows()" class="mat-primary" mat-raised-button>
+    <mat-icon>sync</mat-icon>
+    SYNC FLOWS
+  </button>
 </div>
 
 <div fxLayout="column" fxLayoutAlign="space-between stretch">
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="outline">
     <mat-label>Select a flow</mat-label>
     <mat-select (selectionChange)="getKeysByFlowUuid($event)" [(value)]="selectedFlowUuid">
       <mat-option *ngFor="let flow of flows" [value]="flow.uuid">
@@ -22,7 +19,7 @@
 </div>
 
 <div fxLayout="column" fxLayoutAlign="space-between stretch">
-  <mat-form-field *ngIf="flowKeys.length !== 0 && true" appearance="fill">
+  <mat-form-field *ngIf="flowKeys.length !== 0 && true" appearance="outline">
     <mat-label>Filter</mat-label>
     <input #input (keyup)="applyFilter($event)" autocomplete="off" matInput>
   </mat-form-field>

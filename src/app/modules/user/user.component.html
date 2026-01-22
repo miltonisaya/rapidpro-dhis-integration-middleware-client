@@ -1,13 +1,10 @@
-<div fxFlexLayoutAlign="row" fxLayoutAlign="space-between center">
-  <div>
-    <h3>Manage Users</h3>
-  </div>
-  <div fxLayoutGap="5px">
-    <button (click)="openEditDialog()" class="mat-primary" mat-raised-button>
-      <mat-icon>add</mat-icon>
-      ADD NEW
-    </button>
-  </div>
+<app-breadcrumb [items]="breadcrumbItems" [pageTitle]="title"></app-breadcrumb>
+
+<div fxFlexLayoutAlign="row" fxLayoutAlign="end center" style="margin-bottom: 16px;">
+  <button (click)="openEditDialog()" class="mat-primary" mat-raised-button>
+    <mat-icon>add</mat-icon>
+    ADD NEW
+  </button>
 </div>
 
 <div fxLayout="column" fxLayoutAlign="space-between stretch">
