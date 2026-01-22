@@ -5,7 +5,7 @@ import { UpperCasePipe } from '@angular/common';
 @Component({
     selector: 'app-notifier',
     templateUrl: './notifier.component.html',
-    styleUrls: ['./notifier.component.scss'],
+    styleUrls: ['./notifier.component.css'],
     standalone: true,
     imports: [UpperCasePipe]
 })
