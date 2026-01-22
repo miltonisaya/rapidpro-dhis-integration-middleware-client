@@ -9,13 +9,14 @@ import {ContactService} from "../contact/contact.service";
 import {Transaction} from "../transactions/types/Transaction";
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
   standalone: true,
-  imports: [FlexModule, MatCard, MatCardTitle, MatCardContent, BarchartComponent, MatDivider, CommonModule],
+  imports: [FlexModule, MatCard, MatCardTitle, MatCardContent, BarchartComponent, MatDivider, CommonModule, MatIcon],
   providers: [ContactService, TransactionsService]
 })
 export class DashboardComponent implements OnInit, OnDestroy {

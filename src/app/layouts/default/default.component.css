@@ -1,24 +1,125 @@
+/* Sidenav Container */
+mat-sidenav-container {
+  height: 100vh;
+}
+
+/* Sidebar */
 mat-sidenav {
-  width: 300px;
+  width: 280px;
+  border-right: none !important;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Main Content Area */
+mat-sidenav-content {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
   height: 100%;
 }
 
-mat-sidenav-content {
-  height: 100vh;
-  background-color: #c0c0c0;
+/* Toolbar */
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.toolbar mat-toolbar {
+  background: #ffffff;
+  color: #1a1a2e;
+  padding: 0 24px;
+  height: 64px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toolbar mat-toolbar mat-icon {
+  color: #1a1a2e;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  margin-left: 0;
+}
+
+.toolbar mat-toolbar mat-icon:hover {
+  color: #667eea;
+  transform: scale(1.1);
+}
+
+.toolbar .box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 0;
+}
+
+.toolbar .box mat-icon {
+  padding: 8px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.toolbar .box mat-icon:hover {
+  background-color: rgba(102, 126, 234, 0.1);
+}
+
+/* Main Content */
+.main {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+/* Menu dropdown styling */
+::ng-deep .mat-mdc-menu-panel {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+  margin-top: 8px;
+}
+
+::ng-deep .mat-mdc-menu-item {
+  border-radius: 8px;
+  margin: 4px 8px;
+  width: calc(100% - 16px);
+}
+
+::ng-deep .mat-mdc-menu-item:hover {
+  background-color: rgba(102, 126, 234, 0.1);
+}
+
+::ng-deep .mat-mdc-menu-item mat-icon {
+  color: #667eea;
+  margin-right: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  mat-sidenav {
+    width: 260px;
+  }
+
   .main {
-    margin: 20px;
-    margin-top: 10px;
+    padding: 16px;
+  }
+
+  .toolbar mat-toolbar {
+    padding: 0 16px;
   }
 }
 
-mat-toolbar {
-  mat-icon{
-    margin-left: 15px;
-    color: black;
+@media (max-width: 480px) {
+  mat-sidenav {
+    width: 100%;
   }
-  justify-content: space-between;
-  .box{
-    margin-top: 15px;
+
+  .main {
+    padding: 12px;
   }
 }
