@@ -16,10 +16,16 @@ import {
 } from "@angular/material/table";
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
-import {MatButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {FlexModule} from '@angular/flex-layout';
 import {CommonModule} from "@angular/common";
-import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from "@angular/material/dialog";
+import {
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogConfig,
+  MatDialogContent
+} from "@angular/material/dialog";
 import {NotifierService} from "../notification/notifier.service";
 import {MenuItemDialogComponent} from "./modals/menu-item-dialog-component";
 import {MenuItemService} from "./menu-item.service";
@@ -53,7 +59,8 @@ import {BreadcrumbComponent, BreadcrumbItem} from "../../shared/breadcrumb/bread
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    MatIconButton
   ],
   providers: [
     MenuItemService
@@ -63,9 +70,9 @@ import {BreadcrumbComponent, BreadcrumbItem} from "../../shared/breadcrumb/bread
 export class MenuItemComponent implements OnInit {
   title: string = 'Menu Items';
   breadcrumbItems: BreadcrumbItem[] = [
-    { label: 'Home', url: '/dashboard', icon: 'home' },
-    { label: 'System Settings', url: '/menu-items' },
-    { label: 'Menu Items' }
+    {label: 'Home', url: '/dashboard', icon: 'home'},
+    {label: 'System Settings', url: '/menu-items'},
+    {label: 'Menu Items'}
   ];
   data: MenuItem[] = [];
   roleUuid: string;
@@ -84,9 +91,9 @@ export class MenuItemComponent implements OnInit {
   @ViewChild('deleteDialog') deleteDialog: TemplateRef<any>;
 
   constructor(
-    private menuItemService: MenuItemService,
-    private dialogService: MatDialog,
-    private notifierService: NotifierService
+      private menuItemService: MenuItemService,
+      private dialogService: MatDialog,
+      private notifierService: NotifierService
   ) {
   }
 
@@ -120,7 +127,7 @@ export class MenuItemComponent implements OnInit {
   openDeleteDialog(uuid: string) {
     this.roleUuid = uuid;
     this.dialogService.open(this.deleteDialog)
-      .afterClosed().subscribe(() => {
+        .afterClosed().subscribe(() => {
       this.getMenus();
     });
   }
@@ -140,13 +147,13 @@ export class MenuItemComponent implements OnInit {
         authority: row.authority.uuid
       };
       this.dialogService.open(MenuItemDialogComponent, dialogConfig)
-        .afterClosed().subscribe(() => {
+          .afterClosed().subscribe(() => {
         this.getMenus();
       });
     } else {
       dialogConfig.data = {};
       this.dialogService.open(MenuItemDialogComponent, dialogConfig)
-        .afterClosed().subscribe(() => {
+          .afterClosed().subscribe(() => {
         this.getMenus();
       });
     }
@@ -188,13 +195,13 @@ export class MenuItemComponent implements OnInit {
       };
       this.menuItemService.populateForm(roleData);
       this.dialogService.open(MenuItemDialogComponent, dialogConfig)
-        .afterClosed().subscribe(() => {
+          .afterClosed().subscribe(() => {
         this.ngOnInit();
       });
     } else {
       dialogConfig.minWidth = '400px';
       this.dialogService.open(MenuItemDialogComponent, dialogConfig)
-        .afterClosed().subscribe(() => {
+          .afterClosed().subscribe(() => {
         this.ngOnInit();
       });
     }

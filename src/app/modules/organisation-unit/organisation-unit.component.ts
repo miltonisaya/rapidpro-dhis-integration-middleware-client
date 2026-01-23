@@ -4,15 +4,11 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
   OnDestroy,
-  OnInit,
-  TemplateRef,
-  ViewChild
+  OnInit
 } from '@angular/core';
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent} from '@angular/material/dialog';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
 import {OrganisationUnitService} from './organisation-unit.service';
-import {OrganisationUnitDialogComponent} from './modals/organisation-unit-dialog-component';
+import {OrganisationUnitDialogComponent, OrganisationUnitDialogData} from './modals/organisation-unit-dialog-component';
 import {NestedTreeControl} from '@angular/cdk/tree';
 import {
   MatNestedTreeNode,
@@ -28,11 +24,13 @@ import {MatIcon} from "@angular/material/icon";
 import {NgIf} from "@angular/common";
 import {NotifierService} from "../notification/notifier.service";
 import {MatInput} from "@angular/material/input";
-import {OrganisationUnit} from "./types/OrganisationUnit";
+import {MatTooltip} from "@angular/material/tooltip";
+import {MatSuffix} from "@angular/material/form-field";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {BreadcrumbComponent, BreadcrumbItem} from "../../shared/breadcrumb/breadcrumb.component";
+import {ConfirmDialogComponent} from "../../components/confirm/confirm.dialog";
 
 interface OuNode {
   id: string;
@@ -44,10 +42,15 @@ interface OuNode {
   hasChildren: boolean;
 }
 
+interface FilteredResult {
+  node: OuNode;
+  path: OuNode[];
+}
+
 @Component({
   selector: 'app-organisation-units',
   templateUrl: './organisation-unit.component.html',
-  styleUrls: ['./organisation-unit.component.scss'],
+  styleUrls: ['./organisation-unit.component.css'],
   imports: [
     MatButton,
     MatFormField,
@@ -64,8 +67,11 @@ interface OuNode {
     MatTreeNodeDef,
     MatDialogClose,
     MatInput,
+    MatTooltip,
+    MatSuffix,
     FlexLayoutModule,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    ConfirmDialogComponent
   ],
   standalone: true,
   schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
@@ -80,14 +86,11 @@ export class OrganisationUnitComponent implements OnInit, OnDestroy {
   treeControl = new NestedTreeControl<OuNode>(node => node.children);
   dataSource = new MatTreeNestedDataSource<OuNode>();
   selectedNode: OuNode | null = null;
-  originalData: OrganisationUnit[] = [];
-
-  @ViewChild('deleteDialog') deleteDialog: TemplateRef<OuNode>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  originalData: OuNode[] = [];
+  filterText: string = '';
 
   organisationUnitId: string = '';
-  isSuperAdministrator: boolean = false;
+  isConfirmDeleteDialogOpen: boolean = false;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -100,7 +103,6 @@ export class OrganisationUnitComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getRootOrganisationUnits();
-    this.checkIsAdmin();
   }
 
   ngOnDestroy(): void {
@@ -108,24 +110,27 @@ export class OrganisationUnitComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  checkIsAdmin(): void {
-    const mnmUser = JSON.parse(localStorage.getItem('MNM_USER') || '{}');
-    this.isSuperAdministrator = !!mnmUser.isSuperAdministrator;
-  }
-
   getRootOrganisationUnits(): void {
     this.organisationUnitService.getRootOrganisationUnits()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response: OuNode[]) => {
+          this.originalData = this.deepCopyNodes(response);
           this.dataSource.data = response;
           this.treeControl.dataNodes = response;
           this.cdr.detectChanges();
         },
         error: (error) => {
-          this.notifierService.showNotification(error.error.error, 'OK', 'error');
+          this.notifierService.showNotification(error.error?.error || 'Failed to load organisation units', 'OK', 'error');
         }
       });
+  }
+
+  deepCopyNodes(nodes: OuNode[]): OuNode[] {
+    return nodes.map(node => ({
+      ...node,
+      children: node.children ? this.deepCopyNodes(node.children) : undefined
+    }));
   }
 
   loadChildren(node: OuNode): void {
@@ -136,6 +141,9 @@ export class OrganisationUnitComponent implements OnInit, OnDestroy {
           next: (response: OuNode[]) => {
             node.children = response;
 
+            // Also update originalData to keep in sync
+            this.updateOriginalDataChildren(this.originalData, node.id, response);
+
             const currentData = this.dataSource.data;
             this.dataSource.data = [];
             this.dataSource.data = currentData;
@@ -144,10 +152,25 @@ export class OrganisationUnitComponent implements OnInit, OnDestroy {
             this.cdr.detectChanges();
           },
           error: (error) => {
-            this.notifierService.showNotification(error.error.error, 'OK', 'error');
+            this.notifierService.showNotification(error.error?.error || 'Failed to load children', 'OK', 'error');
           }
         });
     }
+  }
+
+  updateOriginalDataChildren(nodes: OuNode[], parentId: string, children: OuNode[]): boolean {
+    for (const node of nodes) {
+      if (node.id === parentId) {
+        node.children = this.deepCopyNodes(children);
+        return true;
+      }
+      if (node.children && node.children.length > 0) {
+        if (this.updateOriginalDataChildren(node.children, parentId, children)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   onNodeExpand(node: OuNode) {
@@ -160,54 +183,133 @@ export class OrganisationUnitComponent implements OnInit, OnDestroy {
     }
   }
 
-  applyFilter(event: KeyboardEvent) {
+  applyFilter(event: KeyboardEvent): void {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.filterText = filterValue;
+
+    if (!filterValue) {
+      this.dataSource.data = this.deepCopyNodes(this.originalData);
+      this.treeControl.dataNodes = this.dataSource.data;
+      this.treeControl.collapseAll();
+      this.cdr.detectChanges();
+      return;
+    }
+
+    const filteredData = this.filterTreeData(this.deepCopyNodes(this.originalData), filterValue);
+    this.dataSource.data = filteredData;
+    this.treeControl.dataNodes = filteredData;
+    this.expandFilteredNodes(filteredData);
+    this.cdr.detectChanges();
   }
 
-  openDialog(data?: OuNode): void {
+  filterTreeData(nodes: OuNode[], filterValue: string): OuNode[] {
+    const result: OuNode[] = [];
+
+    for (const node of nodes) {
+      const nodeMatches = this.nodeMatchesFilter(node, filterValue);
+      let filteredChildren: OuNode[] = [];
+
+      if (node.children && node.children.length > 0) {
+        filteredChildren = this.filterTreeData(node.children, filterValue);
+      }
+
+      if (nodeMatches || filteredChildren.length > 0) {
+        const newNode: OuNode = {
+          ...node,
+          children: filteredChildren.length > 0 ? filteredChildren : node.children
+        };
+        result.push(newNode);
+      }
+    }
+
+    return result;
+  }
+
+  nodeMatchesFilter(node: OuNode, filterValue: string): boolean {
+    const searchableText = `${node.name} ${node.code} ${node.otherNames || ''}`.toLowerCase();
+    return searchableText.includes(filterValue);
+  }
+
+  expandFilteredNodes(nodes: OuNode[]): void {
+    for (const node of nodes) {
+      if (node.children && node.children.length > 0) {
+        this.treeControl.expand(node);
+        this.expandFilteredNodes(node.children);
+      }
+    }
+  }
+
+  openCreateDialog(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.width = '700px';
+    dialogConfig.data = {
+      mode: 'create'
+    } as OrganisationUnitDialogData;
 
-    if (data) {
-      const ouData = {id: data.id, name: data.name, code: data.code, parentId: data.parentId};
-      this.organisationUnitService.populateForm(ouData);
-    } else {
-      dialogConfig.data = {};
-    }
     this.dialog
       .open(OrganisationUnitDialogComponent, dialogConfig)
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.getRootOrganisationUnits();
+      .subscribe((result) => {
+        if (result) {
+          this.getRootOrganisationUnits();
+        }
+      });
+  }
+
+  openEditDialog(): void {
+    if (!this.selectedNode) {
+      this.notifierService.showNotification('Please select an organisation unit to edit', 'OK', 'error');
+      return;
+    }
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '700px';
+    dialogConfig.data = {
+      mode: 'edit',
+      organisationUnit: this.selectedNode
+    } as OrganisationUnitDialogData;
+
+    this.dialog
+      .open(OrganisationUnitDialogComponent, dialogConfig)
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((result) => {
+        if (result) {
+          this.selectedNode = null;
+          this.getRootOrganisationUnits();
+        }
       });
   }
 
   openDeleteDialog(id: string): void {
     this.organisationUnitId = id;
-    this.dialog
-      .open(this.deleteDialog)
-      .afterClosed()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.getRootOrganisationUnits();
-      });
+    this.isConfirmDeleteDialogOpen = true;
   }
 
-  delete(): void {
+  closeConfirmDialog(): void {
+    this.isConfirmDeleteDialogOpen = false;
+  }
+
+  handleConfirmDelete(): void {
     this.organisationUnitService.delete(this.organisationUnitId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
-          this.notifierService.showNotification(response.message, 'OK', 'success');
+          this.notifierService.showNotification(response.message || 'Organisation unit deleted successfully', 'OK', 'success');
+          this.selectedNode = null;
+          this.isConfirmDeleteDialogOpen = false;
           this.getRootOrganisationUnits();
         },
         error: (error) => {
-          this.notifierService.showNotification(error.error.error, 'OK', 'error');
+          this.notifierService.showNotification(error.error?.error || 'Failed to delete organisation unit', 'OK', 'error');
+          this.isConfirmDeleteDialogOpen = false;
         }
       });
-    this.dialog.closeAll();
   }
 
   hasNestedChild = (_: number, node: OuNode) => {

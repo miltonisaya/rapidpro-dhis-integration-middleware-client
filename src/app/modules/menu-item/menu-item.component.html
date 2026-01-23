@@ -1,7 +1,7 @@
 <app-breadcrumb [items]="breadcrumbItems" [pageTitle]="title"></app-breadcrumb>
 
-<div fxFlexLayoutAlign="row" fxLayoutAlign="end center" style="margin-bottom: 16px;">
-  <button (click)="openCreateDialog()" class="mat-primary" mat-raised-button>
+<div fxLayout="row" fxLayoutAlign="end center" style="margin-bottom: 16px;">
+  <button (click)="openCreateDialog()" class="btn-create" mat-raised-button>
     <mat-icon>add</mat-icon>
     CREATE
   </button>
@@ -24,13 +24,14 @@
         <td mat-cell *matCellDef="let row">{{ row.name }}</td>
       </ng-container>
 
-      <!-- State Column -->
+      <!-- Icon Column -->
       <ng-container matColumnDef="icon">
         <th mat-header-cell *matHeaderCellDef>Icon</th>
         <td mat-cell *matCellDef="let row">
-          <mat-icon>{{ row.icon }}</mat-icon>
-          <br>
-          {{ row.icon }}
+          <div class="icon-display">
+            <mat-icon class="icon-preview">{{ row.icon }}</mat-icon>
+            <span class="icon-name">{{ row.icon }}</span>
+          </div>
         </td>
       </ng-container>
 
@@ -62,10 +63,10 @@
       <ng-container matColumnDef="actions">
         <th *matHeaderCellDef mat-header-cell>Action</th>
         <td *matCellDef="let row" mat-cell>
-          <button mat-button matTooltip="Edit" matTooltipPosition="left" (click)="openEditDialog(row)">
-            <mat-icon (click)="openEditDialog(row)">edit</mat-icon>
+          <button mat-icon-button matTooltip="Edit" matTooltipPosition="left" (click)="openEditDialog(row)" class="action-btn-update">
+            <mat-icon>edit</mat-icon>
           </button>
-          <button mat-button matTooltip="Delete" matTooltipPosition="left" (click)="openDeleteDialog(row.uuid)">
+          <button mat-icon-button matTooltip="Delete" matTooltipPosition="left" (click)="openDeleteDialog(row.uuid)" class="action-btn-delete">
             <mat-icon>delete</mat-icon>
           </button>
         </td>

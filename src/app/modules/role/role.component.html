@@ -1,7 +1,7 @@
 <app-breadcrumb [items]="breadcrumbItems" [pageTitle]="title"></app-breadcrumb>
 
-<div fxFlexLayoutAlign="row" fxLayoutAlign="end center" style="margin-bottom: 16px;">
-  <button (click)="openCreateDialog()" class="mat-primary" mat-raised-button>
+<div fxLayout="row" fxLayoutAlign="end center" style="margin-bottom: 16px;">
+  <button (click)="openCreateDialog()" class="btn-create" mat-raised-button>
     <mat-icon>add</mat-icon>
     CREATE
   </button>
@@ -40,13 +40,13 @@
       <ng-container matColumnDef="actions">
         <th *matHeaderCellDef mat-header-cell>Action</th>
         <td *matCellDef="let row" mat-cell>
-          <button mat-button matTooltip="Edit" matTooltipPosition="left" (click)="openEditDialog(row)">
+          <button mat-icon-button matTooltip="Edit" matTooltipPosition="left" (click)="openEditDialog(row)" class="action-btn-update">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-button matTooltip="Delete" matTooltipPosition="left" (click)="openDeleteDialog(row.uuid)">
+          <button mat-icon-button matTooltip="Delete" matTooltipPosition="left" (click)="openDeleteDialog(row.uuid)" class="action-btn-delete">
             <mat-icon>delete</mat-icon>
           </button>
-          <button mat-button matTooltip="Set Permissions" matTooltipPosition="left"
+          <button mat-icon-button matTooltip="Set Permissions" matTooltipPosition="left"
                   (click)="openPermissionsDialog(row.uuid)">
             <mat-icon>settings</mat-icon>
           </button>
@@ -165,7 +165,7 @@
 
       <mat-dialog-actions fxLayout="row" fxLayoutAlign="end stretch">
         <button mat-dialog-close mat-raised-button type="button">CANCEL</button>
-        <button color="primary" mat-raised-button type="submit">
+        <button [class]="roleService.form.controls['uuid'].value ? 'btn-update' : 'btn-create'" mat-raised-button type="submit">
           {{ roleService.form.controls['uuid'].value ? "UPDATE" : "CREATE" }}
         </button>
       </mat-dialog-actions>

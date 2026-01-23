@@ -56,7 +56,7 @@
     <ng-container matColumnDef="actions">
       <th *matHeaderCellDef mat-header-cell>Action</th>
       <td *matCellDef="let row" mat-cell>
-        <button mat-button matTooltip="Edit" matTooltipPosition="left" (click)="openEditDialog(row)">
+        <button mat-icon-button matTooltip="Edit" matTooltipPosition="left" (click)="openEditDialog(row)" class="action-btn-update">
           <mat-icon>edit</mat-icon>
         </button>
       </td>
@@ -126,7 +126,7 @@
 
       <mat-dialog-actions fxLayout="row" fxLayoutAlign="end stretch">
         <button mat-dialog-close mat-raised-button type="button">CANCEL</button>
-        <button color="primary" mat-raised-button type="submit">
+        <button [class]="contactService.form.controls['uuid'].value ? 'btn-update' : 'btn-create'" mat-raised-button type="submit">
           {{ contactService.form.controls['uuid'].value ? "UPDATE" : "CREATE" }}
         </button>
       </mat-dialog-actions>

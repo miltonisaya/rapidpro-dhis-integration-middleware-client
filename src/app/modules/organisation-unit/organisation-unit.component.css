@@ -1,93 +1,103 @@
-/*.organisation-unit-container {*/
-/*  padding: 20px;*/
-/*}*/
-
-/*mat-tree {*/
-/*  background: #fff;*/
-/*  padding: 10px;*/
-/*  border-radius: 4px;*/
-/*  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
-/*}*/
-
-/*mat-tree-node {*/
-/*  display: flex;*/
-/*  align-items: center;*/
-/*}*/
-
-/*mat-tree-node button {*/
-/*  margin-right: 10px;*/
-/*}*/
-
-
-/*.organisation-unit-container {*/
-/*  padding: 20px;*/
-/*}*/
-
-/*mat-tree {*/
-/*  background: #fff;*/
-/*  padding: 10px;*/
-/*  border-radius: 4px;*/
-/*  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
-/*}*/
-
-/*mat-tree-node {*/
-/*  display: flex;*/
-/*  align-items: center;*/
-/*}*/
-
-/*mat-tree-node button {*/
-/*  margin-right: 10px;*/
-/*}*/
-
-.mat-tree {
-  padding-left: 40px;
-  align-content: center;
-}
-
-.ou-tree-invisible {
-  display: none;
-}
-
-.ou-tree ul,
-.ou-tree li {
-  margin-top: 0;
-  margin-bottom: 0;
-  list-style-type: none;
-  font-size: x-small;
-}
-
-/*
- * This padding sets alignment of the nested nodes.
- */
-.ou-tree .mat-nested-tree-node div[role=group] {
-  padding-left: 40px;
-}
-
-/*
- * Padding for leaf nodes.
- * Leaf nodes need to have padding so as to align with other non-leaf nodes
- * under the same parent.
- */
-.ou-tree div[role=group] > .mat-tree-node {
-  padding-left: 40px;
-}
-
-.nested-node {
-  padding-left: 40px;
-}
-
-.report-tree-invisible {
-  display: none;
-}
-
-.report-tree {
-  padding-left: 40px;
-}
-
-.ou-tree-invisible {
-  display: none;
+.tree-wrapper {
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .ou-tree {
   width: 100%;
+  min-height: 300px;
+  max-height: 500px;
+  overflow-y: auto;
+  background: #fff;
+  padding: 8px;
+}
+
+.ou-tree-invisible {
+  display: none;
+}
+
+.ou-tree .mat-nested-tree-node div[role=group] {
+  padding-left: 40px;
+}
+
+.ou-tree div[role=group] > .mat-tree-node {
+  padding-left: 40px;
+}
+
+.tree-node-item {
+  min-height: 40px;
+  cursor: pointer;
+  padding: 4px 12px;
+  border-radius: 6px;
+  margin: 2px 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.tree-node-item:hover {
+  background-color: rgba(102, 126, 234, 0.08);
+}
+
+.tree-node-item.selected {
+  background-color: rgba(102, 126, 234, 0.15);
+  border-left: 3px solid #667eea;
+}
+
+.tree-node-item.selected .node-text {
+  color: #667eea;
+  font-weight: 500;
+}
+
+.node-text {
+  font-size: 14px;
+  color: #333;
+}
+
+.node-text.clickable {
+  cursor: pointer;
+}
+
+.node-other-names {
+  font-size: 12px;
+  color: #888;
+  margin-left: 8px;
+  font-style: italic;
+}
+
+.selected-node-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: #667eea;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.selected-node-info mat-icon:first-child {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-buttons button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .selected-node-info {
+    display: none;
+  }
 }

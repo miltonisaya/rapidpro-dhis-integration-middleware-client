@@ -74,7 +74,7 @@
 
   <mat-dialog-actions fxLayout="row" fxLayoutAlign="end stretch">
     <button mat-dialog-close mat-raised-button type="button">CANCEL</button>
-    <button color="primary" mat-raised-button type="submit">
+    <button [class]="menuService.form.controls['uuid'].value ? 'btn-update' : 'btn-create'" mat-raised-button type="submit">
       {{ menuService.form.controls['uuid'].value ? "UPDATE" : "CREATE" }}
     </button>
   </mat-dialog-actions>

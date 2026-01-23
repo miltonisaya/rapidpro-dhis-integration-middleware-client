@@ -1,31 +1,35 @@
 <app-breadcrumb [items]="breadcrumbItems" [pageTitle]="title"></app-breadcrumb>
 
-<div fxFlexLayoutAlign="row" fxLayoutAlign="end center" style="margin-bottom: 16px;">
-  <div fxLayoutGap="5px">
-    <button
-      (click)="openDialog()"
-      *ngIf="isSuperAdministrator"
-      class="mat-primary"
-      mat-raised-button
-    >
+<div fxLayout="row" fxLayoutAlign="space-between center" style="margin-bottom: 16px;">
+  <div *ngIf="selectedNode" class="selected-node-info">
+    <mat-icon>check_circle</mat-icon>
+    <span>Selected: {{ selectedNode.name }}</span>
+    <button mat-icon-button
+            (click)="selectedNode = null"
+            matTooltip="Clear selection">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div *ngIf="!selectedNode"></div>
+
+  <div fxLayoutGap="8px">
+    <button mat-raised-button
+            class="btn-create"
+            (click)="openCreateDialog()">
       <mat-icon>add</mat-icon>
-      ADD
+      CREATE
     </button>
-    <button
-      (click)="openDialog(selectedNode)"
-      *ngIf="selectedNode && isSuperAdministrator"
-      class="mat-primary"
-      mat-raised-button
-    >
+    <button mat-raised-button
+            class="btn-update"
+            *ngIf="selectedNode"
+            (click)="openEditDialog()">
       <mat-icon>edit</mat-icon>
-      EDIT
+      UPDATE
     </button>
-    <button
-      (click)="openDeleteDialog(selectedNode.id)"
-      *ngIf="selectedNode && isSuperAdministrator"
-      color="warn"
-      mat-raised-button
-    >
+    <button mat-raised-button
+            class="btn-delete"
+            *ngIf="selectedNode"
+            (click)="openDeleteDialog(selectedNode.id)">
       <mat-icon>delete</mat-icon>
       DELETE
     </button>
@@ -33,26 +37,33 @@
 </div>
 
 <mat-form-field appearance="outline" style="width: 100%;">
-  <mat-label>Filter</mat-label>
-  <input #input (keyup)="applyFilter($event)" autocomplete="off" matInput/>
+  <mat-label>Filter organisation units</mat-label>
+  <input #input
+         (keyup)="applyFilter($event)"
+         autocomplete="off"
+         matInput
+         placeholder="Search by name, code, or other names..."/>
+  <mat-icon matSuffix>search</mat-icon>
 </mat-form-field>
 
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8 tree-wrapper">
   <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="ou-tree">
     <!-- Leaf node -->
     <mat-tree-node
       (click)="onNodeClick(node)"
       *matTreeNodeDef="let node"
       [class.selected]="node === selectedNode"
+      class="tree-node-item"
     >
-      {{ node.name }} ({{ node.code }}) - {{ node.otherNames || 'N/A' }}
+      <span class="node-text">{{ node.name }} ({{ node.code }})</span>
+      <span class="node-other-names" *ngIf="node.otherNames">- {{ node.otherNames }}</span>
     </mat-tree-node>
 
     <!-- Expandable node -->
     <mat-nested-tree-node *matTreeNodeDef="let node; when: hasNestedChild">
-      <div class="mat-tree-node">
+      <div class="mat-tree-node tree-node-item" [class.selected]="node === selectedNode">
         <button
-          (click)="onNodeExpand(node)"
+          (click)="onNodeExpand(node); $event.stopPropagation()"
           [attr.aria-label]="'Toggle ' + node.name"
           mat-icon-button
         >
@@ -60,14 +71,14 @@
             {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
           </mat-icon>
         </button>
-        <span (click)="onNodeClick(node)" [class.selected]="node === selectedNode">
-          {{ node.name }} ({{ node.code }}) - {{ node.otherNames || 'N/A' }}
+        <span (click)="onNodeClick(node)" class="node-text clickable">
+          {{ node.name }} ({{ node.code }})
         </span>
+        <span class="node-other-names" *ngIf="node.otherNames">- {{ node.otherNames }}</span>
       </div>
       <div
         *ngIf="treeControl.isExpanded(node)"
         [class.ou-tree-invisible]="!treeControl.isExpanded(node)"
-        data-debug="children-container"
         role="group"
       >
         <ng-container matTreeNodeOutlet></ng-container>
@@ -76,16 +87,10 @@
   </mat-tree>
 </div>
 
-
-<!-- Delete organisation unit dialog template -->
-<ng-template #deleteDialog>
-  <mat-dialog-content>
-    <h3>Are you sure you want to delete this organisation unit?</h3>
-  </mat-dialog-content>
-  <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>NO</button>
-    <button (click)="delete()" mat-button>YES</button>
-  </mat-dialog-actions>
-</ng-template>
-
-<!--<pre>{{ dataSource.data | json }}</pre>-->
+<app-confirm-dialog
+  [open]="isConfirmDeleteDialogOpen"
+  [title]="'Delete Organisation Unit'"
+  [message]="'Are you sure you want to delete this organisation unit? This action cannot be undone.'"
+  (onClose)="closeConfirmDialog()"
+  (onConfirm)="handleConfirmDelete()"
+/>

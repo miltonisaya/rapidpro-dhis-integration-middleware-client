@@ -1,9 +1,9 @@
 <app-breadcrumb [items]="breadcrumbItems" [pageTitle]="title"></app-breadcrumb>
 
-<div fxFlexLayoutAlign="row" fxLayoutAlign="end center" style="margin-bottom: 16px;">
-  <button (click)="openEditDialog()" class="mat-primary" mat-raised-button>
+<div fxLayout="row" fxLayoutAlign="end center" style="margin-bottom: 16px;">
+  <button (click)="openEditDialog()" class="btn-create" mat-raised-button>
     <mat-icon>add</mat-icon>
-    ADD NEW
+    CREATE
   </button>
 </div>
 
@@ -58,11 +58,11 @@
     <ng-container matColumnDef="actions">
       <th *matHeaderCellDef mat-header-cell>Action</th>
       <td *matCellDef="let users" mat-cell>
-        <button mat-icon-button matTooltip="Edit" matTooltipPosition="left" (click)="openEditDialog(users)">
+        <button mat-icon-button matTooltip="Edit" matTooltipPosition="left" (click)="openEditDialog(users)" class="action-btn-update">
           <mat-icon>edit</mat-icon>
         </button>
-        <button (click)="openDeleteDialog(users.uuid)" color="warn" mat-icon-button matTooltip="Delete"
-                matTooltipPosition="right">
+        <button (click)="openDeleteDialog(users.uuid)" mat-icon-button matTooltip="Delete"
+                matTooltipPosition="right" class="action-btn-delete">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
